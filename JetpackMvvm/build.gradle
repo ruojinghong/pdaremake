@@ -1,0 +1,70 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+//apply plugin: 'com.github.panpf.bintray-publish'
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 20
+        versionName "1.2.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+    buildFeatures {
+        dataBinding = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api rootProject.ext.deps["appcompat"]
+    //kotlin
+    api rootProject.ext.deps["kotlin-stdlib-jdk7"]
+    api rootProject.ext.deps["ktxz"]
+    //lifecycle
+    api rootProject.ext.deps["runtime-ktx"]
+    api rootProject.ext.deps["common-java8"]
+    api rootProject.ext.deps["lifecycle-extension"]
+    // viewModel
+    api rootProject.ext.deps["viewmodel-ktx"]
+    api rootProject.ext.deps["fragment-ktx"]
+    // liveData
+    api rootProject.ext.deps["livedata-ktx"]
+    api rootProject.ext.deps["livedata"]
+    //navigation
+    api rootProject.ext.deps["navigation-runtime-kt"]
+    //retrofit
+    api rootProject.ext.deps["retrofit"]
+    api rootProject.ext.deps["converter-gson"]
+    api rootProject.ext.deps["PersistentCookieJar"]
+    //动态替换BaseUrl库 使用可参考 https://github.com/JessYanCoding/RetrofitUrlManager
+    api rootProject.ext.deps["url-manager"]
+}
+
+//publish {
+//    userOrg = 'hegaojian'//bintray网站中的用户名，网站链接：https://bintray.com/
+//    repoName = 'cxk'//仓库名字 这个可以随便起,比如我觉得我比较菜，所以我取了个蔡徐坤
+//    groupId = 'me.hegj'//路径 名等于“me.hegj.JetpackMvvm:1.0.0”中的   me.hegj，你也可以写com.xxx
+//    artifactId = 'JetpackMvvm'//项目名 等于“me.hegj.JetpackMvvm:1.0.0”中的  JetpackMvvm
+//    publishVersion = '1.2.0'//版本号 等于“me.hegj.JetpackMvvm:1.0.0”中的 1.0.0
+//    desc = 'An Android Jetpack-MVVM framework,JetpackMvvm is nb?'//说明，不重要的东西，随便写
+//    website = 'https://github.com/hegaojian/JetpackMvvm'//项目主页，用GitHub地址
+//    licences = ['Apache-2.0']//协议
+//}

@@ -1,0 +1,87 @@
+
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
+    //使用databinding
+    buildFeatures {
+        dataBinding true
+    }
+    defaultConfig {
+        applicationId "com.bigoffs.pdaremake"
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+
+        ndk {
+            // 设置支持的SO库架构 一般只设置这个就阔以设配所有的设备了，还可以减少apk的大小
+            abiFilters 'armeabi','armeabi-v7a'
+        }
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    //dialog
+    api rootProject.deps["material-dialogs:lifecycle"]
+    api rootProject.deps["material-dialogs:core"]
+    api rootProject.deps["material-dialogs:color"]
+    api rootProject.deps["material-dialogs:datetime"]
+    api rootProject.deps["material-dialogs:bottomsheets"]
+    api rootProject.deps["mmkv"]
+    api rootProject.deps["loadsir"]
+    api rootProject.deps["utilcodex"]
+    api rootProject.deps["multidex"]
+    api rootProject.deps["bottomnavigationviewex"]
+    api rootProject.deps["navigation-runtime-kt"]
+    api rootProject.deps["crashreport_upgrade"]
+    api rootProject.deps["nativecrashreport"]
+    api rootProject.deps["customactivityoncrash"]
+    api rootProject.deps["BannerViewPager"]
+    api rootProject.deps["swiperefreshlayout"]
+    api rootProject.deps["yanzhenjie.recyclerview"]
+    api rootProject.deps["BaseRecyclerViewAdapterHelper"]
+    api rootProject.deps["RevealLayout"]
+    api rootProject.deps["utilcodex"]
+    api rootProject.deps["Glide"]
+    api rootProject.deps["agentWeb"]
+    api rootProject.deps["MagicIndicator"]
+    api rootProject.deps["preference"]
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.2'
+
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.2.2'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta1'
+    implementation project(path: ':JetpackMvvm')
+}
