@@ -4,4 +4,6 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class UserInfo (var name:String  = "admin"):Parcelable
+data class UserInfo (var userId:String  = "admin",
+                    var trueName:String,
+                    var accessToken:String):Parcelable
