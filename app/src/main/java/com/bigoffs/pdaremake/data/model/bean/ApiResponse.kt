@@ -3,7 +3,7 @@ package com.bigoffs.pdaremake.data.model.bean
 import me.hgj.jetpackmvvm.network.BaseResponse
 
 data class ApiResponse<T>(var status:Int,var t:T):BaseResponse<T>() {
-    override fun isSucces(): Boolean = status == 0
+    override fun isSucces(): Boolean = status == 1
 
     override fun getResponseData(): T  = t
 

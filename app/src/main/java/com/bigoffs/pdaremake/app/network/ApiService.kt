@@ -11,7 +11,7 @@ interface ApiService {
         const val BASE_URL = "http://wms.pandora.okbuy.com/"
 //        val BASE_URL = ""
     }
-    @POST
+    @POST("api/pda/user/user/login")
     @FormUrlEncoded
     suspend fun  login(
         @Field("user_name") username:String
