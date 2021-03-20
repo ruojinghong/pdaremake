@@ -35,11 +35,11 @@
     </style>
     <style name="login_text_style">
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">24dp</item>
+        <item name="android:textSize">12dp</item>
     </style>
     <style name="login_et_style">
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">24dp</item>
+        <item name="android:textSize">12dp</item>
         <item name="hintTextColor">#C8C8C8</item>
     </style>
 </resources>
