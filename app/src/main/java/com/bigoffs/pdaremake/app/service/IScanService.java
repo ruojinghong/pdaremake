@@ -2,7 +2,7 @@ package com.bigoffs.pdaremake.app.service;
 
 import android.content.Context;
 
-import com.bigoffs.rfid.listener.OnFinishListener;
+import com.bigoffs.pdaremake.app.event.RfidViewModel;
 
 import java.util.Map;
 
@@ -29,9 +29,9 @@ public interface IScanService {
 
     void setReadDataMode(int readDataMode);
 
-    void setListener(OnFinishListener listener);
+    void setListener(RfidViewModel.OnFinishListener listener);
 
-    void setAnotherListener(OnFinishListener listener);
+    void setAnotherListener(RfidViewModel.OnFinishListener listener);
 
     void removeListener();
     void removeAnotherListener();

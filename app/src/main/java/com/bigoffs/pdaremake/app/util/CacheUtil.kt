@@ -36,6 +36,28 @@ object CacheUtil {
     }
 
     /**
+     * 设置无线射频信号强度
+     */
+    fun setPower(value: Int) {
+        val kv = MMKV.mmkvWithID("app")
+        if(0<value&&value>30){
+            value == 30
+        }
+            kv.encode("power",value)
+
+
+    }
+
+    /**
+     * 获取保存的账户信息
+     */
+    fun getPower(): Int {
+        val kv = MMKV.mmkvWithID("app")
+        return kv.decodeInt("power",30)
+
+    }
+
+    /**
      * 是否已经登录
      */
     fun isLogin(): Boolean {

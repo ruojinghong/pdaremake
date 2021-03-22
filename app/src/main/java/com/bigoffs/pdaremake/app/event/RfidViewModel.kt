@@ -2,6 +2,7 @@ package com.bigoffs.pdaremake.app.event
 
 import com.bigoffs.pdaremake.app.service.IScanService
 import com.bigoffs.pdaremake.app.service.ScanServiceControl
+import com.bigoffs.pdaremake.app.util.CacheUtil
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import java.util.*
 import kotlin.collections.HashMap
@@ -16,14 +17,16 @@ class RfidViewModel : BaseViewModel() {
 
     //继初始化已采集数据之后，新增的数据都会加入到这个集合中
     var out: LinkedList<String?> = LinkedList()
+    companion object{
+        private  var currentFacility = Facility.YBX
+    }
 
 
-    private val currentFacility = Facility.YBX
 
     private val mService: IScanService = ScanServiceControl.getScanService()
 
 
-    fun initOut(datas: List<String?>) {
+    fun initOut(datas: List<String>) {
         out.addAll(datas)
     }
 
@@ -51,15 +54,15 @@ class RfidViewModel : BaseViewModel() {
     }
 
     //初始化已采集的数据
-    fun initData(datas: List<String?>) {
+    fun initData(datas: List<String>) {
         for (data in datas) {
-            map.put(data, null)
+            map[data] = null
             num++
         }
     }
 
     //清理部分已采集的数据
-    fun clearPartOfData(datas: List<String?>) {
+    fun clearPartOfData(datas: List<String>) {
         for (data in datas) {
             map.remove(data)
             out.remove(data)
@@ -83,7 +86,7 @@ class RfidViewModel : BaseViewModel() {
     }
 
     //停止扫条码
-    fun setCurrentSetting(setting: Setting?) {
+    fun setCurrentSetting(setting: Setting) {
         mService.setCurrentSetting(Setting.getSettingMap(setting))
     }
 
@@ -108,15 +111,17 @@ class RfidViewModel : BaseViewModel() {
 
     //设置回调，通过内存排重
     fun setListenerProtectModel(listener: OnFinishListener) {
-        mService.setListener(object : OnFinishListener() {
-            fun OnFinish(data: String) {
+        mService.setListener(object : OnFinishListener {
+            override fun onFinish(data: String) {
                 map.put(data, "")
                 if (num < map.size) {
                     num++
                     out.add(data)
-                    listener.OnFinish(data)
+                    listener.onFinish(data)
                 }
             }
+
+
         })
     }
 
@@ -156,23 +161,23 @@ class RfidViewModel : BaseViewModel() {
         binding, bindingMore, stockRead;
 
         companion object {
-            fun getSettingMap(setting: Setting?): Map<String, Any> {
+            fun getSettingMap(setting: Setting): Map<String, Any> {
                 val map: MutableMap<String, Any> =
                     HashMap()
                 when (setting) {
                     binding -> when (currentFacility) {
                         Facility.YBX -> map["power"] =
-                            SPUtils.get(MApplication.getInstance(), "power", 30)
+                            CacheUtil.getPower()
                         Facility.CW -> map["power"] = 10
                     }
                     bindingMore -> when (currentFacility) {
                         Facility.YBX -> map["power"] =
-                            SPUtils.get(MApplication.getInstance(), "power", 30)
+                            CacheUtil.getPower()
                         Facility.CW -> map["power"] = 30
                     }
                     stockRead -> when (currentFacility) {
                         Facility.YBX -> map["power"] =
-                            SPUtils.get(MApplication.getInstance(), "power", 30)
+                            CacheUtil.getPower()
                         Facility.CW -> map["power"] = 30
                     }
                     else -> {
@@ -187,8 +192,8 @@ class RfidViewModel : BaseViewModel() {
         YBX, CW
     }
 
-    fun interface OnFinishListener{
-
+     interface OnFinishListener{
+            fun onFinish(data:String)
     }
 
 
