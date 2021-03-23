@@ -7,6 +7,7 @@ import com.tencent.mmkv.MMKV
 
 object CacheUtil {
 
+
     /**
      * 获取保存的账户信息
      */
@@ -86,5 +87,16 @@ object CacheUtil {
     fun setFirst(first:Boolean): Boolean {
         val kv = MMKV.mmkvWithID("app")
         return kv.encode("first", first)
+    }
+
+
+     fun  getInt(name:String,defaultValue:Int): Int {
+        val kv = MMKV.mmkvWithID("app")
+        return kv.decodeInt(name,defaultValue)
+    }
+
+    fun setInt(name:String,value:Int):Boolean{
+        val kv = MMKV.mmkvWithID("app")
+        return kv.encode(name, value)
     }
 }

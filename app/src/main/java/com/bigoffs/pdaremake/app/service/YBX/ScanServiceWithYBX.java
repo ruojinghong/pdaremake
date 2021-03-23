@@ -5,12 +5,13 @@ import android.device.ScanManager;
 import android.os.Handler;
 import android.os.Message;
 
-import com.UHF.scanlable.UfhData;
-import com.bigoffs.rfid.listener.OnFinishListener;
-import com.bigoffs.rfid.persistence.util.SPUtils;
-import com.bigoffs.rfid.persistence.util.SoundUtils;
-import com.bigoffs.rfid.service.CW.ScanServiceWithCW;
-import com.bigoffs.rfid.service.IScanService;
+
+import com.bigoffs.UHF.scanlable.UfhData;
+import com.bigoffs.pdaremake.app.service.CW.ScanServiceWithCW;
+import com.bigoffs.pdaremake.app.service.IScanService;
+import com.bigoffs.pdaremake.app.service.OnFinishListener;
+import com.bigoffs.pdaremake.app.util.SPUtils;
+import com.bigoffs.pdaremake.app.util.SoundUtils;
 import com.orhanobut.logger.Logger;
 
 import java.util.Iterator;
@@ -119,9 +120,9 @@ public class ScanServiceWithYBX implements IScanService {
 
                     if (currentMode == scanMode) return;
 
-                    mListener.OnFinish(epc);
+                    mListener.onFinish(epc);
                     if (listener != null) {
-                        listener.OnFinish(epc);
+                        listener.onFinish(epc);
                     }
 
                 }
@@ -253,14 +254,14 @@ public class ScanServiceWithYBX implements IScanService {
 
         BarcodeReceiver.setListener(new OnFinishListener() {
             @Override
-            public void OnFinish(String data) {
+            public void onFinish(String data) {
                 if (currentMode == readMode) return;
                 if (mListener != null) {
-                    mListener.OnFinish(data);
+                    mListener.onFinish(data);
 
                 }
                 if (listener != null) {
-                    listener.OnFinish(data);
+                    listener.onFinish(data);
 
                 }
 

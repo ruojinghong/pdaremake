@@ -70,6 +70,7 @@ dependencies {
     api rootProject.deps["agentWeb"]
     api rootProject.deps["MagicIndicator"]
     api rootProject.deps["preference"]
+    api rootProject.deps["Logger"]
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.2'
@@ -79,6 +80,11 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
+    implementation files('libs/commons-codec-1.5.jar')
+    implementation files('libs/commons-lang3-3.1.jar')
+    implementation files('libs/DeviceAPIver20160808.jar')
+    implementation files('libs/jingchen.jar')
+    implementation files('libs/platform_sdk_v2.2.3.jar')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.bigoffs.rfid.listener.OnFinishListener;
+import com.bigoffs.pdaremake.app.service.OnFinishListener;
 
 
 public class BarcodeReceiver extends BroadcastReceiver {
@@ -20,7 +20,7 @@ public class BarcodeReceiver extends BroadcastReceiver {
         String barcodeStr = new String(barcode, 0, barocodelen);//直接获取字符串
 
         if (listener != null)
-            listener.OnFinish(barcodeStr);
+            listener.onFinish(barcodeStr);
     }
 
     public static void setListener(OnFinishListener listener) {
