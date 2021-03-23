@@ -5,6 +5,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseFragment
+import com.bigoffs.pdaremake.app.base.BaseRfidFragment
 import com.bigoffs.pdaremake.app.ext.showMessage
 import com.bigoffs.pdaremake.app.util.CacheUtil
 import com.bigoffs.pdaremake.databinding.FragmentLoginBinding
@@ -13,7 +14,7 @@ import com.bigoffs.pdaremake.viewmodel.state.LoginRegisterViewModel
 import me.hgj.jetpackmvvm.ext.nav
 import me.hgj.jetpackmvvm.ext.parseState
 
-class LoginFragment : BaseFragment<LoginRegisterViewModel,FragmentLoginBinding>(){
+class LoginFragment : BaseRfidFragment<LoginRegisterViewModel,FragmentLoginBinding>(){
 
     private val requestLoginViewModel : RequestLoginViewModel   by  viewModels()
     override fun layoutId(): Int  = R.layout.fragment_login
@@ -40,6 +41,10 @@ class LoginFragment : BaseFragment<LoginRegisterViewModel,FragmentLoginBinding>(
                 showLoading()
             })
         })
+    }
+
+    override fun onFinish(data: String) {
+        showLoading(data)
     }
 
     inner  class Click{
