@@ -29,9 +29,9 @@ public interface IScanService {
 
     void setReadDataMode(int readDataMode);
 
-    void setListener(RfidViewModel.OnFinishListener listener);
+    void setListener(OnFinishListener listener);
 
-    void setAnotherListener(RfidViewModel.OnFinishListener listener);
+    void setAnotherListener(OnFinishListener listener);
 
     void removeListener();
     void removeAnotherListener();

@@ -7,10 +7,11 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.bigoffs.rfid.listener.OnFinishListener;
-import com.bigoffs.rfid.persistence.util.SPUtils;
-import com.bigoffs.rfid.persistence.util.SoundUtils;
-import com.bigoffs.rfid.service.IScanService;
+
+import com.bigoffs.pdaremake.app.service.IScanService;
+import com.bigoffs.pdaremake.app.service.OnFinishListener;
+import com.bigoffs.pdaremake.app.util.SPUtils;
+import com.bigoffs.pdaremake.app.util.SoundUtils;
 import com.rscja.deviceapi.Barcode1D;
 import com.rscja.deviceapi.RFIDWithUHF;
 import com.rscja.deviceapi.exception.ConfigurationException;
@@ -68,11 +69,11 @@ public class ScanServiceWithCW implements IScanService {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case 0:
-                        mListener.OnFinish(msg.obj.toString());
-                        listener.OnFinish(msg.obj.toString());
+                        mListener.onFinish(msg.obj.toString());
+                        listener.onFinish(msg.obj.toString());
                     case 1:
-                        mListener.OnFinish(msg.obj.toString());
-                        listener.OnFinish(msg.obj.toString());
+                        mListener.onFinish(msg.obj.toString());
+                        listener.onFinish(msg.obj.toString());
                 }
             }
         };
@@ -285,8 +286,8 @@ public class ScanServiceWithCW implements IScanService {
             String scan = barcode1D.scan();
             if (scan != null) {
                 SoundUtils.play(1);
-                mListener.OnFinish(scan);
-                listener.OnFinish(scan);
+                mListener.onFinish(scan);
+                listener.onFinish(scan);
             }
         } else {
             barcode2D.scan();
@@ -299,8 +300,8 @@ public class ScanServiceWithCW implements IScanService {
                         int loc = barcode.indexOf('\u0000');
                         String newStr = barcode.substring(0, loc);
                         if (newStr == null) return;
-                        mListener.OnFinish(newStr);
-                        listener.OnFinish(newStr);
+                        mListener.onFinish(newStr);
+                        listener.onFinish(newStr);
                     }
                 }
             });

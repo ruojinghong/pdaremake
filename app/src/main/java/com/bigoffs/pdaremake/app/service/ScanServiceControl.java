@@ -1,9 +1,8 @@
 package com.bigoffs.pdaremake.app.service;
 
 
-import com.bigoffs.rfid.service.CW.ScanServiceWithCW;
-import com.bigoffs.rfid.service.YBX.ScanServiceWithYBX;
-
+import com.bigoffs.pdaremake.app.service.CW.ScanServiceWithCW;
+import com.bigoffs.pdaremake.app.service.YBX.ScanServiceWithYBX;
 
 public class ScanServiceControl {
 

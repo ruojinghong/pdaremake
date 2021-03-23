@@ -88,6 +88,8 @@ ext{
             "MagicIndicator": "com.github.hackware1993:MagicIndicator:1.6.0",
             //settingfragment设置页
             "preference": "androidx.preference:preference-ktx:1.1.1",
+            //Logger
+            "Logger": "com.github.open-android:Logger:v1.0.0",
     ]
 
 

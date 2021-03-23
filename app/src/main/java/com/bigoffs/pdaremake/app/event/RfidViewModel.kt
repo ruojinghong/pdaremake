@@ -1,6 +1,7 @@
 package com.bigoffs.pdaremake.app.event
 
 import com.bigoffs.pdaremake.app.service.IScanService
+import com.bigoffs.pdaremake.app.service.OnFinishListener
 import com.bigoffs.pdaremake.app.service.ScanServiceControl
 import com.bigoffs.pdaremake.app.util.CacheUtil
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
@@ -96,7 +97,7 @@ class RfidViewModel : BaseViewModel() {
     }
 
     //多增加一个监听
-    fun setAnotherListener(listener: OnFinishListener?) {
+    fun setAnotherListener(listener: OnFinishListener) {
         mService.setAnotherListener(listener)
     }
 
@@ -192,9 +193,7 @@ class RfidViewModel : BaseViewModel() {
         YBX, CW
     }
 
-     interface OnFinishListener{
-            fun onFinish(data:String)
-    }
+
 
 
 }
