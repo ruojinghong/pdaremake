@@ -58,4 +58,5 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
             Toast.makeText(applicationContext, "请检查网络设置", Toast.LENGTH_SHORT).show()
         }
     }
+
 }

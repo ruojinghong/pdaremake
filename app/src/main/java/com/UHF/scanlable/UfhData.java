@@ -1,4 +1,4 @@
-package com.bigoffs.UHF.scanlable;
+package com.UHF.scanlable;
 
 import java.util.Date;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.bigoffs.UHF.scanlable;
+package com.UHF.scanlable;
 
 import android.content.Context;
 import android.widget.EditText;

@@ -177,8 +177,7 @@ class RfidViewModel : BaseViewModel() {
                         Facility.CW -> map["power"] = 30
                     }
                     stockRead -> when (currentFacility) {
-                        Facility.YBX -> map["power"] =
-                            CacheUtil.getPower()
+                        Facility.YBX -> map.put("power",30)
                         Facility.CW -> map["power"] = 30
                     }
                     else -> {

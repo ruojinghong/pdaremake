@@ -23,7 +23,7 @@ abstract class BaseRfidFragment<VM: BaseViewModel,DB:ViewDataBinding> : BaseFrag
   rfidViewModel.initData()
   rfidViewModel.setReadDataModel(0)
   rfidViewModel.setMode(1)
-  rfidViewModel.setCurrentSetting(RfidViewModel.Setting.stockRead)
+//  rfidViewModel.setCurrentSetting(RfidViewModel.Setting.stockRead)
   rfidViewModel.setListenerProtectModel(this)
  }
 
@@ -31,4 +31,8 @@ abstract class BaseRfidFragment<VM: BaseViewModel,DB:ViewDataBinding> : BaseFrag
   super.onPause()
   rfidViewModel.stopReadRfid()
  }
+
+
+
+
 }

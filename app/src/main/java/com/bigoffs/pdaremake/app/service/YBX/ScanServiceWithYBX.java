@@ -6,7 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 
 
-import com.bigoffs.UHF.scanlable.UfhData;
+import com.UHF.scanlable.UfhData;
 import com.bigoffs.pdaremake.app.service.CW.ScanServiceWithCW;
 import com.bigoffs.pdaremake.app.service.IScanService;
 import com.bigoffs.pdaremake.app.service.OnFinishListener;

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+            <variable
+                name="viewmodel"
+                type="com.bigoffs.pdaremake.viewmodel.state.LoginRegisterViewModel" />
+            <variable
+                name="click"
+                type="com.bigoffs.pdaremake.ui.activity.LoginActivity.Click" />
+
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="登录"
+            android:textSize="14dp"
+            android:textStyle="normal"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:id="@+id/tv_h1"/>
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_h1"
+            android:layout_marginTop="40dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:src="@mipmap/icon_login_logo"/>
+        <LinearLayout
+            android:id="@+id/ll_account"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_logo"
+            android:layout_marginTop="54dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:background="@drawable/ll_login_bg_shape">
+            <TextView
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                style="@style/login_text_style"
+                android:text="账号"
+                android:inputType="text"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                style="@style/login_et_style"
+                android:hint="请输入用户名称"
+                android:text="@={viewmodel.username}"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_password"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_account"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:background="@drawable/ll_login_bg_shape">
+            <TextView
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                style="@style/login_text_style"
+                android:text="密码"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                style="@style/login_et_style"
+                android:text="@={viewmodel.password}"
+                android:hint="请输入登录密码"
+                android:inputType="textPassword"/>
+
+
+        </LinearLayout>
+        <Button
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_password"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:textColor="@color/white"
+            android:text="登录"
+            android:textSize="13dp"
+            android:background="@drawable/btn_login_seletor"
+            android:onClick="@{() -> click.login()}"/>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
