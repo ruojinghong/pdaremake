@@ -12,10 +12,7 @@ import okhttp3.Response
 class MyHeaderInterceptor : Interceptor{
     override fun intercept(chain: Interceptor.Chain): Response {
         val builder = chain.request().newBuilder()
-        builder.addHeader("token", "token123456").build()
-        builder.addHeader("device", "Android").build()
-        builder.addHeader("isLogin", CacheUtil.isLogin().toString()).build()
-        builder.addHeader("Content-Type","application/json")
+        builder.addHeader("Content-Type","application/json;charset=UTF-8")
         return chain.proceed(builder.build())
     }
 }

@@ -28,7 +28,6 @@ val apiService: ApiService by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
     var url = if(BuildConfig.DEBUG){
         ApiService.BASE_URL
     }else{
-
         ApiService.TEST_URL
     }
     NetworkApi.INSTANCE.getApi(ApiService::class.java,url)

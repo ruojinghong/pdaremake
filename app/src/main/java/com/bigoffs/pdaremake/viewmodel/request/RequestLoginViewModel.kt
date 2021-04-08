@@ -3,9 +3,15 @@ package com.bigoffs.pdaremake.viewmodel.request
 import androidx.lifecycle.MutableLiveData
 import com.bigoffs.pdaremake.app.network.apiService
 import com.bigoffs.pdaremake.data.model.bean.UserInfo
+import com.google.gson.Gson
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.ext.request
 import me.hgj.jetpackmvvm.state.ResultState
+import okhttp3.MediaType
+import okhttp3.RequestBody
+
+
+
 
 /**
  * @author: sxy
@@ -24,8 +30,14 @@ class RequestLoginViewModel : BaseViewModel(){
 
     fun loginReq(username: String, password: String) {
         //1.这种是在 Activity/Fragment的监听回调中拿到已脱壳的数据（项目有基类的可以用）
+        val map = HashMap<String, String>()
+        map.put("username",username)
+        map.put("password",password)
+        map.put("w_id","1")
+        val requestBody: RequestBody =
+            RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))
         request(
-            { apiService.login(username, password,"1") }//请求体
+            { apiService.login(requestBody) }//请求体
             , loginResult,//请求的返回结果，请求成功与否都会改变该值，在Activity或fragment中监听回调结果，具体可看loginActivity中的回调
             true,//是否显示等待框，，默认false不显示 可以默认不传
             "正在登录中..."//等待框内容，可以默认不填请求网络中...
@@ -53,9 +65,15 @@ class RequestLoginViewModel : BaseViewModel(){
         })*/
     }
 
-    fun getDetail(id:String){
+    fun getDetail(id: String){
+        val map = HashMap<String, String>()
+        map.put("shelf_code",id)
+
+        map.put("w_id","1")
+        val requestBody: RequestBody =
+            RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))
         request(
-            { apiService.detail("1") }//请求体
+            { apiService.detail(requestBody) }//请求体
             , detaliResult,//请求的返回结果，请求成功与否都会改变该值，在Activity或fragment中监听回调结果，具体可看loginActivity中的回调
             true,//是否显示等待框，，默认false不显示 可以默认不传
             "正在登录中..."//等待框内容，可以默认不填请求网络中...

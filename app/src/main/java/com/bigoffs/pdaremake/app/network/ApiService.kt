@@ -2,10 +2,8 @@ package com.bigoffs.pdaremake.app.network
 
 import com.bigoffs.pdaremake.data.model.bean.ApiResponse
 import com.bigoffs.pdaremake.data.model.bean.UserInfo
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import okhttp3.RequestBody
+import retrofit2.http.*
 
 interface ApiService {
     companion object{
@@ -13,19 +11,15 @@ interface ApiService {
         const val TEST_URL = "http://10.1.1.3:2022/mock/13/"
 //        val BASE_URL = ""
     }
-    @Headers("Content-type:application/json")
+
     @POST("Index/login")
-    @FormUrlEncoded
     suspend fun  login(
-        @Field("user_name") username:String,
-        @Field("password") password :String,
-        @Field("w_id") id:String
+        @Body  body : RequestBody
     ):ApiResponse<UserInfo>
 
-    @Headers("Content-type:application/json")
-    @POST("instore/detail")
-    @FormUrlEncoded
+
+    @POST("v1/shelf/query")
     suspend fun  detail(
-        @Field("id") id:String
+        @Body  body : RequestBody
     ):ApiResponse<List<UserInfo>>
 }
