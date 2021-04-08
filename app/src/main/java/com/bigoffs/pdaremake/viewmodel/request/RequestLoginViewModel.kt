@@ -16,6 +16,7 @@ class RequestLoginViewModel : BaseViewModel(){
 
     //方式1  自动脱壳过滤处理请求结果，判断结果是否成功
     var loginResult = MutableLiveData<ResultState<UserInfo>>()
+    var detaliResult = MutableLiveData<ResultState<List<UserInfo>>>()
 
     //方式2  不用框架帮脱壳，判断结果是否成功
 //    var loginResult2 = MutableLiveData<ResultState<ApiResponse<UserInfo>>>()
@@ -24,7 +25,7 @@ class RequestLoginViewModel : BaseViewModel(){
     fun loginReq(username: String, password: String) {
         //1.这种是在 Activity/Fragment的监听回调中拿到已脱壳的数据（项目有基类的可以用）
         request(
-            { apiService.login(username, password) }//请求体
+            { apiService.login(username, password,"1") }//请求体
             , loginResult,//请求的返回结果，请求成功与否都会改变该值，在Activity或fragment中监听回调结果，具体可看loginActivity中的回调
             true,//是否显示等待框，，默认false不显示 可以默认不传
             "正在登录中..."//等待框内容，可以默认不填请求网络中...
@@ -50,5 +51,14 @@ class RequestLoginViewModel : BaseViewModel(){
         },{
             //请求失败 网络异常回调在这里
         })*/
+    }
+
+    fun getDetail(id:String){
+        request(
+            { apiService.detail("1") }//请求体
+            , detaliResult,//请求的返回结果，请求成功与否都会改变该值，在Activity或fragment中监听回调结果，具体可看loginActivity中的回调
+            true,//是否显示等待框，，默认false不显示 可以默认不传
+            "正在登录中..."//等待框内容，可以默认不填请求网络中...
+        )
     }
 }

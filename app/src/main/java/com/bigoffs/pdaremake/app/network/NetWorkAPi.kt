@@ -1,5 +1,6 @@
 package com.bigoffs.pdaremake.app.network
 
+import com.franmontiel.persistentcookiejar.BuildConfig
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
@@ -23,7 +24,14 @@ import java.util.concurrent.TimeUnit
  */
 //双重校验锁式-单例 封装NetApiService 方便直接快速调用简单的接口
 val apiService: ApiService by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
-    NetworkApi.INSTANCE.getApi(ApiService::class.java, ApiService.BASE_URL)
+
+    var url = if(BuildConfig.DEBUG){
+        ApiService.BASE_URL
+    }else{
+
+        ApiService.TEST_URL
+    }
+    NetworkApi.INSTANCE.getApi(ApiService::class.java,url)
 }
 class NetworkApi : BaseNetworkApi() {
 

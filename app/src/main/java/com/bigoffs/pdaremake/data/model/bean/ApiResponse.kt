@@ -2,12 +2,12 @@ package com.bigoffs.pdaremake.data.model.bean
 
 import me.hgj.jetpackmvvm.network.BaseResponse
 
-data class ApiResponse<T>(var status:Int,var t:T):BaseResponse<T>() {
-    override fun isSucces(): Boolean = status == 1
+data class ApiResponse<T>(val code: String, val msg: String, val data: T):BaseResponse<T>() {
+    override fun isSucces(): Boolean = code.equals("200")
 
-    override fun getResponseData(): T  = t
+    override fun getResponseData(): T  = data
 
-    override fun getResponseCode(): Int  = -1
+    override fun getResponseCode(): String  = code
 
-    override fun getResponseMsg(): String = "暂未实现"
+    override fun getResponseMsg(): String = msg
 }

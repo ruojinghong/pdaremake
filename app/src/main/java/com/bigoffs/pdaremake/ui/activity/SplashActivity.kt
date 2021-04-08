@@ -27,7 +27,12 @@ class SplashActivity : BaseActivity<BaseViewModel,ActivitySplashBinding>() {
         override fun onPostExecute(result: Boolean?) {
 
            startActivity(Intent(this@SplashActivity,LoginActivity::class.java))
+            finish()
         }
+
+    }
+
+    override fun setStatusBar() {
 
     }
 }

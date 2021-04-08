@@ -2,10 +2,12 @@ package com.bigoffs.pdaremake.app.base
 
 import android.os.Bundle
 import androidx.databinding.ViewDataBinding
+import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.event.AppViewModel
 import com.bigoffs.pdaremake.app.event.EventViewModel
 import com.bigoffs.pdaremake.app.ext.dismissLoadingExt
 import com.bigoffs.pdaremake.app.ext.showLoadingExt
+import com.gyf.immersionbar.ktx.immersionBar
 import me.hgj.jetpackmvvm.base.activity.BaseVmDbActivity
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.ext.getAppViewModel
@@ -24,6 +26,13 @@ abstract class BaseActivity<VM : BaseViewModel,DB : ViewDataBinding> : BaseVmDbA
     val eventViewModel: EventViewModel by lazy { getAppViewModel<EventViewModel>() }
 
     abstract override fun layoutId(): Int
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStatusBar()
+    }
+
+    abstract fun setStatusBar()
 
     abstract override fun initView(savedInstanceState: Bundle?)
 

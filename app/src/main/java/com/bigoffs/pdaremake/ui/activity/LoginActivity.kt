@@ -12,6 +12,8 @@ import com.bigoffs.pdaremake.databinding.ActivityLoginBinding
 import com.bigoffs.pdaremake.databinding.FragmentLoginBinding
 import com.bigoffs.pdaremake.viewmodel.request.RequestLoginViewModel
 import com.bigoffs.pdaremake.viewmodel.state.LoginRegisterViewModel
+import com.gyf.immersionbar.ImmersionBar
+import com.gyf.immersionbar.ktx.immersionBar
 import me.hgj.jetpackmvvm.ext.parseState
 
 class LoginActivity:BaseRfidFActivity<LoginRegisterViewModel,ActivityLoginBinding>() {
@@ -52,6 +54,7 @@ class LoginActivity:BaseRfidFActivity<LoginRegisterViewModel,ActivityLoginBindin
     inner  class Click{
 
         fun login(){
+            requestLoginViewModel.getDetail("1")
             when{
                 mViewModel.username.value.isEmpty() -> showMessage("请填写账号")
                 mViewModel.password.value.isEmpty() -> showMessage("请填写密码")
@@ -67,6 +70,15 @@ class LoginActivity:BaseRfidFActivity<LoginRegisterViewModel,ActivityLoginBindin
 
     override fun readOrClose() {
       rfidViewModel.startReadRfid()
+    }
+
+    override fun setStatusBar() {
+        immersionBar {
+            //解决状态栏和布局重叠问题
+            statusBarView(findViewById(R.id.bar))
+            //状态栏字体是深色，不写默认为亮色
+            statusBarDarkFont(true)
+      }
     }
 
 

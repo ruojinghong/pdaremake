@@ -535,6 +535,8 @@ public class UhfLib {
     }
 
     static {
+        //   路径一定要对，否则就会报以下异常
+        //   java.lang.UnsatisfiedLinkError: dlopen failed: library "/system/lib/libUhf_jni.so" needed or dlopened by "/system/lib/libnativeloader.so" is not accessible for the namespace "classloader-namespace"
         System.loadLibrary("Uhf_jni");
     }
 

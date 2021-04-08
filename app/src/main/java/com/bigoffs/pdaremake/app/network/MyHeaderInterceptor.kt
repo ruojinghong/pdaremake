@@ -15,6 +15,7 @@ class MyHeaderInterceptor : Interceptor{
         builder.addHeader("token", "token123456").build()
         builder.addHeader("device", "Android").build()
         builder.addHeader("isLogin", CacheUtil.isLogin().toString()).build()
+        builder.addHeader("Content-Type","application/json")
         return chain.proceed(builder.build())
     }
 }
