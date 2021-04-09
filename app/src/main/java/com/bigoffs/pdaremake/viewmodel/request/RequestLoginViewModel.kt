@@ -66,12 +66,12 @@ class RequestLoginViewModel : BaseViewModel(){
     }
 
     fun getDetail(id: String){
-        val map = HashMap<String, String>()
+        val map = HashMap<String, Any>()
         map.put("shelf_code",id)
 
-        map.put("w_id","1")
+        map.put("w_id",1)
         val requestBody: RequestBody =
-            RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))
+            RequestBody.create(MediaType.parse("application/json"), Gson().toJson(map))
         request(
             { apiService.detail(requestBody) }//请求体
             , detaliResult,//请求的返回结果，请求成功与否都会改变该值，在Activity或fragment中监听回调结果，具体可看loginActivity中的回调

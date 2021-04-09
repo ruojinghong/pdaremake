@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseRfidFActivity
+import com.bigoffs.pdaremake.app.ext.showBottomSheedList
 import com.bigoffs.pdaremake.app.ext.showMessage
 import com.bigoffs.pdaremake.app.util.CacheUtil
 import com.bigoffs.pdaremake.databinding.ActivityLoginBinding
@@ -20,6 +21,8 @@ class LoginActivity:BaseRfidFActivity<LoginRegisterViewModel,ActivityLoginBindin
 
     private val requestLoginViewModel : RequestLoginViewModel by  viewModels()
     override fun layoutId(): Int  = R.layout.activity_login
+    var mContext = this
+
 
     override fun initView(savedInstanceState: Bundle?) {
         mDatabind.viewmodel = mViewModel
@@ -55,6 +58,7 @@ class LoginActivity:BaseRfidFActivity<LoginRegisterViewModel,ActivityLoginBindin
 
         fun login(){
             requestLoginViewModel.getDetail("1")
+            showBottomSheedList(mContext)
             when{
                 mViewModel.username.value.isEmpty() -> showMessage("请填写账号")
                 mViewModel.password.value.isEmpty() -> showMessage("请填写密码")
