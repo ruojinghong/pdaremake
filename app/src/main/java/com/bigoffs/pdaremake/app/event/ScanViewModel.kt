@@ -80,7 +80,7 @@ class ScanViewModel : BaseViewModel(){
 
     protected fun onScan(barcode: String) {
 
-
+        onReceiverListener?.onReceiverData(barcode)
     }
 
 

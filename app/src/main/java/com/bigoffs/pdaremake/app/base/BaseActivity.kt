@@ -33,15 +33,7 @@ abstract class BaseActivity<VM : BaseViewModel,DB : ViewDataBinding> : BaseVmDbA
         setStatusBar()
     }
 
-    open fun setStatusBar(){
-        var tvBar = findViewById<TextView>(R.id.tv_bar)
-        immersionBar {
-            //解决状态栏和布局重叠问题
-            tvBar?.let { statusBarView(tvBar) }
-            //状态栏字体是深色，不写默认为亮色
-            statusBarDarkFont(true)
-        }
-    }
+    abstract fun setStatusBar()
 
     abstract override fun initView(savedInstanceState: Bundle?)
 

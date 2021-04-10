@@ -14,7 +14,7 @@ import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.ext.getAppViewModel
 import java.io.IOException
 
-abstract  class BaseScanActivity<VM : BaseViewModel, DB : ViewDataBinding> : BaseActivity<VM, DB>(),OnReceiverListener{
+abstract class BaseScanActivity<VM : BaseViewModel, DB : ViewDataBinding> : BaseActivity<VM, DB>(),OnReceiverListener{
 
     val scanViewModel: ScanViewModel by viewModels()
     var mShouldPlayBeep:Boolean = true

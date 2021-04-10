@@ -11,10 +11,9 @@ import com.bigoffs.pdaremake.app.util.StatusBarUtil
 import com.bigoffs.pdaremake.databinding.ActivityMainBinding
 import com.bigoffs.pdaremake.viewmodel.state.MainViewModel
 import com.blankj.utilcode.util.ToastUtils
-import me.hgj.jetpackmvvm.base.activity.BaseVmActivity
 import me.hgj.jetpackmvvm.network.manager.NetState
 
-class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
+class NavMainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
 
     var exitTime = 0L
     override fun layoutId(): Int = R.layout.activity_main
@@ -22,7 +21,7 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
             onBackPressedDispatcher.addCallback(this,object : OnBackPressedCallback(true){
                 override fun handleOnBackPressed() {
-                    val nav = Navigation.findNavController(this@MainActivity, R.id.host_fragment)
+                    val nav = Navigation.findNavController(this@NavMainActivity, R.id.host_fragment)
                     if (nav.currentDestination != null && nav.currentDestination!!.id != R.id.mainfragment) {
                         //如果当前界面不是主页，那么直接调用返回即可
                         nav.navigateUp()

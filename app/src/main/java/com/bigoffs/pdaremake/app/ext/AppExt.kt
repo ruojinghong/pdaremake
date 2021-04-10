@@ -1,13 +1,21 @@
 package com.bigoffs.pdaremake.app.ext
 
+import android.graphics.Color
 import android.text.TextUtils
+import android.view.View
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
+import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.util.SettingUtil
+import com.bigoffs.pdaremake.ui.customview.FreeArrowView
+import com.gyf.immersionbar.ktx.immersionBar
 import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
@@ -146,3 +154,48 @@ inline fun <reified T> List<T>?.getChild(position: Int): T? {
         }
     }
 }
+/**
+ * 初始化titlebar
+ */
+fun AppCompatActivity.initTitle(statusBarDarkFont:Boolean = true,
+                                titleBg: Int = Color.parseColor("#0033cc"),
+                                biaotiBg: Int = Color.WHITE,
+                                biaoti: String = "",
+                                showRightBtn : Int = View.GONE,
+                                showLeftBtn : Int = View.VISIBLE,
+                                onClickListener: View.OnClickListener? = null){
+    var tvBar = findViewById<TextView>(R.id.tv_bar)
+    var title = findViewById<ConstraintLayout>(R.id.common_title)
+    var tvTitle = findViewById<TextView>(R.id.tv_title)
+    var right_image_btn = findViewById<ImageButton>(R.id.iv_right_btn)
+    var leftArrow = findViewById<FreeArrowView>(R.id.fa_left)
+    immersionBar {
+        //解决状态栏和布局重叠问题
+        tvBar?.let {
+            statusBarView(tvBar)
+        }
+        title?.let {
+            it.setBackgroundColor(titleBg)
+        }
+        tvTitle?.let {
+            it.setText(biaoti)
+            it.setTextColor(biaotiBg)
+        }
+        right_image_btn?.let {
+
+            it.visibility = showRightBtn
+            it.setOnClickListener(onClickListener)
+        }
+        leftArrow?.let {
+            it.setOnClickListener(object : View.OnClickListener{
+                override fun onClick(p0: View?) {
+                   finish()
+                }
+            })
+            it.visibility = showLeftBtn
+        }
+        //状态栏字体是深色，不写默认为亮色
+        statusBarDarkFont(statusBarDarkFont)
+    }
+}
+
