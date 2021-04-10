@@ -1,6 +1,7 @@
 package com.bigoffs.pdaremake.app.base
 
 import android.os.Bundle
+import android.widget.TextView
 import androidx.databinding.ViewDataBinding
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.event.AppViewModel
@@ -32,7 +33,15 @@ abstract class BaseActivity<VM : BaseViewModel,DB : ViewDataBinding> : BaseVmDbA
         setStatusBar()
     }
 
-    abstract fun setStatusBar()
+    open fun setStatusBar(){
+        var tvBar = findViewById<TextView>(R.id.tv_bar)
+        immersionBar {
+            //解决状态栏和布局重叠问题
+            tvBar?.let { statusBarView(tvBar) }
+            //状态栏字体是深色，不写默认为亮色
+            statusBarDarkFont(true)
+        }
+    }
 
     abstract override fun initView(savedInstanceState: Bundle?)
 

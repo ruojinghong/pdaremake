@@ -2,6 +2,7 @@ package com.bigoffs.pdaremake.app.base
 
 import android.os.Bundle
 import android.view.KeyEvent
+import androidx.activity.viewModels
 import androidx.databinding.ViewDataBinding
 import com.bigoffs.pdaremake.app.event.RfidViewModel
 import com.bigoffs.pdaremake.app.service.OnFinishListener
@@ -16,7 +17,7 @@ import me.hgj.jetpackmvvm.ext.getAppViewModel
 abstract class BaseRfidFActivity<VM : BaseViewModel, DB : ViewDataBinding> : BaseActivity<VM, DB>(),OnFinishListener {
 
 
-    val rfidViewModel: RfidViewModel by lazy { getAppViewModel() }
+    val rfidViewModel: RfidViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +28,7 @@ abstract class BaseRfidFActivity<VM : BaseViewModel, DB : ViewDataBinding> : Bas
         rfidViewModel.initData()
         rfidViewModel.setReadDataModel(0)
         rfidViewModel.setMode(1)
-         rfidViewModel.setCurrentSetting(RfidViewModel.Setting.stockRead)
+        rfidViewModel.setCurrentSetting(RfidViewModel.Setting.stockRead)
         rfidViewModel.setListenerProtectModel(this)
     }
 

@@ -13,8 +13,10 @@ import com.bigoffs.pdaremake.databinding.ActivityLoginBinding
 import com.bigoffs.pdaremake.databinding.FragmentLoginBinding
 import com.bigoffs.pdaremake.viewmodel.request.RequestLoginViewModel
 import com.bigoffs.pdaremake.viewmodel.state.LoginRegisterViewModel
+import com.blankj.utilcode.util.ToastUtils
 import com.gyf.immersionbar.ImmersionBar
 import com.gyf.immersionbar.ktx.immersionBar
+import com.lxj.xpopup.interfaces.OnSelectListener
 import me.hgj.jetpackmvvm.ext.parseState
 
 class LoginActivity:BaseRfidFActivity<LoginRegisterViewModel,ActivityLoginBinding>() {
@@ -58,7 +60,12 @@ class LoginActivity:BaseRfidFActivity<LoginRegisterViewModel,ActivityLoginBindin
 
         fun login(){
             requestLoginViewModel.getDetail("1")
-            showBottomSheedList(mContext)
+            showBottomSheedList(mContext, arrayOf("1","1","1","1","1","1")
+            ) { position, text ->
+
+                ToastUtils.showShort(text)
+
+            }
             when{
                 mViewModel.username.value.isEmpty() -> showMessage("请填写账号")
                 mViewModel.password.value.isEmpty() -> showMessage("请填写密码")

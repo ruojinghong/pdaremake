@@ -96,6 +96,7 @@ dependencies {
     implementation files('libs/DeviceAPIver20160808.jar')
     implementation files('libs/jingchen.jar')
     implementation files('libs/platform_sdk_v2.2.3.jar')
+    implementation files('libs\\zltd_common_v1.3.2.jar')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

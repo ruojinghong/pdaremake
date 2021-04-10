@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.bigoffs.pdaremake.R
 import com.blankj.utilcode.util.ToastUtils
 import com.lxj.xpopup.XPopup
@@ -25,17 +26,23 @@ fun hideSoftKeyboard(activity: Activity?) {
         }
     }
 }
-fun AppCompatActivity.showBottomSheedList( context: Context){
+fun AppCompatActivity.showBottomSheedList( context: Context,data : Array<String>,listener: OnSelectListener){
     XPopup.Builder(context)
         .isDestroyOnDismiss(true) //对于只使用一次的弹窗，推荐设置这个
         .asBottomList(
-            "选择仓库", arrayOf("条目1", "条目2", "条目3", "条目4", "条目5"),
-            null, 2,false,object :OnSelectListener{
-                override fun onSelect(position: Int, text: String) {
-                     ToastUtils.showShort(text)
-                }
-            }
+            "选择仓库", data,
+            null, 2,false,listener
         , R.layout._xpopup_bottom_impl_list,R.layout._xpopup_adapter_text_match)
+        .show()
+}
+
+fun Fragment.showBottomSheedList( context: Context,data : Array<String>,listener: OnSelectListener){
+    XPopup.Builder(context)
+        .isDestroyOnDismiss(true) //对于只使用一次的弹窗，推荐设置这个
+        .asBottomList(
+            "选择仓库", data,
+            null, 2,false,listener
+            , R.layout._xpopup_bottom_impl_list,R.layout._xpopup_adapter_text_match)
         .show()
 }
 

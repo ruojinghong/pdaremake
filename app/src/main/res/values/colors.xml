@@ -18,4 +18,6 @@
     <color name="accent">#E91E63</color>
     <color name="chinaHoliDay">#e10015</color>
 
+    <color name="transparent">#00ffffff</color>
+
 </resources>

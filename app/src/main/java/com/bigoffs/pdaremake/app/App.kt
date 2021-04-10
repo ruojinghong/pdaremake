@@ -1,8 +1,6 @@
 package com.bigoffs.pdaremake.app
 
 import androidx.multidex.MultiDex
-import cat.ereza.customactivityoncrash.config.CaocConfig
-import com.bigoffs.pdaremake.MainActivity
 import com.bigoffs.pdaremake.app.weight.loadCallBack.EmptyCallback
 import com.bigoffs.pdaremake.app.weight.loadCallBack.ErrorCallback
 import com.bigoffs.pdaremake.app.weight.loadCallBack.LoadingCallback
