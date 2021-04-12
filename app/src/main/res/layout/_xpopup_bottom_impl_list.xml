@@ -8,7 +8,7 @@
     <TextView
         android:id="@+id/tv_title"
         android:textStyle="bold"
-        android:textColor="@color/_xpopup_title_color"
+        android:textColor="@color/black"
         android:paddingTop="14dp"
         android:paddingStart="18dp"
         android:gravity="center_vertical"

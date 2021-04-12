@@ -1,5 +1,6 @@
 package com.bigoffs.pdaremake.app.base
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.TextView
 import androidx.databinding.ViewDataBinding
@@ -19,7 +20,7 @@ import me.hgj.jetpackmvvm.ext.getAppViewModel
  * abstract class BaseActivity<VM : BaseViewModel> : BaseVmActivity<VM>() {
  */
 abstract class BaseActivity<VM : BaseViewModel,DB : ViewDataBinding> : BaseVmDbActivity<VM,DB>() {
-
+    val mContext:Context = this
     //Application全局的ViewModel，里面存放了一些账户信息，基本配置信息等
     val appViewModel: AppViewModel by lazy { getAppViewModel<AppViewModel>()}
 

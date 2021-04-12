@@ -163,12 +163,14 @@ fun AppCompatActivity.initTitle(statusBarDarkFont:Boolean = true,
                                 biaoti: String = "",
                                 showRightBtn : Int = View.GONE,
                                 showLeftBtn : Int = View.VISIBLE,
+                                rightBitaoti : String ="",
                                 onClickListener: View.OnClickListener? = null){
     var tvBar = findViewById<TextView>(R.id.tv_bar)
     var title = findViewById<ConstraintLayout>(R.id.common_title)
     var tvTitle = findViewById<TextView>(R.id.tv_title)
     var right_image_btn = findViewById<ImageButton>(R.id.iv_right_btn)
     var leftArrow = findViewById<FreeArrowView>(R.id.fa_left)
+    var rightTv = findViewById<TextView>(R.id.tv_right)
     immersionBar {
         //解决状态栏和布局重叠问题
         tvBar?.let {
@@ -185,6 +187,14 @@ fun AppCompatActivity.initTitle(statusBarDarkFont:Boolean = true,
 
             it.visibility = showRightBtn
             it.setOnClickListener(onClickListener)
+        }
+        rightTv?.let {
+
+            if(rightBitaoti != ""){
+                rightTv.visibility = View.VISIBLE
+                rightTv.setText(rightBitaoti)
+                it.setOnClickListener(onClickListener)
+            }
         }
         leftArrow?.let {
             it.setOnClickListener(object : View.OnClickListener{

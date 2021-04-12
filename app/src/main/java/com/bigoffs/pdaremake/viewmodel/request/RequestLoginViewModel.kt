@@ -2,7 +2,7 @@ package com.bigoffs.pdaremake.viewmodel.request
 
 import androidx.lifecycle.MutableLiveData
 import com.bigoffs.pdaremake.app.network.apiService
-import com.bigoffs.pdaremake.data.model.bean.UserInfo
+import com.bigoffs.pdaremake.data.model.bean.User
 import com.google.gson.Gson
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.ext.request
@@ -21,8 +21,8 @@ import okhttp3.RequestBody
 class RequestLoginViewModel : BaseViewModel(){
 
     //方式1  自动脱壳过滤处理请求结果，判断结果是否成功
-    var loginResult = MutableLiveData<ResultState<UserInfo>>()
-    var detaliResult = MutableLiveData<ResultState<List<UserInfo>>>()
+    var loginResult = MutableLiveData<ResultState<User>>()
+    var detaliResult = MutableLiveData<ResultState<List<User>>>()
 
     //方式2  不用框架帮脱壳，判断结果是否成功
 //    var loginResult2 = MutableLiveData<ResultState<ApiResponse<UserInfo>>>()
@@ -33,7 +33,7 @@ class RequestLoginViewModel : BaseViewModel(){
         val map = HashMap<String, String>()
         map.put("username",username)
         map.put("password",password)
-        map.put("w_id","1")
+        map.put("appid","pda")
         val requestBody: RequestBody =
             RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))
         request(
@@ -65,18 +65,18 @@ class RequestLoginViewModel : BaseViewModel(){
         })*/
     }
 
-    fun getDetail(id: String){
-        val map = HashMap<String, Any>()
-        map.put("shelf_code",id)
-
-        map.put("w_id",1)
-        val requestBody: RequestBody =
-            RequestBody.create(MediaType.parse("application/json"), Gson().toJson(map))
-        request(
-            { apiService.detail(requestBody) }//请求体
-            , detaliResult,//请求的返回结果，请求成功与否都会改变该值，在Activity或fragment中监听回调结果，具体可看loginActivity中的回调
-            true,//是否显示等待框，，默认false不显示 可以默认不传
-            "正在登录中..."//等待框内容，可以默认不填请求网络中...
-        )
-    }
+//    fun getDetail(id: String){
+//        val map = HashMap<String, Any>()
+//        map.put("shelf_code",id)
+//
+//        map.put("w_id",1)
+//        val requestBody: RequestBody =
+//            RequestBody.create(MediaType.parse("application/json"), Gson().toJson(map))
+//        request(
+//            { apiService.detail(requestBody) }//请求体
+//            , detaliResult,//请求的返回结果，请求成功与否都会改变该值，在Activity或fragment中监听回调结果，具体可看loginActivity中的回调
+//            true,//是否显示等待框，，默认false不显示 可以默认不传
+//            "正在登录中..."//等待框内容，可以默认不填请求网络中...
+//        )
+//    }
 }

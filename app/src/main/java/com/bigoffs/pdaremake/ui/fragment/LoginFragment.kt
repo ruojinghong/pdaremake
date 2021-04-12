@@ -31,7 +31,7 @@ class LoginFragment : BaseRfidFragment<LoginRegisterViewModel,FragmentLoginBindi
                 //登录成功 通知账户数据发生改变鸟
                 CacheUtil.setUser(userInfo)
                 CacheUtil.setIsLogin(true)
-                appViewModel.userinfo.value = userInfo
+                appViewModel.user.value = userInfo
 //                me.hgj.jetpackmvvm.ext.nav().navigateUp()
             }, { appException ->
                 //登录失败

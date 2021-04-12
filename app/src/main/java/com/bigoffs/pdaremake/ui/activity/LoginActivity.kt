@@ -5,6 +5,7 @@ import android.view.KeyEvent
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.bigoffs.pdaremake.R
+import com.bigoffs.pdaremake.app.base.BaseActivity
 import com.bigoffs.pdaremake.app.base.BaseRfidFActivity
 import com.bigoffs.pdaremake.app.ext.showBottomSheedList
 import com.bigoffs.pdaremake.app.ext.showMessage
@@ -19,11 +20,11 @@ import com.gyf.immersionbar.ktx.immersionBar
 import com.lxj.xpopup.interfaces.OnSelectListener
 import me.hgj.jetpackmvvm.ext.parseState
 
-class LoginActivity:BaseRfidFActivity<LoginRegisterViewModel,ActivityLoginBinding>() {
+class LoginActivity:BaseActivity<LoginRegisterViewModel,ActivityLoginBinding>() {
 
     private val requestLoginViewModel : RequestLoginViewModel by  viewModels()
     override fun layoutId(): Int  = R.layout.activity_login
-    var mContext = this
+
 
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -35,11 +36,17 @@ class LoginActivity:BaseRfidFActivity<LoginRegisterViewModel,ActivityLoginBindin
     override fun createObserver() {
         requestLoginViewModel.loginResult.observe(this, Observer { resultState ->
             parseState(resultState, { userInfo ->
-                //登录成功 通知账户数据发生改变鸟
-                CacheUtil.setUser(userInfo)
-                CacheUtil.setIsLogin(true)
-                appViewModel.userinfo.value = userInfo
+
 //                me.hgj.jetpackmvvm.ext.nav().navigateUp()
+                showBottomSheedList(mContext, arrayOf("1","1","1","1","1","1")
+                ) { position, text ->
+                    //登录成功 通知账户数据发生改变鸟
+                    CacheUtil.setUser(userInfo)
+                    CacheUtil.setIsLogin(true)
+                    appViewModel.user.value = userInfo
+                    ToastUtils.showShort(text)
+
+                }
             }, { appException ->
                 //登录失败
                 showMessage(appException.errorMsg)
@@ -50,22 +57,17 @@ class LoginActivity:BaseRfidFActivity<LoginRegisterViewModel,ActivityLoginBindin
         })
     }
 
-    override fun onFinish(data: String) {
-
-        showLoading(data)
-        rfidViewModel.stopReadRfid()
-    }
+//    override fun onFinish(data: String) {
+//
+//        showLoading(data)
+//        rfidViewModel.stopReadRfid()
+//    }
 
     inner  class Click{
 
         fun login(){
-            requestLoginViewModel.getDetail("1")
-            showBottomSheedList(mContext, arrayOf("1","1","1","1","1","1")
-            ) { position, text ->
+//            requestLoginViewModel.getDetail("1")
 
-                ToastUtils.showShort(text)
-
-            }
             when{
                 mViewModel.username.value.isEmpty() -> showMessage("请填写账号")
                 mViewModel.password.value.isEmpty() -> showMessage("请填写密码")
@@ -79,9 +81,9 @@ class LoginActivity:BaseRfidFActivity<LoginRegisterViewModel,ActivityLoginBindin
 
     }
 
-    override fun readOrClose() {
-      rfidViewModel.startReadRfid()
-    }
+//    override fun readOrClose() {
+//      rfidViewModel.startReadRfid()
+//    }
 
     override fun setStatusBar() {
         immersionBar {

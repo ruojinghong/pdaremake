@@ -1,7 +1,7 @@
 package com.bigoffs.pdaremake.app.util
 
 import android.text.TextUtils
-import com.bigoffs.pdaremake.data.model.bean.UserInfo
+import com.bigoffs.pdaremake.data.model.bean.User
 import com.google.gson.Gson
 import com.tencent.mmkv.MMKV
 
@@ -11,20 +11,20 @@ object CacheUtil {
     /**
      * 获取保存的账户信息
      */
-    fun getUser(): UserInfo? {
+    fun getUser(): User? {
         val kv = MMKV.mmkvWithID("app")
         val userStr = kv.decodeString("user")
         return if (TextUtils.isEmpty(userStr)) {
             null
         } else {
-            Gson().fromJson(userStr, UserInfo::class.java)
+            Gson().fromJson(userStr, User::class.java)
         }
     }
 
     /**
      * 设置账户信息
      */
-    fun setUser(userResponse: UserInfo?) {
+    fun setUser(userResponse: User?) {
         val kv = MMKV.mmkvWithID("app")
         if (userResponse == null) {
             kv.encode("user", "")
