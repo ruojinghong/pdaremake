@@ -19,6 +19,7 @@ import com.gyf.immersionbar.ImmersionBar
 import com.gyf.immersionbar.ktx.immersionBar
 import com.lxj.xpopup.interfaces.OnSelectListener
 import me.hgj.jetpackmvvm.ext.parseState
+import me.hgj.jetpackmvvm.util.ActivityMessenger
 
 class LoginActivity:BaseActivity<LoginRegisterViewModel,ActivityLoginBinding>() {
 
@@ -44,8 +45,7 @@ class LoginActivity:BaseActivity<LoginRegisterViewModel,ActivityLoginBinding>() 
                     CacheUtil.setUser(userInfo)
                     CacheUtil.setIsLogin(true)
                     appViewModel.user.value = userInfo
-                    ToastUtils.showShort(text)
-
+                    ActivityMessenger.startActivity<MainActivity>(this)
                 }
             }, { appException ->
                 //登录失败

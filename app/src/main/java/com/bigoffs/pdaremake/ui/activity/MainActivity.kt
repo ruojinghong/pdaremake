@@ -24,6 +24,7 @@ import com.bigoffs.pdaremake.viewmodel.state.MainViewModel
 import com.blankj.utilcode.util.*
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemChildClickListener
+import me.hgj.jetpackmvvm.ext.util.px2dp
 
 class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
     override fun layoutId(): Int = R.layout.activity_new_main
@@ -103,6 +104,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
         intent.putExtra("endchar", "NONE")
         sendBroadcast(intent)
         startPdaActivity()
+
 
     }
 

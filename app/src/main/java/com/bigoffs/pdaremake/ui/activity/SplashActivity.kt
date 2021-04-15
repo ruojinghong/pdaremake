@@ -8,8 +8,11 @@ import com.bigoffs.pdaremake.app.base.BaseActivity
 import com.bigoffs.pdaremake.app.service.ScanServiceControl
 import com.bigoffs.pdaremake.databinding.ActivityLoginBinding
 import com.bigoffs.pdaremake.databinding.ActivitySplashBinding
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
+import me.hgj.jetpackmvvm.ext.util.dp2px
+import me.hgj.jetpackmvvm.ext.util.px2dp
 
 class SplashActivity : BaseActivity<BaseViewModel,ActivitySplashBinding>() {
     override fun layoutId(): Int  = R.layout.activity_splash

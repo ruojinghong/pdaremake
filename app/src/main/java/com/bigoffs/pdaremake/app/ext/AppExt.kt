@@ -1,5 +1,8 @@
 package com.bigoffs.pdaremake.app.ext
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.text.TextUtils
 import android.view.View
@@ -15,6 +18,7 @@ import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.util.SettingUtil
 import com.bigoffs.pdaremake.ui.customview.FreeArrowView
+import com.gyf.immersionbar.ImmersionBar
 import com.gyf.immersionbar.ktx.immersionBar
 import java.io.BufferedReader
 import java.io.FileReader
@@ -175,6 +179,7 @@ fun AppCompatActivity.initTitle(statusBarDarkFont:Boolean = true,
         //解决状态栏和布局重叠问题
         tvBar?.let {
             statusBarView(tvBar)
+            it.setBackgroundColor(titleBg)
         }
         title?.let {
             it.setBackgroundColor(titleBg)
@@ -204,8 +209,15 @@ fun AppCompatActivity.initTitle(statusBarDarkFont:Boolean = true,
             })
             it.visibility = showLeftBtn
         }
-        //状态栏字体是深色，不写默认为亮色
-        statusBarDarkFont(statusBarDarkFont)
+        immersionBar {
+            //状态栏字体是深色，不写默认为亮色
+            statusBarDarkFont(statusBarDarkFont)
+        }
+
     }
+}
+
+inline fun <reified T : Activity> Activity.startActivity(context: Context) {
+    startActivity(Intent(context, T::class.java))
 }
 

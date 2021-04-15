@@ -25,16 +25,13 @@
             android:id="@+id/fa_left"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="23dp"
+            android:paddingTop="19dp"
+            android:paddingBottom="19dp"
+            android:paddingLeft="17dp"
+            android:paddingRight="27dp"
             app:poleRatio="0.6"
             app:lineStrokeWidth="3dp"
             app:arrowColor="#ffffff"
-            android:layout_marginLeft="5dp"
-
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:textSize="28dp"
+            android:textSize="20dp"
             tools:text="标题"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -53,16 +50,17 @@
 
         <ImageButton
             android:id="@+id/iv_right_btn"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_marginTop="21dp"
+            android:layout_marginRight="21dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:background="@null"
             android:src="@mipmap/icon_mine_setting"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY"
+            />
 
 
         <TextView
@@ -84,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:textSize="24dp"
+            android:textSize="17dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
