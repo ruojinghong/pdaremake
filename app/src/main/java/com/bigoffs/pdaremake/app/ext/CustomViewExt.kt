@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.bigoffs.pdaremake.R
 import com.blankj.utilcode.util.ToastUtils
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.enums.PopupAnimation
 import com.lxj.xpopup.interfaces.OnSelectListener
 
 /**
@@ -48,11 +49,11 @@ fun Fragment.showBottomSheedList( context: Context,data : Array<String>,listener
 }
 
 fun AppCompatActivity.showSpinner(v: View, context: Context, data : Array<String>, listener: OnSelectListener){
-    XPopup.Builder(context)
+    XPopup.Builder(context).popupAnimation(PopupAnimation.ScrollAlphaFromTop)
         .isDestroyOnDismiss(false) //对于只使用一次的弹窗，推荐设置这个
         .hasShadowBg(false)
         .atView(v)
-        .asAttachList(data,null,listener,R.layout._xpopup_bottom_impl_list,R.layout._xpopup_adapter_text_match).show()
+        .asAttachList(data,null,listener,R.layout._xpopup_down_impl_list,R.layout._xpopup_adapter_text_match).show()
 
 
 }

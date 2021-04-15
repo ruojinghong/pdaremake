@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
          <variable
@@ -15,7 +16,9 @@
         android:orientation="vertical"
         android:background="@color/white">
             <include layout="@layout/common_title_bar_arrow"/>
-            <include layout="@layout/common_choose_edittext"/>
+            <include layout="@layout/common_choose_edittext"
+                android:id="@+id/include"
+                app:viewmode="@{viewmodel}"/>
 
 
 
