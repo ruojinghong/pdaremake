@@ -3,19 +3,27 @@ package com.bigoffs.pdaremake.ui.activity.pda
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseRfidFActivity
 import com.bigoffs.pdaremake.app.base.BaseScanActivity
 import com.bigoffs.pdaremake.app.event.RfidViewModel
-import com.bigoffs.pdaremake.app.ext.initTitle
-import com.bigoffs.pdaremake.app.ext.showMessage
-import com.bigoffs.pdaremake.app.ext.showSpinner
+import com.bigoffs.pdaremake.app.ext.*
 import com.bigoffs.pdaremake.app.util.StatusBarUtil
 import com.bigoffs.pdaremake.databinding.ActivityRfidQueryBinding
 import com.bigoffs.pdaremake.ui.customview.DropDownMenu
+import com.bigoffs.pdaremake.viewmodel.request.RequestQueryViewModel
 import com.bigoffs.pdaremake.viewmodel.state.RfidQueryViewModel
+import com.kingja.loadsir.core.LoadService
+import me.hgj.jetpackmvvm.ext.parseState
 
 class PdaQueryActivity : BaseScanActivity<RfidQueryViewModel,ActivityRfidQueryBinding>() {
+    //界面状态管理者
+    private lateinit var loadsir: LoadService<Any>
+    var select  = arrayListOf<String>("店内码","条形码","货架")
+
+    private val requestQueryViewModel: RequestQueryViewModel by viewModels()
     override fun initView(savedInstanceState: Bundle?) {
 //        findViewById<DropDownMenu>(R.id.dropdown_menu).setDropDownMenu("店内码",arrayListOf("店内码","条形码","货架号"),
 //             TextView(this)
@@ -26,11 +34,22 @@ class PdaQueryActivity : BaseScanActivity<RfidQueryViewModel,ActivityRfidQueryBi
         mDatabind.viewmodel = mViewModel
         findViewById<LinearLayout>(R.id.ll_select).setOnClickListener{
 
-            showSpinner(it,this, arrayOf("店内码","条形码","货架")){position,text ->
-                mViewModel.currentCodeText.value = "haha"
+            showSpinner(it,this,select ){position,text ->
+                mViewModel.currentCodeText.value = select[position]
             }
 
         }
+
+        //状态页配置
+        loadsir = loadServiceInit(findViewById(R.id.ll_content)) {
+            //点击重试时触发的操作
+            loadsir.showLoading()
+            requestQueryViewModel.getQueryData()
+        }
+
+        //设置界面 加载中
+        loadsir.showLoading()
+        requestQueryViewModel.getQueryData()
     }
 
 
@@ -45,5 +64,31 @@ class PdaQueryActivity : BaseScanActivity<RfidQueryViewModel,ActivityRfidQueryBi
 
     override fun onReceiverData(data: String?) {
 
+    }
+
+
+
+
+
+
+    override fun createObserver() {
+        requestQueryViewModel.queryData.observe(this, Observer {
+
+            parseState(it,{list ->
+                val stringList = arrayListOf<String>()
+              for (item in list){
+                  stringList.add(item.name)
+              }
+                select = stringList
+
+                loadsir.showSuccess()
+            },{
+
+                loadsir.showError("加载失败")
+
+
+
+            })
+        })
     }
 }
