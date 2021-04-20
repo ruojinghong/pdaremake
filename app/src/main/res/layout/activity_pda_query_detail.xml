@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.bigoffs.pdaremake.viewmodel.state.QueryResultViewModel" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white">
+
+        <include
+            layout="@layout/common_title_bar_arrow"
+            android:id="@+id/title" />
+
+        <androidx.core.widget.NestedScrollView
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/ll_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:gravity="center_vertical"
+                    android:background="#F5F5F5"
+                    android:text="@{String.valueOf(vm.queryDetail.unique_code)}"
+                    android:textSize="16dp"
+                    android:textColor="@color/black"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp">
+                        <ImageView
+                            android:id="@+id/iv"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_margin="10dp"/>
+                    <TextView
+                        android:id="@+id/tv_barcode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{vm.queryDetail.barcode}"
+                        android:layout_toRightOf="@+id/iv"
+                        android:layout_alignTop="@+id/iv"
+                        android:textSize="12dp"
+                        android:textColor="#999999"/>
+
+                    <TextView
+                        android:id="@+id/tv_shelfcode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{vm.queryDetail.shelf_code}"
+                        android:layout_toRightOf="@+id/iv"
+                        android:layout_below="@+id/tv_barcode"
+                        android:textSize="12dp"
+                        android:textColor="#999999"
+                        android:layout_marginTop="5dp"/>
+
+                    <TextView
+                        android:id="@+id/guige"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="规格项"
+                        android:layout_toRightOf="@+id/iv"
+                        android:layout_below="@+id/tv_shelfcode"
+                        android:textSize="12dp"
+                        android:textColor="#999999"
+                        android:layout_marginTop="5dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_sale_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(vm.queryDetail.sale_price)}"
+                        android:layout_toRightOf="@+id/iv"
+                        android:layout_below="@+id/guige"
+                        android:textSize="12dp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="10dp"/>
+                    <com.bigoffs.pdaremake.ui.customview.ExplainLinearLayout
+                        android:id="@+id/ex"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+
+
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+</layout>

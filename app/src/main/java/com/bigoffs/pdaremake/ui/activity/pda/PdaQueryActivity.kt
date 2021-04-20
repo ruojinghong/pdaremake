@@ -1,5 +1,6 @@
 package com.bigoffs.pdaremake.ui.activity.pda
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -11,6 +12,7 @@ import com.bigoffs.pdaremake.app.base.BaseScanActivity
 import com.bigoffs.pdaremake.app.event.RfidViewModel
 import com.bigoffs.pdaremake.app.ext.*
 import com.bigoffs.pdaremake.app.util.StatusBarUtil
+import com.bigoffs.pdaremake.data.model.bean.QueryType
 import com.bigoffs.pdaremake.databinding.ActivityRfidQueryBinding
 import com.bigoffs.pdaremake.ui.customview.DropDownMenu
 import com.bigoffs.pdaremake.viewmodel.request.RequestQueryViewModel
@@ -18,24 +20,21 @@ import com.bigoffs.pdaremake.viewmodel.state.RfidQueryViewModel
 import com.kingja.loadsir.core.LoadService
 import me.hgj.jetpackmvvm.ext.parseState
 
-class PdaQueryActivity : BaseScanActivity<RfidQueryViewModel,ActivityRfidQueryBinding>() {
+class PdaQueryActivity : BaseScanActivity<RfidQueryViewModel, ActivityRfidQueryBinding>() {
     //界面状态管理者
     private lateinit var loadsir: LoadService<Any>
-    var select  = arrayListOf<String>("店内码","条形码","货架")
+    var select = arrayListOf<String>("店内码", "条形码", "货架")
+    var currentList = arrayListOf<QueryType>();
 
     private val requestQueryViewModel: RequestQueryViewModel by viewModels()
     override fun initView(savedInstanceState: Bundle?) {
-//        findViewById<DropDownMenu>(R.id.dropdown_menu).setDropDownMenu("店内码",arrayListOf("店内码","条形码","货架号"),
-//             TextView(this)
-//        ) { p0, p1, p2, p3 ->
-//
-//        }
 
+        scanViewModel.setOnReceiveListener(this)
         mDatabind.viewmodel = mViewModel
-        findViewById<LinearLayout>(R.id.ll_select).setOnClickListener{
+        findViewById<LinearLayout>(R.id.ll_select).setOnClickListener {
 
-            showSpinner(it,this,select ){position,text ->
-                mViewModel.currentCodeText.value = select[position]
+            showSpinner(it, this, select) { position, text ->
+                setCurrentType(position)
             }
 
         }
@@ -53,12 +52,11 @@ class PdaQueryActivity : BaseScanActivity<RfidQueryViewModel,ActivityRfidQueryBi
     }
 
 
-
-    override fun layoutId(): Int  = R.layout.activity_rfid_query
+    override fun layoutId(): Int = R.layout.activity_rfid_query
 
     override fun setStatusBar() {
-        initTitle(statusBarDarkFont =  false,biaoti = "查询",rightBitaoti = "配置价签"){
-            showMessage("配置价签")
+        initTitle(statusBarDarkFont = false, biaoti = "查询", rightBitaoti = "配置价签") {
+            startActivity(Intent(this,PdaQueryDetailActivity::class.java))
         }
     }
 
@@ -67,28 +65,36 @@ class PdaQueryActivity : BaseScanActivity<RfidQueryViewModel,ActivityRfidQueryBi
     }
 
 
-
-
-
-
     override fun createObserver() {
         requestQueryViewModel.queryData.observe(this, Observer {
 
-            parseState(it,{list ->
-                val stringList = arrayListOf<String>()
-              for (item in list){
-                  stringList.add(item.name)
-              }
-                select = stringList
-
+            parseState(it, { list ->
+                currentList.addAll(list)
                 loadsir.showSuccess()
-            },{
+                val stringList = arrayListOf<String>()
+                for (item in list){
+                    stringList.add(item.name)
+                }
+                select = stringList
+                setCurrentType(0)
+
+            }, {
 
                 loadsir.showError("加载失败")
 
 
-
+            }, {
+                showLoading()
             })
         })
+    }
+
+    fun setCurrentType(position: Int) {
+        if (position >= currentList.size) {
+            return
+        }
+        mViewModel.currentCodeType.value = currentList.get(position).type
+        mViewModel.currentCodeText.value = currentList.get(position).name
+
     }
 }

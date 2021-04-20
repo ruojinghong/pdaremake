@@ -1,6 +1,7 @@
 package com.bigoffs.pdaremake.app.network
 
 import com.bigoffs.pdaremake.data.model.bean.ApiResponse
+import com.bigoffs.pdaremake.data.model.bean.QueryResultBean
 import com.bigoffs.pdaremake.data.model.bean.QueryType
 import com.bigoffs.pdaremake.data.model.bean.User
 import okhttp3.RequestBody
@@ -13,8 +14,8 @@ interface ApiService {
 
         const val BASE_URL = "http://wms.pandora.okbuy.com/"
 //        const val TEST_URL = "http://10.1.1.3:2022/mock/13/"
-        const val TEST_URL = "http://admin.bigoffs.com:9080/"
-//        const val TEST_URL = "http://dev-pda.bigoffs.com:9080/"
+//        const val TEST_URL = "http://admin.bigoffs.com:9080/"
+        const val TEST_URL = "http://dev-pda.bigoffs.com:9080/"
 //        val BASE_URL = ""
     }
 
@@ -28,8 +29,14 @@ interface ApiService {
     suspend fun  detail(
         @Body  body : RequestBody
     ):ApiResponse<User>
-    @POST("v1/shelf/query")
+
+    @POST("v1/search/index")
     suspend fun getQueryType(
         @Body  body : RequestBody
     ):ApiResponse<List<QueryType>>
+
+    @POST("v1/search/unique")
+    suspend fun getQueryDetail(
+        @Body  body : RequestBody
+    ):ApiResponse<QueryResultBean>
 }

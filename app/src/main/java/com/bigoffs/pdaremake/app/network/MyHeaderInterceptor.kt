@@ -13,6 +13,8 @@ class MyHeaderInterceptor : Interceptor{
     override fun intercept(chain: Interceptor.Chain): Response {
         val builder = chain.request().newBuilder()
         builder.addHeader("Content-Type","application/json;charset=UTF-8")
+        builder.addHeader("Request-Type","api-request")
+        builder.addHeader("Authorization", CacheUtil.getUser()?.token+"")
         return chain.proceed(builder.build())
     }
 }
