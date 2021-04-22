@@ -15,6 +15,8 @@ class MyHeaderInterceptor : Interceptor{
         builder.addHeader("Content-Type","application/json;charset=UTF-8")
         builder.addHeader("Request-Type","api-request")
         builder.addHeader("Authorization", CacheUtil.getUser()?.token+"")
+        builder.addHeader("X-WarehouseId", CacheUtil.getHouse()?.id.toString()+"")
+//        builder.addHeader("X-WarehouseId", 14080257.toString()+"")
         return chain.proceed(builder.build())
     }
 }

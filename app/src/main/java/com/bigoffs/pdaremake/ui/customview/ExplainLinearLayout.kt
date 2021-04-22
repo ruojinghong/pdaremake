@@ -20,7 +20,7 @@ class ExplainLinearLayout : LinearLayout {
 
     constructor( context :Context,  attrs: AttributeSet) : super(context,attrs){
 
-        addView(LayoutInflater.from(context).inflate(R.layout.component_good,null))
+        addView(LayoutInflater.from(context).inflate(R.layout.component_good,null,true))
         var llContent = findViewById<LinearLayout>(R.id.content)
         var tv = findViewById<TextView>(R.id.tv_fold)
         findViewById<LinearLayout>(R.id.ll_fold).setOnClickListener(){

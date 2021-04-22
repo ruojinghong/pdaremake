@@ -1,6 +1,7 @@
 package com.bigoffs.pdaremake.app.util
 
 import android.text.TextUtils
+import com.bigoffs.pdaremake.data.model.bean.House
 import com.bigoffs.pdaremake.data.model.bean.User
 import com.google.gson.Gson
 import com.tencent.mmkv.MMKV
@@ -35,6 +36,33 @@ object CacheUtil {
         }
 
     }
+    /**
+     * 设置仓库ID
+     */
+    fun setHouse(house: House?) {
+        val kv = MMKV.mmkvWithID("app")
+        if (house == null) {
+            kv.encode("house", "")
+        } else {
+            kv.encode("house", Gson().toJson(house))
+        }
+
+    }
+
+    /**
+     * 获取仓库ID
+     */
+    fun getHouse() : House? {
+        val kv = MMKV.mmkvWithID("app")
+        val userStr = kv.decodeString("house")
+        return if (TextUtils.isEmpty(userStr)) {
+            null
+        } else {
+            Gson().fromJson(userStr, House::class.java)
+        }
+
+    }
+
 
     /**
      * 设置无线射频信号强度

@@ -8,8 +8,8 @@ import com.bigoffs.pdaremake.app.base.BaseActivity
 import com.bigoffs.pdaremake.app.ext.*
 import com.bigoffs.pdaremake.databinding.ActivityPdaQueryDetailBinding
 import com.bigoffs.pdaremake.viewmodel.request.RequestQueryDetailViewModel
-import com.bigoffs.pdaremake.viewmodel.request.RequestQueryViewModel
 import com.bigoffs.pdaremake.viewmodel.state.QueryResultViewModel
+import com.blankj.utilcode.util.ToastUtils
 import com.kingja.loadsir.core.LoadService
 import me.hgj.jetpackmvvm.ext.parseState
 
@@ -50,10 +50,14 @@ class PdaQueryDetailActivity :BaseActivity<QueryResultViewModel,ActivityPdaQuery
             parseState(it, { list ->
 
                 loadsir.showSuccess()
+                mViewModel.barcode.value = list.barcode
+                mViewModel.uniqueCode.value = list.unique_code
+                mViewModel.queryDetail.value = list
 
 
-            }, {
 
+            }, { exception ->
+                ToastUtils.showShort(exception.message)
                 loadsir.showError("加载失败")
 
 

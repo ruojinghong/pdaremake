@@ -1,9 +1,6 @@
 package com.bigoffs.pdaremake.app.network
 
-import com.bigoffs.pdaremake.data.model.bean.ApiResponse
-import com.bigoffs.pdaremake.data.model.bean.QueryResultBean
-import com.bigoffs.pdaremake.data.model.bean.QueryType
-import com.bigoffs.pdaremake.data.model.bean.User
+import com.bigoffs.pdaremake.data.model.bean.*
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -18,11 +15,16 @@ interface ApiService {
         const val TEST_URL = "http://dev-pda.bigoffs.com:9080/"
 //        val BASE_URL = ""
     }
-
+    @Headers("Domain-Name:loginurl")
     @POST("login")
     suspend fun  login(
         @Body  body : RequestBody
     ):ApiResponse<User>
+
+    @POST("v1/search/warehouseList")
+    suspend fun  getHouse(
+        @Body  body : RequestBody
+    ):ApiResponse<List<House>>
 
 
     @POST("v1/shelf/query")

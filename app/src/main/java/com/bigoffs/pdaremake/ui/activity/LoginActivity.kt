@@ -21,11 +21,10 @@ import com.lxj.xpopup.interfaces.OnSelectListener
 import me.hgj.jetpackmvvm.ext.parseState
 import me.hgj.jetpackmvvm.util.ActivityMessenger
 
-class LoginActivity:BaseActivity<LoginRegisterViewModel,ActivityLoginBinding>() {
+class LoginActivity : BaseActivity<LoginRegisterViewModel, ActivityLoginBinding>() {
 
-    private val requestLoginViewModel : RequestLoginViewModel by  viewModels()
-    override fun layoutId(): Int  = R.layout.activity_login
-
+    private val requestLoginViewModel: RequestLoginViewModel by viewModels()
+    override fun layoutId(): Int = R.layout.activity_login
 
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -39,22 +38,45 @@ class LoginActivity:BaseActivity<LoginRegisterViewModel,ActivityLoginBinding>() 
             parseState(resultState, { userInfo ->
 
 //                me.hgj.jetpackmvvm.ext.nav().navigateUp()
-                showBottomSheedList(mContext, arrayOf("1","1","1","1","1","1")
+                appViewModel.user.value = userInfo
+                CacheUtil.setUser(appViewModel.user.value)
+                requestLoginViewModel.getHouseId()
+            }, { appException ->
+                //登录失败
+                showMessage(appException.errorMsg)
+            }, {
+
+                showLoading()
+            })
+        })
+
+        requestLoginViewModel.houseResult.observe(this, { resultState ->
+            parseState(resultState, { houseList ->
+
+                val arrayString = arrayListOf<String>()
+                for(house in houseList){
+                    arrayString.add(house.name)
+                }
+
+                showBottomSheedList(
+                    mContext, arrayString.toTypedArray()
                 ) { position, text ->
                     //登录成功 通知账户数据发生改变鸟
-                    CacheUtil.setUser(userInfo)
+
+                    CacheUtil.setHouse(houseList[position])
                     CacheUtil.setIsLogin(true)
-                    appViewModel.user.value = userInfo
                     ActivityMessenger.startActivity<MainActivity>(this)
                 }
             }, { appException ->
                 //登录失败
                 showMessage(appException.errorMsg)
-            },{
+            }, {
 
                 showLoading()
-            })
+            }
+            )
         })
+
     }
 
 //    override fun onFinish(data: String) {
@@ -63,12 +85,12 @@ class LoginActivity:BaseActivity<LoginRegisterViewModel,ActivityLoginBinding>() 
 //        rfidViewModel.stopReadRfid()
 //    }
 
-    inner  class Click{
+    inner class Click {
 
-        fun login(){
+        fun login() {
 //            requestLoginViewModel.getDetail("1")
 
-            when{
+            when {
                 mViewModel.username.value.isEmpty() -> showMessage("请填写账号")
                 mViewModel.password.value.isEmpty() -> showMessage("请填写密码")
                 else -> requestLoginViewModel.loginReq(
@@ -91,7 +113,7 @@ class LoginActivity:BaseActivity<LoginRegisterViewModel,ActivityLoginBinding>() 
             statusBarView(findViewById(R.id.bar))
             //状态栏字体是深色，不写默认为亮色
             statusBarDarkFont(true)
-      }
+        }
     }
 
 
