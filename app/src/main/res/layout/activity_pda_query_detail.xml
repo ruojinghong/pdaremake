@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -32,11 +33,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="36dp"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
                     android:background="#F5F5F5"
                     android:text="@{String.valueOf(vm.queryDetail.unique_code)}"
                     android:textSize="16dp"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    />
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="90dp">
@@ -44,7 +46,8 @@
                             android:id="@+id/iv"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
-                            android:layout_margin="10dp"/>
+                            android:layout_margin="10dp"
+                            bind:circleImageUrl="@{vm.queryDetail.image}"/>
                     <TextView
                         android:id="@+id/tv_barcode"
                         android:layout_width="wrap_content"
@@ -64,7 +67,7 @@
                         android:layout_below="@+id/tv_barcode"
                         android:textSize="12dp"
                         android:textColor="#999999"
-                        android:layout_marginTop="5dp"/>
+                        android:layout_marginTop="3dp"/>
 
                     <TextView
                         android:id="@+id/guige"
@@ -75,7 +78,7 @@
                         android:layout_below="@+id/tv_shelfcode"
                         android:textSize="12dp"
                         android:textColor="#999999"
-                        android:layout_marginTop="5dp"/>
+                        android:layout_marginTop="3dp"/>
 
                     <TextView
                         android:id="@+id/tv_sale_price"

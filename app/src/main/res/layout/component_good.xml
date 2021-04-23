@@ -31,11 +31,12 @@
                 android:gravity="center_vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="65dp"
                     android:layout_height="wrap_content"
                     android:text="商品名称"
                     android:textSize="16dp"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                   />
 
                 <TextView
                     android:id="@+id/tv_name"
@@ -54,7 +55,7 @@
                 android:gravity="center_vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="65dp"
                     android:layout_height="wrap_content"
                     android:text="SPU"
                     android:textSize="16dp"
@@ -77,7 +78,7 @@
                 android:gravity="center_vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="65dp"
                     android:layout_height="wrap_content"
                     android:text="SKU"
                     android:textSize="16dp"
@@ -100,7 +101,7 @@
                 android:gravity="center_vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="65dp"
                     android:layout_height="wrap_content"
                     android:text="货号"
                     android:textSize="16dp"
@@ -123,7 +124,8 @@
                 android:gravity="center_vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="60dp"
+                    android:layout_marginRight="5dp"
                     android:layout_height="wrap_content"
                     android:text="品牌"
                     android:textSize="16dp"
@@ -140,7 +142,16 @@
             </LinearLayout>
 
 
+            <LinearLayout
+                android:id="@+id/ll_property"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
         </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/ll_fold"
