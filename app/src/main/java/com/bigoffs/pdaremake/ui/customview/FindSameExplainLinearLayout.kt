@@ -13,13 +13,14 @@ import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.marginRight
 import com.bigoffs.pdaremake.R
+import com.bigoffs.pdaremake.data.model.bean.FindSame
 import com.bigoffs.pdaremake.data.model.bean.QueryResultBean
 import com.blankj.utilcode.util.ConvertUtils
 import com.blankj.utilcode.util.SizeUtils
 import org.w3c.dom.Text
 
 
-class ExplainLinearLayout : LinearLayout {
+class FindSameExplainLinearLayout : LinearLayout {
     /**
      * 0是收缩状态 ，1是展开状态
      */
@@ -54,7 +55,7 @@ class ExplainLinearLayout : LinearLayout {
     }
 
 
-    fun setContent(bean: QueryResultBean) {
+    fun setContent(bean: FindSame) {
 
         tvSpuName.text = bean.spu_name
         tv_spu.text = bean.spu_no

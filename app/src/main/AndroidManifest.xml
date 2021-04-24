@@ -39,6 +39,7 @@
         <activity android:name=".ui.activity.Rfid.RfidQueryActivity" />
         <activity android:name=".ui.activity.pda.PdaQueryActivity" />
         <activity android:name=".ui.activity.pda.PdaQueryDetailActivity" />
+        <activity android:name=".ui.activity.pda.PdaUniqueQueryFindSamelActivity" />
     </application>
 
 </manifest>

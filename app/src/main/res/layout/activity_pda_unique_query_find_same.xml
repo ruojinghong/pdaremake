@@ -6,7 +6,7 @@
     <data>
         <variable
             name="vm"
-            type="com.bigoffs.pdaremake.viewmodel.state.QueryResultViewModel" />
+            type="com.bigoffs.pdaremake.viewmodel.state.QueryPdaUniqueFindSameViewModel" />
         <variable
             name="click"
             type="com.bigoffs.pdaremake.ui.activity.pda.PdaQueryDetailActivity.ClickProxy" />
@@ -40,7 +40,7 @@
                     android:layout_height="36dp"
                     android:gravity="center"
                     android:background="#F5F5F5"
-                    android:text="@{String.valueOf(vm.queryDetail.unique_code)}"
+                    android:text="@{String.valueOf(vm.queryDetail.spu_id)}"
                     android:textSize="16dp"
                     android:textColor="@color/black"
                     />
@@ -58,7 +58,7 @@
                         android:id="@+id/tv_barcode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{vm.queryDetail.barcode}"
+                        android:text="@{vm.queryDetail.spu_name}"
                         android:layout_toRightOf="@+id/iv"
                         android:layout_alignTop="@+id/iv"
                         android:textSize="12dp"
@@ -110,44 +110,6 @@
         </androidx.core.widget.NestedScrollView>
 
     </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:orientation="horizontal"
-            android:layout_alignParentBottom="true">
-            <TextView
-                android:id="@+id/tv_find_same"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textSize="16dp"
-                android:text="找同款"
-                android:textColor="@color/black"
-                android:gravity="center"
-                android:onClick="@{()->click.findSame()}"/>
-            <TextView
-                android:id="@+id/tv_print"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textSize="16dp"
-                android:text="打印价签"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:background="@color/colorPrimary"
-                android:onClick="@{()->click.printTag()}"/>
-            <TextView
-                android:id="@+id/tv_find_good"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textSize="16dp"
-                android:text="找货"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:background="@color/colororange"
-                android:onClick="@{()->click.findGood()}"/>
 
-        </LinearLayout>
     </RelativeLayout>
 </layout>

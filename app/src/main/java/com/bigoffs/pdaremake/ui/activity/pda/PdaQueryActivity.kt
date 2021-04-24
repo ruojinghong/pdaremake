@@ -19,6 +19,7 @@ import com.bigoffs.pdaremake.viewmodel.request.RequestQueryViewModel
 import com.bigoffs.pdaremake.viewmodel.state.RfidQueryViewModel
 import com.kingja.loadsir.core.LoadService
 import me.hgj.jetpackmvvm.ext.parseState
+import me.hgj.jetpackmvvm.util.ActivityMessenger
 
 class PdaQueryActivity : BaseScanActivity<RfidQueryViewModel, ActivityRfidQueryBinding>() {
     //界面状态管理者
@@ -60,8 +61,14 @@ class PdaQueryActivity : BaseScanActivity<RfidQueryViewModel, ActivityRfidQueryB
         }
     }
 
-    override fun onReceiverData(data: String?) {
+    override fun onReceiverData(data: String) {
+            when( mViewModel.currentCodeText.value){
+                    "店内码" ->{
+                        ActivityMessenger.startActivity<PdaQueryDetailActivity>(this,"unique" to data)
+                    }
 
+
+            }
     }
 
 

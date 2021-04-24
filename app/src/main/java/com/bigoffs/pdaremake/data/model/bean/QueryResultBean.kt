@@ -8,23 +8,23 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class QueryResultBean(
-    val barcode: String,
-    val unique_code: String,
-    val brand_id: Int,
-    val brand_name: String,
-    val category_id: Int,
-    val category_name: String,
-    val shelf_code: String,
-    val image: String,
-    val property_list: List<Property>,
-    val sale_price: Int,
-    val sku_id: Int,
-    val spec_list: List<Spec>,
-    val spu_id: Int,
-    val spu_name: String,
-    val spu_no: String,
-    val stock_map: List<StockMap>,
-    val stock_num: Int
+    val barcode : String = "",
+    val unique_code: String= "",
+    val brand_id: Int = 0,
+    val brand_name: String= "",
+    val category_id: Int = 0,
+    val category_name: String= "",
+    val shelf_code: String= "",
+    val image: String = "",
+    val property_list: List<Property> = mutableListOf(),
+    val sale_price: Int = 0,
+    val sku_id: Int = 0,
+    val spec_list: List<Spec> = mutableListOf(),
+    val spu_id: Int = 0,
+    val spu_name: String = "",
+    val spu_no: String= "",
+    val stock_map: List<StockMap> = mutableListOf(),
+    val stock_num: Int = 0
 ): Parcelable
 @Parcelize
 data class Property(

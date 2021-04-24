@@ -41,4 +41,9 @@ interface ApiService {
     suspend fun getQueryDetail(
         @Body  body : RequestBody
     ):ApiResponse<QueryResultBean>
+
+    @POST("v1/search/spu_no")
+    suspend fun findSameByUnique(
+        @Body  body : RequestBody
+    ):ApiResponse<FindSame>
 }

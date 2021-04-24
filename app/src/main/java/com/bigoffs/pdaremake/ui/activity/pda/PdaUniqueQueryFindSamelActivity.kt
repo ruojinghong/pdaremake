@@ -9,48 +9,49 @@ import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseActivity
 import com.bigoffs.pdaremake.app.ext.*
 import com.bigoffs.pdaremake.databinding.ActivityPdaQueryDetailBinding
+import com.bigoffs.pdaremake.databinding.ActivityPdaUniqueQueryFindSameBinding
 import com.bigoffs.pdaremake.ui.customview.ExplainLinearLayout
 import com.bigoffs.pdaremake.ui.customview.ImageLoader
 import com.bigoffs.pdaremake.viewmodel.request.RequestQueryDetailViewModel
+import com.bigoffs.pdaremake.viewmodel.request.RequestQueryPdaFindSameViewModel
+import com.bigoffs.pdaremake.viewmodel.state.QueryPdaUniqueFindSameViewModel
 import com.bigoffs.pdaremake.viewmodel.state.QueryResultViewModel
 import com.blankj.utilcode.util.ToastUtils
 import com.kingja.loadsir.core.LoadService
 import com.lxj.xpopup.XPopup
 import me.hgj.jetpackmvvm.ext.parseState
-import me.hgj.jetpackmvvm.util.ActivityMessenger
 
-class PdaQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPdaQueryDetailBinding>() {
+class PdaUniqueQueryFindSamelActivity : BaseActivity<QueryPdaUniqueFindSameViewModel, ActivityPdaUniqueQueryFindSameBinding>() {
 
 
     //界面状态管理者
     private lateinit var loadsir: LoadService<Any>
-    private val requestQueryDetailViewModel: RequestQueryDetailViewModel by viewModels()
+    private val requestViewModel: RequestQueryPdaFindSameViewModel by viewModels()
     var uniqueCode = ""
 
-    override fun layoutId(): Int = R.layout.activity_pda_query_detail
+    override fun layoutId(): Int = R.layout.activity_pda_unique_query_find_same
     lateinit var image: ImageView
     lateinit var ex: ExplainLinearLayout
     override fun setStatusBar() {
-        initTitle(statusBarDarkFont = false, biaoti = "查询", rightBitaoti = "配置价签") {
-            showMessage("配置价签")
+        initTitle(statusBarDarkFont = false, biaoti = "查询") {
+
         }
     }
 
     override fun initView(savedInstanceState: Bundle?) {
         uniqueCode = (intent.getStringExtra("unique"))+""
         mDatabind.vm = mViewModel
-        mDatabind.click = ClickProxy()
 
 //状态页配置
         loadsir = loadServiceInit(findViewById(R.id.ll_content)) {
             //点击重试时触发的操作
             loadsir.showLoading()
-            requestQueryDetailViewModel.queryDetail("", "")
+            requestViewModel.findSameByUnique( "")
         }
 
         //设置界面 加载中
         loadsir.showLoading()
-        requestQueryDetailViewModel.queryDetail("", uniqueCode)
+        requestViewModel.findSameByUnique(uniqueCode)
 
         image = findViewById(R.id.iv)
         ex = findViewById(R.id.ex)
@@ -77,14 +78,14 @@ class PdaQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPdaQue
     }
 
     override fun createObserver() {
-        requestQueryDetailViewModel.queryDetail.observe(this, Observer {
+        requestViewModel.same.observe(this, Observer {
 
-            parseState(it, { list ->
+            parseState(it, { same ->
 
                 loadsir.showSuccess()
-                mViewModel.barcode.value = list.barcode
-                mViewModel.uniqueCode.value = list.unique_code
-                mViewModel.queryDetail.value = list
+
+                mViewModel.uniqueCode.value = ""
+                mViewModel.queryDetail.value = same
                 ex.setContent(list)
                 ex.foldOrUnfold()
 
@@ -100,24 +101,6 @@ class PdaQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPdaQue
         })
     }
 
-    fun goFindSame(){
-        ActivityMessenger.startActivity<PdaUniqueQueryFindSamelActivity>(this,"unique" to mViewModel.barcode.value)
-    }
 
-    inner class ClickProxy{
-
-        fun findSame(){
-            goFindSame()
-        }
-
-        fun printTag(){
-
-        }
-        fun findGood(){
-
-        }
-
-
-    }
 
 }
