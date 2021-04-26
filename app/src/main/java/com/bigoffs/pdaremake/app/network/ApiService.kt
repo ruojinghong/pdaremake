@@ -46,4 +46,10 @@ interface ApiService {
     suspend fun findSameByUnique(
         @Body  body : RequestBody
     ):ApiResponse<FindSame>
+
+
+    @POST("v1/search/barcode_find")
+    suspend fun findGoodByEpc(
+        @Body  body : RequestBody
+    ):ApiResponse<BarcodeFind>
 }

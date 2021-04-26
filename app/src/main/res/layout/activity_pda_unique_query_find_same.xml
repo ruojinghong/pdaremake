@@ -68,7 +68,7 @@
                         android:id="@+id/tv_shelfcode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{vm.queryDetail.shelf_code}"
+                        android:text="@{String.valueOf(vm.queryDetail.stock_num)}"
                         android:layout_toRightOf="@+id/iv"
                         android:layout_below="@+id/tv_barcode"
                         android:textSize="12dp"
@@ -97,7 +97,7 @@
                         android:textColor="@color/black"
                         android:layout_marginTop="6dp"/>
                 </RelativeLayout>
-                <com.bigoffs.pdaremake.ui.customview.ExplainLinearLayout
+                <com.bigoffs.pdaremake.ui.customview.FindSameExplainLinearLayout
                     android:layout_marginTop="5dp"
                     android:id="@+id/ex"
                     android:layout_width="match_parent"

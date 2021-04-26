@@ -40,7 +40,7 @@ abstract class BaseRfidFActivity<VM : BaseViewModel, DB : ViewDataBinding> : Bas
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == 523) {
-            if (event!!.repeatCount == 0) {
+            if (event?.repeatCount == 0) {
                 readOrClose()
                 return true
             }

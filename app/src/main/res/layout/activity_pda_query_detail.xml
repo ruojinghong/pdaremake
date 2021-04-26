@@ -19,7 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#F5F5F5">
+        android:background="#F5F5F5"
+        android:layout_above="@+id/ll_bottom">
 
         <include
             layout="@layout/common_title_bar_arrow"
@@ -28,7 +29,8 @@
         <androidx.core.widget.NestedScrollView
 
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -111,8 +113,9 @@
 
     </LinearLayout>
         <LinearLayout
+            android:id="@+id/ll_bottom"
             android:layout_width="match_parent"
-            android:layout_height="64dp"
+            android:layout_height="50dp"
             android:orientation="horizontal"
             android:layout_alignParentBottom="true">
             <TextView
@@ -124,7 +127,8 @@
                 android:text="找同款"
                 android:textColor="@color/black"
                 android:gravity="center"
-                android:onClick="@{()->click.findSame()}"/>
+                android:onClick="@{()->click.findSame()}"
+                android:background="@color/white"/>
             <TextView
                 android:id="@+id/tv_print"
                 android:layout_width="0dp"

@@ -9,6 +9,7 @@ import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseActivity
 import com.bigoffs.pdaremake.app.ext.*
 import com.bigoffs.pdaremake.databinding.ActivityPdaQueryDetailBinding
+import com.bigoffs.pdaremake.ui.activity.Rfid.FindGoodByEpcActivity
 import com.bigoffs.pdaremake.ui.customview.ExplainLinearLayout
 import com.bigoffs.pdaremake.ui.customview.ImageLoader
 import com.bigoffs.pdaremake.viewmodel.request.RequestQueryDetailViewModel
@@ -103,6 +104,10 @@ class PdaQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPdaQue
     fun goFindSame(){
         ActivityMessenger.startActivity<PdaUniqueQueryFindSamelActivity>(this,"unique" to mViewModel.barcode.value)
     }
+    fun goFindGood(){
+        ActivityMessenger.startActivity<FindGoodByEpcActivity>(this,
+           "unique" to mViewModel.barcode.value ,"shelf_code" to mViewModel.shelfcode.value)
+    }
 
     inner class ClickProxy{
 
@@ -114,6 +119,7 @@ class PdaQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPdaQue
 
         }
         fun findGood(){
+            goFindGood();
 
         }
 

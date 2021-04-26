@@ -14,6 +14,7 @@ import com.bigoffs.pdaremake.app.ext.*
 import com.bigoffs.pdaremake.app.util.StatusBarUtil
 import com.bigoffs.pdaremake.data.model.bean.QueryType
 import com.bigoffs.pdaremake.databinding.ActivityRfidQueryBinding
+import com.bigoffs.pdaremake.ui.activity.pda.PdaQueryDetailActivity
 import com.bigoffs.pdaremake.ui.customview.DropDownMenu
 import com.bigoffs.pdaremake.viewmodel.request.RequestQueryViewModel
 import com.bigoffs.pdaremake.viewmodel.state.RfidQueryViewModel
@@ -21,6 +22,7 @@ import com.gyf.immersionbar.ktx.immersionBar
 import com.kingja.loadsir.core.LoadService
 import com.lxj.xpopup.interfaces.OnSelectListener
 import me.hgj.jetpackmvvm.ext.parseState
+import me.hgj.jetpackmvvm.util.ActivityMessenger
 
 class RfidQueryActivity : BaseRfidFActivity<RfidQueryViewModel,ActivityRfidQueryBinding>() {
 
@@ -54,11 +56,17 @@ class RfidQueryActivity : BaseRfidFActivity<RfidQueryViewModel,ActivityRfidQuery
     }
 
     override fun onFinish(data: String) {
-            showMessage(currentType+data)
+        when( mViewModel.currentCodeText.value){
+            "店内码" ->{
+                ActivityMessenger.startActivity<PdaQueryDetailActivity>(this,"unique" to data)
+            }
+
+
+        }
     }
 
     override fun readOrClose() {
-
+        rfidViewModel.startReadRfid()
     }
 
     override fun layoutId(): Int  = R.layout.activity_rfid_query

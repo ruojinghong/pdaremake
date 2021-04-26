@@ -11,6 +11,7 @@ import com.bigoffs.pdaremake.app.ext.*
 import com.bigoffs.pdaremake.databinding.ActivityPdaQueryDetailBinding
 import com.bigoffs.pdaremake.databinding.ActivityPdaUniqueQueryFindSameBinding
 import com.bigoffs.pdaremake.ui.customview.ExplainLinearLayout
+import com.bigoffs.pdaremake.ui.customview.FindSameExplainLinearLayout
 import com.bigoffs.pdaremake.ui.customview.ImageLoader
 import com.bigoffs.pdaremake.viewmodel.request.RequestQueryDetailViewModel
 import com.bigoffs.pdaremake.viewmodel.request.RequestQueryPdaFindSameViewModel
@@ -31,7 +32,7 @@ class PdaUniqueQueryFindSamelActivity : BaseActivity<QueryPdaUniqueFindSameViewM
 
     override fun layoutId(): Int = R.layout.activity_pda_unique_query_find_same
     lateinit var image: ImageView
-    lateinit var ex: ExplainLinearLayout
+    lateinit var ex: FindSameExplainLinearLayout
     override fun setStatusBar() {
         initTitle(statusBarDarkFont = false, biaoti = "查询") {
 
@@ -86,13 +87,13 @@ class PdaUniqueQueryFindSamelActivity : BaseActivity<QueryPdaUniqueFindSameViewM
 
                 mViewModel.uniqueCode.value = ""
                 mViewModel.queryDetail.value = same
-                ex.setContent(list)
+                ex.setContent(same)
                 ex.foldOrUnfold()
 
 
             }, { exception ->
                 ToastUtils.showShort(exception.message)
-                loadsir.showError("加载失败")
+                loadsir.showError(exception.message+"")
                 finish()
 
             }, {

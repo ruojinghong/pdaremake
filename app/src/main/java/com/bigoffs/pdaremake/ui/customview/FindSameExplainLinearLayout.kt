@@ -25,29 +25,28 @@ class FindSameExplainLinearLayout : LinearLayout {
      * 0是收缩状态 ，1是展开状态
      */
     var isFold = true;
-    lateinit var tvSpuName: TextView
-    lateinit var tv_spu: TextView
-    lateinit var tv_sku: TextView
-    lateinit var tv_num: TextView
-    lateinit var tv_brand: TextView
+
     lateinit var ll_property: LinearLayout
     lateinit var llContent: LinearLayout
+    lateinit var tv_spu: TextView
+    lateinit var tv_num: TextView
+    lateinit var tv_categroy: TextView
+    lateinit var tv_brand: TextView
     lateinit var tv: TextView
 
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
 
-        addView(LayoutInflater.from(context).inflate(R.layout.component_good, null, true))
-        tvSpuName = findViewById(R.id.tv_name)
+        addView(LayoutInflater.from(context).inflate(R.layout.component_find_same, null, true))
         tv_spu = findViewById(R.id.tv_spu)
-        tv_sku = findViewById(R.id.tv_sku)
+        tv_num = findViewById(R.id.tv_num)
+        tv_categroy = findViewById(R.id.tv_categroy)
         tv_num = findViewById(R.id.tv_num)
         tv_brand = findViewById(R.id.tv_brand)
         ll_property = findViewById(R.id.ll_property)
         llContent = findViewById<LinearLayout>(R.id.content)
         tv = findViewById<TextView>(R.id.tv_fold)
         findViewById<LinearLayout>(R.id.ll_fold).setOnClickListener() {
-
             foldOrUnfold()
         }
 
@@ -57,11 +56,10 @@ class FindSameExplainLinearLayout : LinearLayout {
 
     fun setContent(bean: FindSame) {
 
-        tvSpuName.text = bean.spu_name
-        tv_spu.text = bean.spu_no
-        tv_sku.text = bean.sku_id.toString()
-        tv_num.text = bean.stock_num.toString()
+        tv_spu.text = bean.spu_id.toString()
+        tv_num.text = bean.spu_no
         tv_brand.text = bean.brand_name
+        tv_categroy.text = bean.category_name
         for (item in bean.property_list) {
             val linearLayout = LinearLayout(context)
             linearLayout.orientation = LinearLayout.HORIZONTAL
