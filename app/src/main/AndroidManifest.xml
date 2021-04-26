@@ -36,11 +36,11 @@
 
 
         </activity>
-        <activity android:name=".ui.activity.Rfid.RfidQueryActivity" />
+        <activity android:name=".ui.activity.rfid.RfidQueryActivity" />
         <activity android:name=".ui.activity.pda.PdaQueryActivity" />
         <activity android:name=".ui.activity.pda.PdaQueryDetailActivity" />
         <activity android:name=".ui.activity.pda.PdaUniqueQueryFindSamelActivity" />
-        <activity android:name=".ui.activity.Rfid.FindGoodByEpcActivity" />
+        <activity android:name=".ui.activity.rfid.FindGoodByEpcActivity" />
     </application>
 
 </manifest>

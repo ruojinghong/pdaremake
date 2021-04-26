@@ -1,37 +1,31 @@
-package com.bigoffs.pdaremake.ui.activity.Rfid
+package com.bigoffs.pdaremake.ui.activity.rfid
 
 import android.os.Bundle
-import android.view.View
-import android.widget.AdapterView
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseRfidFActivity
 import com.bigoffs.pdaremake.app.event.RfidViewModel
 import com.bigoffs.pdaremake.app.ext.*
-import com.bigoffs.pdaremake.app.util.StatusBarUtil
 import com.bigoffs.pdaremake.data.model.bean.QueryType
 import com.bigoffs.pdaremake.databinding.ActivityRfidQueryBinding
 import com.bigoffs.pdaremake.ui.activity.pda.PdaQueryDetailActivity
-import com.bigoffs.pdaremake.ui.customview.DropDownMenu
 import com.bigoffs.pdaremake.viewmodel.request.RequestQueryViewModel
 import com.bigoffs.pdaremake.viewmodel.state.RfidQueryViewModel
-import com.gyf.immersionbar.ktx.immersionBar
 import com.kingja.loadsir.core.LoadService
-import com.lxj.xpopup.interfaces.OnSelectListener
 import me.hgj.jetpackmvvm.ext.parseState
 import me.hgj.jetpackmvvm.util.ActivityMessenger
+import me.hgj.jetpackmvvm.util.LogUtils
 
-class RfidQueryActivity : BaseRfidFActivity<RfidQueryViewModel,ActivityRfidQueryBinding>() {
+class RfidQueryActivity : BaseRfidFActivity<RfidQueryViewModel, ActivityRfidQueryBinding>() {
 
     //界面状态管理者
     private lateinit var loadsir: LoadService<Any>
     var select = arrayListOf<String>("店内码", "条形码", "货架")
     var currentType = "";
     var currentList = arrayListOf<QueryType>();
-
+    var intercept = false
     private val requestQueryViewModel: RequestQueryViewModel by viewModels()
     override fun initView(savedInstanceState: Bundle?) {
         mDatabind.viewmodel = mViewModel
@@ -56,31 +50,40 @@ class RfidQueryActivity : BaseRfidFActivity<RfidQueryViewModel,ActivityRfidQuery
     }
 
     override fun onFinish(data: String) {
-        when( mViewModel.currentCodeText.value){
-            "店内码" ->{
-                ActivityMessenger.startActivity<PdaQueryDetailActivity>(this,"unique" to data)
+        if (intercept) return
+        intercept = true
+        rfidViewModel.stopReadRfid()
+        when (mViewModel.currentCodeText.value) {
+            "店内码" -> {
+                ActivityMessenger.startActivity<PdaQueryDetailActivity>(this, "unique" to data)
             }
-
-
         }
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initScan()
+        intercept = false
     }
 
     override fun readOrClose() {
         rfidViewModel.startReadRfid()
     }
 
-    override fun layoutId(): Int  = R.layout.activity_rfid_query
+    override fun layoutId(): Int = R.layout.activity_rfid_query
 
     override fun setStatusBar() {
-        initTitle(statusBarDarkFont =  false,biaoti = "查询",rightBitaoti = "配置价签"){
+        initTitle(statusBarDarkFont = false, biaoti = "查询", rightBitaoti = "配置价签") {
             showMessage("配置价签")
         }
 
     }
 
-    inner  class Click{
+    inner class Click {
 
-        fun switchCodeType(){
+        fun switchCodeType() {
 
         }
 
@@ -94,7 +97,7 @@ class RfidQueryActivity : BaseRfidFActivity<RfidQueryViewModel,ActivityRfidQuery
                 currentList.addAll(list)
                 loadsir.showSuccess()
                 val stringList = arrayListOf<String>()
-                for (item in list){
+                for (item in list) {
                     stringList.add(item.name)
                 }
                 select = stringList
@@ -119,5 +122,17 @@ class RfidQueryActivity : BaseRfidFActivity<RfidQueryViewModel,ActivityRfidQuery
         currentType = currentList.get(position).type
         mViewModel.currentCodeText.value = currentList.get(position).name
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+    }
+
+    override fun initScan() {
+        rfidViewModel.initData()
+        rfidViewModel.setReadDataModel(0)
+        rfidViewModel.setMode(1)
+        rfidViewModel.setCurrentSetting(RfidViewModel.Setting.stockRead)
+        rfidViewModel.setListener(this)
     }
 }

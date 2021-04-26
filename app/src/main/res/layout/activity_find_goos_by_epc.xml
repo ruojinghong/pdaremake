@@ -5,6 +5,12 @@
             <variable
                 name="vm"
                 type="com.bigoffs.pdaremake.viewmodel.state.FindGoodByEpcViewModel" />
+
+            <variable
+                name="click"
+                type="com.bigoffs.pdaremake.ui.activity.rfid.FindGoodByEpcActivity.ClickProxy" />
+
+
     </data>
 
     <LinearLayout
@@ -69,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="25dp"
+                    android:textSize="17dp"
                     android:text="@{vm.foodList.shelf_code}" />
 
             </LinearLayout>
@@ -90,17 +96,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="25dp"
-                    android:text="" />
+                    android:textSize="17dp"
+                    android:text="@{vm.currentUnique}" />
 
                 <TextView
                     android:id="@+id/tv_change"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="切换"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:textColor="@color/colorPrimary"
-                    android:layout_marginLeft="20dp" />
+                    android:layout_marginLeft="10dp"
+                    android:onClick="@{() -> click.change()}"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -136,7 +143,8 @@
                 android:background="@color/colorPrimary"
                 android:text="开始扫描"
                 android:textColor="@color/white"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:onClick="@{()->click.openOrClose()}"/>
         </LinearLayout>
 
     </LinearLayout>

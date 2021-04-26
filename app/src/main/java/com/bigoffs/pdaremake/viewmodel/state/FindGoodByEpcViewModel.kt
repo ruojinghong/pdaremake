@@ -11,6 +11,7 @@ import me.hgj.jetpackmvvm.callback.livedata.StringLiveData
 class FindGoodByEpcViewModel : BaseViewModel() {
     var currentPosition  = IntLiveData()
     var currentUnique = StringLiveData()
+    var epc = StringLiveData()
     var unique  = StringLiveData()
     var shelfCode  = StringLiveData()
     var foodList: MutableLiveData<BarcodeFind> = MutableLiveData()

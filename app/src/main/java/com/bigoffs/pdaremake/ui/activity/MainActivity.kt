@@ -8,23 +8,17 @@ import android.widget.ImageButton
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseActivity
-import com.bigoffs.pdaremake.app.base.BaseScanActivity
 import com.bigoffs.pdaremake.app.ext.DeviceType
 import com.bigoffs.pdaremake.app.ext.initTitle
 import com.bigoffs.pdaremake.app.ext.showMessage
 import com.bigoffs.pdaremake.app.service.ScanServiceControl
-import com.bigoffs.pdaremake.databinding.ActivityMainBinding
 import com.bigoffs.pdaremake.databinding.ActivityNewMainBinding
-import com.bigoffs.pdaremake.generated.callback.OnClickListener
-import com.bigoffs.pdaremake.ui.activity.Rfid.RfidQueryActivity
+import com.bigoffs.pdaremake.ui.activity.rfid.RfidQueryActivity
 import com.bigoffs.pdaremake.ui.activity.pda.PdaQueryActivity
 import com.bigoffs.pdaremake.ui.adapter.MainAdapter
 import com.bigoffs.pdaremake.ui.customview.SpaceItemDecoration
 import com.bigoffs.pdaremake.viewmodel.state.MainViewModel
 import com.blankj.utilcode.util.*
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemChildClickListener
-import me.hgj.jetpackmvvm.ext.util.px2dp
 
 class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
     override fun layoutId(): Int = R.layout.activity_new_main

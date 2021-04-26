@@ -21,16 +21,9 @@ abstract class BaseRfidFActivity<VM : BaseViewModel, DB : ViewDataBinding> : Bas
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Thread.sleep(2000)
         initScan()
     }
-    private fun initScan(){
-        rfidViewModel.initData()
-        rfidViewModel.setReadDataModel(0)
-        rfidViewModel.setMode(1)
-        rfidViewModel.setCurrentSetting(RfidViewModel.Setting.stockRead)
-        rfidViewModel.setListenerProtectModel(this)
-    }
+    abstract fun initScan()
 
     override fun onPause() {
         super.onPause()
