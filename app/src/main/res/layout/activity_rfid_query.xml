@@ -7,26 +7,49 @@
              name="viewmodel"
              type="com.bigoffs.pdaremake.viewmodel.state.RfidQueryViewModel" />
 
-
+        <variable
+            name="click"
+            type="com.bigoffs.pdaremake.ui.activity.rfid.RfidQueryActivity.Click" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/color_grey">
-            <include layout="@layout/common_title_bar_arrow"/>
+            <include layout="@layout/common_title_bar_arrow"
+                android:id="@+id/title"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/ll_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_above="@+id/ll_bottom"
+            android:layout_below="@+id/title">
             <include layout="@layout/common_choose_edittext"
                 android:id="@+id/include"
                 app:viewmode="@{viewmodel}"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/btn_read_or_stop"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/colorPrimary"
+                android:text="开始扫描"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:onClick="@{()->click.switchCodeType()}"/>
         </LinearLayout>
 
 
-
-    </LinearLayout>
+    </RelativeLayout>
 </layout>

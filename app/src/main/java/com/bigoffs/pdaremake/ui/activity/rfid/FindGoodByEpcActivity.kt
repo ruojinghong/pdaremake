@@ -87,7 +87,7 @@ class FindGoodByEpcActivity : BaseRfidFActivity<FindGoodByEpcViewModel, Activity
     override fun onFinish(data: String) {
 
         val split = data.split("@".toRegex()).toTypedArray()
-        val epc: String = "888888888888888888880048"
+        val epc: String = mViewModel.currentUnique.value
 
         if (epc == split[0]) {
             if (split.size == 1) {
@@ -152,15 +152,15 @@ class FindGoodByEpcActivity : BaseRfidFActivity<FindGoodByEpcViewModel, Activity
                 SoundUtils.playByVolume(1, 0.5f)
             }
             3 -> {
-                animation1.setImageResource(R.drawable.icon1)
+                animation1.setImageResource(R.drawable.icon4)
                 SoundUtils.playByVolume(1, 0.66f)
             }
             4 -> {
-                animation1.setImageResource(R.drawable.icon2)
+                animation1.setImageResource(R.drawable.icon5)
                 SoundUtils.playByVolume(1, 0.78f)
             }
             5 -> {
-                animation1.setImageResource(R.drawable.icon3)
+                animation1.setImageResource(R.drawable.icon6)
                 SoundUtils.playByVolume(1, 1f)
             }
         }

@@ -2,6 +2,9 @@ package com.bigoffs.pdaremake.ui.activity.pda
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -13,15 +16,17 @@ import com.bigoffs.pdaremake.app.event.RfidViewModel
 import com.bigoffs.pdaremake.app.ext.*
 import com.bigoffs.pdaremake.app.util.StatusBarUtil
 import com.bigoffs.pdaremake.data.model.bean.QueryType
+import com.bigoffs.pdaremake.databinding.ActivityPdaQueryBinding
 import com.bigoffs.pdaremake.databinding.ActivityRfidQueryBinding
 import com.bigoffs.pdaremake.ui.customview.DropDownMenu
 import com.bigoffs.pdaremake.viewmodel.request.RequestQueryViewModel
 import com.bigoffs.pdaremake.viewmodel.state.RfidQueryViewModel
+import com.blankj.utilcode.util.LogUtils
 import com.kingja.loadsir.core.LoadService
 import me.hgj.jetpackmvvm.ext.parseState
 import me.hgj.jetpackmvvm.util.ActivityMessenger
 
-class PdaQueryActivity : BaseScanActivity<RfidQueryViewModel, ActivityRfidQueryBinding>() {
+class PdaQueryActivity : BaseScanActivity<RfidQueryViewModel, ActivityPdaQueryBinding>() {
     //界面状态管理者
     private lateinit var loadsir: LoadService<Any>
     var select = arrayListOf<String>("店内码", "条形码", "货架")
@@ -40,6 +45,11 @@ class PdaQueryActivity : BaseScanActivity<RfidQueryViewModel, ActivityRfidQueryB
 
         }
 
+        findViewById<EditText>(R.id.common_et).addOnEditorActionListener{
+
+            onReceiverData(it)
+        }
+
         //状态页配置
         loadsir = loadServiceInit(findViewById(R.id.ll_content)) {
             //点击重试时触发的操作
@@ -53,7 +63,7 @@ class PdaQueryActivity : BaseScanActivity<RfidQueryViewModel, ActivityRfidQueryB
     }
 
 
-    override fun layoutId(): Int = R.layout.activity_rfid_query
+    override fun layoutId(): Int = R.layout.activity_pda_query
 
     override fun setStatusBar() {
         initTitle(statusBarDarkFont = false, biaoti = "查询", rightBitaoti = "配置价签") {
@@ -62,6 +72,7 @@ class PdaQueryActivity : BaseScanActivity<RfidQueryViewModel, ActivityRfidQueryB
     }
 
     override fun onReceiverData(data: String) {
+        LogUtils.i("it---------$data")
             when( mViewModel.currentCodeText.value){
                     "店内码" ->{
                         ActivityMessenger.startActivity<PdaQueryDetailActivity>(this,"unique" to data)

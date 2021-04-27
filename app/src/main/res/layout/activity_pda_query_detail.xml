@@ -154,7 +154,8 @@
                 android:textColor="@color/white"
                 android:gravity="center"
                 android:background="@color/colororange"
-                android:onClick="@{()->click.findGood()}"/>
+                android:onClick="@{()->click.findGood()}"
+                android:visibility="gone"/>
 
         </LinearLayout>
     </RelativeLayout>

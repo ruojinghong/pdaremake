@@ -4,11 +4,10 @@ import android.os.SystemClock
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.View
-import android.widget.CheckBox
-import android.widget.CompoundButton
-import android.widget.EditText
-import android.widget.ImageView
+import android.view.inputmethod.EditorInfo
+import android.widget.*
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -79,7 +78,7 @@ object CustomBindAdapter {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                action(s.toString())
+                action.invoke(s.toString())
             }
         })
     }
@@ -95,6 +94,19 @@ object CustomBindAdapter {
                 clickListener.invoke()
             }
         }
+    }
+    @BindingAdapter("setOnEditorActionListener")
+    @JvmStatic
+    fun EditText.onEditorActionListener(action: (String) -> Unit){
+            setOnEditorActionListener(object : TextView.OnEditorActionListener{
+                override fun onEditorAction(tv: TextView, actionId: Int, keyEvent: KeyEvent): Boolean {
+
+                    if(actionId == EditorInfo.IME_ACTION_SEARCH){
+                            action(tv.text.toString())
+                    }
+                     return true
+                }
+            })
     }
 
 

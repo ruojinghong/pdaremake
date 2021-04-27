@@ -2,12 +2,15 @@ package com.bigoffs.pdaremake.ui.activity.pda
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseActivity
 import com.bigoffs.pdaremake.app.ext.*
+import com.bigoffs.pdaremake.app.util.DeviceUtil
 import com.bigoffs.pdaremake.databinding.ActivityPdaQueryDetailBinding
 import com.bigoffs.pdaremake.ui.activity.rfid.FindGoodByEpcActivity
 import com.bigoffs.pdaremake.ui.customview.ExplainLinearLayout
@@ -74,6 +77,9 @@ class PdaQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPdaQue
                 )
                 .show()
 
+        }
+        if (DeviceUtil.isRfidDevice()){
+            findViewById<TextView>(R.id.tv_find_good).visibility = View.VISIBLE
         }
     }
 

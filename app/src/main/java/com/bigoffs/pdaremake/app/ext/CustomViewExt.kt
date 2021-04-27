@@ -2,8 +2,11 @@ package com.bigoffs.pdaremake.app.ext
 
 import android.app.Activity
 import android.content.Context
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -13,6 +16,7 @@ import com.bigoffs.pdaremake.app.weight.loadCallBack.EmptyCallback
 import com.bigoffs.pdaremake.app.weight.loadCallBack.ErrorCallback
 import com.bigoffs.pdaremake.app.weight.loadCallBack.LoadingCallback
 import com.bigoffs.pdaremake.data.model.bean.QueryType
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
@@ -108,6 +112,22 @@ fun LoadService<*>.showEmpty() {
  */
 fun LoadService<*>.showLoading() {
     this.showCallback(LoadingCallback::class.java)
+}
+
+/**
+ *
+ */
+fun EditText.addOnEditorActionListener(action:(String) -> Unit){
+        setOnEditorActionListener { p0, p1, p2 ->
+            if (p1 == EditorInfo.IME_ACTION_SEARCH) {
+                action(p0.text.toString().trim())
+            }else if(p1 == EditorInfo.IME_ACTION_NONE){
+                action(p0.text.toString().trim())
+            }
+            true
+        }
+
+
 }
 
 

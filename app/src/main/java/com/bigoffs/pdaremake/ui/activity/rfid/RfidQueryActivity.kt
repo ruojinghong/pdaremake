@@ -1,8 +1,12 @@
 package com.bigoffs.pdaremake.ui.activity.rfid
 
+import android.graphics.Color
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseRfidFActivity
@@ -26,15 +30,25 @@ class RfidQueryActivity : BaseRfidFActivity<RfidQueryViewModel, ActivityRfidQuer
     var currentType = "";
     var currentList = arrayListOf<QueryType>();
     var intercept = false
+    private lateinit var btn_read_or_stop:TextView
     private val requestQueryViewModel: RequestQueryViewModel by viewModels()
     override fun initView(savedInstanceState: Bundle?) {
         mDatabind.viewmodel = mViewModel
+        mDatabind.click = Click()
+        btn_read_or_stop = findViewById(R.id.btn_read_or_stop)
         findViewById<LinearLayout>(R.id.ll_select).setOnClickListener {
 
             showSpinner(it, this, select) { position, text ->
                 setCurrentType(position)
             }
 
+        }
+        val sum = {x:Int,y:Int -> x+y}
+        val finish = {onFinish("11")}
+
+
+        findViewById<EditText>(R.id.common_et).addOnEditorActionListener{
+            onFinish(it)
         }
 
         //状态页配置
@@ -51,6 +65,7 @@ class RfidQueryActivity : BaseRfidFActivity<RfidQueryViewModel, ActivityRfidQuer
 
     override fun onFinish(data: String) {
         if (intercept) return
+        com.blankj.utilcode.util.LogUtils.i("it---------$data")
         intercept = true
         rfidViewModel.stopReadRfid()
         when (mViewModel.currentCodeText.value) {
@@ -69,7 +84,18 @@ class RfidQueryActivity : BaseRfidFActivity<RfidQueryViewModel, ActivityRfidQuer
     }
 
     override fun readOrClose() {
-        rfidViewModel.startReadRfid()
+        if (btn_read_or_stop.text.toString() == "停止扫描") {
+            rfidViewModel.stopReadRfid()
+            btn_read_or_stop.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            //            mActivity.tbCommon.setVisibility(View.VISIBLE);
+            btn_read_or_stop.text = "开始扫描"
+        } else {
+            rfidViewModel.setReadDataModel(1)
+            rfidViewModel.startReadRfid()
+            btn_read_or_stop.setBackgroundColor(Color.RED)
+            //                mActivity.tbCommon.setVisibility(View.INVISIBLE);
+            btn_read_or_stop.text = "停止扫描"
+        }
     }
 
     override fun layoutId(): Int = R.layout.activity_rfid_query
@@ -84,7 +110,7 @@ class RfidQueryActivity : BaseRfidFActivity<RfidQueryViewModel, ActivityRfidQuer
     inner class Click {
 
         fun switchCodeType() {
-
+                readOrClose()
         }
 
 
@@ -126,6 +152,9 @@ class RfidQueryActivity : BaseRfidFActivity<RfidQueryViewModel, ActivityRfidQuer
 
     override fun onPause() {
         super.onPause()
+        if (btn_read_or_stop.text.toString() == "停止扫描"){
+            readOrClose()
+        }
     }
 
     override fun initScan() {
