@@ -2,23 +2,15 @@ package com.bigoffs.pdaremake.ui.activity.pda
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.KeyEvent
-import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.bigoffs.pdaremake.R
-import com.bigoffs.pdaremake.app.base.BaseRfidFActivity
 import com.bigoffs.pdaremake.app.base.BaseScanActivity
-import com.bigoffs.pdaremake.app.event.RfidViewModel
 import com.bigoffs.pdaremake.app.ext.*
-import com.bigoffs.pdaremake.app.util.StatusBarUtil
 import com.bigoffs.pdaremake.data.model.bean.QueryType
 import com.bigoffs.pdaremake.databinding.ActivityPdaQueryBinding
-import com.bigoffs.pdaremake.databinding.ActivityRfidQueryBinding
-import com.bigoffs.pdaremake.ui.customview.DropDownMenu
 import com.bigoffs.pdaremake.viewmodel.request.RequestQueryViewModel
 import com.bigoffs.pdaremake.viewmodel.state.RfidQueryViewModel
 import com.blankj.utilcode.util.LogUtils
@@ -67,7 +59,7 @@ class PdaQueryActivity : BaseScanActivity<RfidQueryViewModel, ActivityPdaQueryBi
 
     override fun setStatusBar() {
         initTitle(statusBarDarkFont = false, biaoti = "查询", rightBitaoti = "配置价签") {
-            startActivity(Intent(this,PdaQueryDetailActivity::class.java))
+            startActivity(Intent(this,UniqueQueryDetailActivity::class.java))
         }
     }
 
@@ -75,8 +67,14 @@ class PdaQueryActivity : BaseScanActivity<RfidQueryViewModel, ActivityPdaQueryBi
         LogUtils.i("it---------$data")
             when( mViewModel.currentCodeText.value){
                     "店内码" ->{
-                        ActivityMessenger.startActivity<PdaQueryDetailActivity>(this,"unique" to data)
+                        ActivityMessenger.startActivity<UniqueQueryDetailActivity>(this,"unique" to data)
                     }
+                "条形码" ->{
+                    ActivityMessenger.startActivity<BarCodeQueryDetailActivity>(this,"barcode" to data)
+                }
+                "货号" ->{
+                    ActivityMessenger.startActivity<PdaBarcodeQueryFindSamelActivity>(this,"spu_no" to data)
+                }
 
 
             }

@@ -38,9 +38,11 @@
         </activity>
         <activity android:name=".ui.activity.rfid.RfidQueryActivity" />
         <activity android:name=".ui.activity.pda.PdaQueryActivity" />
-        <activity android:name=".ui.activity.pda.PdaQueryDetailActivity" />
-        <activity android:name=".ui.activity.pda.PdaUniqueQueryFindSamelActivity" />
-        <activity android:name=".ui.activity.rfid.FindGoodByEpcActivity" />
+        <activity android:name=".ui.activity.pda.UniqueQueryDetailActivity" />
+        <activity android:name=".ui.activity.pda.PdaBarcodeQueryFindSamelActivity" />
+        <activity android:name=".ui.activity.rfid.FindEpcByBarcodeActivity" />
+        <activity android:name=".ui.activity.pda.BarCodeQueryDetailActivity" />
+        <activity android:name=".ui.activity.rfid.FindEpcByUniqueActivity" />
     </application>
 
 </manifest>

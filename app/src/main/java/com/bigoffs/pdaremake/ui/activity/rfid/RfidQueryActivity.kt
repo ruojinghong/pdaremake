@@ -14,13 +14,14 @@ import com.bigoffs.pdaremake.app.event.RfidViewModel
 import com.bigoffs.pdaremake.app.ext.*
 import com.bigoffs.pdaremake.data.model.bean.QueryType
 import com.bigoffs.pdaremake.databinding.ActivityRfidQueryBinding
-import com.bigoffs.pdaremake.ui.activity.pda.PdaQueryDetailActivity
+import com.bigoffs.pdaremake.ui.activity.pda.BarCodeQueryDetailActivity
+import com.bigoffs.pdaremake.ui.activity.pda.PdaBarcodeQueryFindSamelActivity
+import com.bigoffs.pdaremake.ui.activity.pda.UniqueQueryDetailActivity
 import com.bigoffs.pdaremake.viewmodel.request.RequestQueryViewModel
 import com.bigoffs.pdaremake.viewmodel.state.RfidQueryViewModel
 import com.kingja.loadsir.core.LoadService
 import me.hgj.jetpackmvvm.ext.parseState
 import me.hgj.jetpackmvvm.util.ActivityMessenger
-import me.hgj.jetpackmvvm.util.LogUtils
 
 class RfidQueryActivity : BaseRfidFActivity<RfidQueryViewModel, ActivityRfidQueryBinding>() {
 
@@ -70,7 +71,13 @@ class RfidQueryActivity : BaseRfidFActivity<RfidQueryViewModel, ActivityRfidQuer
         rfidViewModel.stopReadRfid()
         when (mViewModel.currentCodeText.value) {
             "店内码" -> {
-                ActivityMessenger.startActivity<PdaQueryDetailActivity>(this, "unique" to data)
+                ActivityMessenger.startActivity<UniqueQueryDetailActivity>(this, "unique" to data)
+            }
+            "条形码" ->{
+                ActivityMessenger.startActivity<BarCodeQueryDetailActivity>(this,"barcode" to data)
+            }
+            "货号" ->{
+                ActivityMessenger.startActivity<PdaBarcodeQueryFindSamelActivity>(this,"spu_no" to data)
             }
         }
 

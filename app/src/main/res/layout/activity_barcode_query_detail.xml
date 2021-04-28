@@ -9,7 +9,7 @@
             type="com.bigoffs.pdaremake.viewmodel.state.QueryResultViewModel" />
         <variable
             name="click"
-            type="com.bigoffs.pdaremake.ui.activity.pda.UniqueQueryDetailActivity.ClickProxy" />
+            type="com.bigoffs.pdaremake.ui.activity.pda.BarCodeQueryDetailActivity.ClickProxy" />
     </data>
 
     <RelativeLayout
@@ -42,7 +42,7 @@
                     android:layout_height="36dp"
                     android:gravity="center_vertical"
                     android:background="#F5F5F5"
-                    android:text="@{String.valueOf(vm.queryDetail.unique_code)}"
+                    android:text="@{String.valueOf(vm.queryDetail.barcode)}"
                     android:textSize="16dp"
                     android:textColor="@color/black"
                     android:paddingLeft="10dp"/>
@@ -63,17 +63,19 @@
                         android:id="@+id/tv_barcode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{vm.queryDetail.barcode}"
+                        android:text="@{vm.spec}"
                         android:layout_toRightOf="@+id/iv"
                         android:layout_alignTop="@+id/iv"
                         android:textSize="12dp"
                         android:textColor="#999999"/>
 
+
+
                     <TextView
-                        android:id="@+id/tv_shelfcode"
+                        android:id="@+id/num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{vm.queryDetail.shelf_code}"
+                        android:text="@{vm.stockNum}"
                         android:layout_toRightOf="@+id/iv"
                         android:layout_below="@+id/tv_barcode"
                         android:textSize="12dp"
@@ -81,33 +83,15 @@
                         android:layout_marginTop="3dp"/>
 
                     <TextView
-                        android:id="@+id/guige"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{vm.spec}"
-                        android:layout_toRightOf="@+id/iv"
-                        android:layout_below="@+id/tv_shelfcode"
-                        android:textSize="12dp"
-                        android:textColor="#999999"
-                        android:layout_marginTop="3dp"
-                        />
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_toRightOf="@+id/iv"
-                        android:layout_below="@+id/guige"
-                        android:layout_marginTop="6dp">
-
-                    <TextView
                         android:id="@+id/tv_sale_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{vm.salePrice}"
+                        android:text="@{String.valueOf(vm.queryDetail.sale_price)}"
+                        android:layout_toRightOf="@+id/iv"
+                        android:layout_below="@+id/num"
                         android:textSize="12dp"
                         android:textColor="@color/black"
-                       />
-                    </LinearLayout>
+                        android:layout_marginTop="6dp"/>
                 </RelativeLayout>
                 </androidx.cardview.widget.CardView>
                 <com.bigoffs.pdaremake.ui.customview.ExplainLinearLayout
@@ -116,6 +100,34 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"/>
+                <LinearLayout
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="货架号"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimary"
+                        android:gravity="center_vertical"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="商品数量"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimary"
+                        android:gravity="center_vertical"/>
+                </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:paddingLeft="10dp"
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 

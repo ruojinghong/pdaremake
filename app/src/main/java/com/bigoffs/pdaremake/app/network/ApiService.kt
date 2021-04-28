@@ -37,6 +37,11 @@ interface ApiService {
         @Body  body : RequestBody
     ):ApiResponse<List<QueryType>>
 
+    @POST("v1/search/barcode")
+    suspend fun getBarcodeQueryDetail(
+        @Body  body : RequestBody
+    ):ApiResponse<QueryResultBean>
+
     @POST("v1/search/unique")
     suspend fun getQueryDetail(
         @Body  body : RequestBody
@@ -52,4 +57,9 @@ interface ApiService {
     suspend fun findGoodByEpc(
         @Body  body : RequestBody
     ):ApiResponse<BarcodeFind>
+
+    @POST("v1/search/unique_find")
+    suspend fun findEpcByUnicode(
+        @Body  body : RequestBody
+    ):ApiResponse<FindEpcByUnicodeBean>
 }

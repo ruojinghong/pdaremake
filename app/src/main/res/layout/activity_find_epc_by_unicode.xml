@@ -4,11 +4,11 @@
     <data>
             <variable
                 name="vm"
-                type="com.bigoffs.pdaremake.viewmodel.state.FindGoodByEpcViewModel" />
+                type="com.bigoffs.pdaremake.viewmodel.state.FindEpcByUnicodeViewModel" />
 
             <variable
                 name="click"
-                type="com.bigoffs.pdaremake.ui.activity.rfid.FindEpcByBarcodeActivity.ClickProxy" />
+                type="com.bigoffs.pdaremake.ui.activity.rfid.FindEpcByUniqueActivity.ClickProxy" />
 
 
     </data>
@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
                     android:textSize="17dp"
-                    android:text="@{vm.foodList.shelf_code}" />
+                    android:text="@{vm.data.shelf_code}" />
 
             </LinearLayout>
 
@@ -88,7 +88,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="EPC"
+                    android:text="店内码"
                     android:textColor="@color/black" />
 
                 <TextView
@@ -97,17 +97,18 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
                     android:textSize="17dp"
-                    android:text="@{vm.currentUnique}" />
+                    android:text="@{vm.data.epc_code}" />
 
-                <TextView
-                    android:id="@+id/tv_change"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="切换"
-                    android:visibility="visible"
-                    android:textColor="@color/colorPrimary"
-                    android:layout_marginLeft="10dp"
-                    android:onClick="@{() -> click.change()}"/>
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_change"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="切换"-->
+<!--                    android:visibility="gone"-->
+<!--                    android:textColor="@color/colorPrimary"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:onClick="@{() -> click.change()}"-->
+<!--                    />-->
 
             </LinearLayout>
         </LinearLayout>

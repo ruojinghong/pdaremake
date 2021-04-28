@@ -26,7 +26,7 @@ import com.blankj.utilcode.util.ToastUtils
 import com.kingja.loadsir.core.LoadService
 import me.hgj.jetpackmvvm.ext.parseState
 
-class FindGoodByEpcActivity : BaseRfidFActivity<FindGoodByEpcViewModel, ActivityFindGoosByEpcBinding>() {
+class FindEpcByBarcodeActivity : BaseRfidFActivity<FindGoodByEpcViewModel, ActivityFindGoosByEpcBinding>() {
 
     //界面状态管理者
     private lateinit var loadsir: LoadService<Any>

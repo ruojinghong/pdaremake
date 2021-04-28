@@ -7,12 +7,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseActivity
 import com.bigoffs.pdaremake.app.ext.*
 import com.bigoffs.pdaremake.app.util.DeviceUtil
-import com.bigoffs.pdaremake.databinding.ActivityPdaQueryDetailBinding
-import com.bigoffs.pdaremake.ui.activity.rfid.FindGoodByEpcActivity
+import com.bigoffs.pdaremake.data.model.bean.StockMap
+import com.bigoffs.pdaremake.databinding.ActivityBarcodeQueryDetailBinding
+import com.bigoffs.pdaremake.ui.activity.rfid.FindEpcByBarcodeActivity
+import com.bigoffs.pdaremake.ui.adapter.BarcodeDetailAdapter
 import com.bigoffs.pdaremake.ui.customview.ExplainLinearLayout
 import com.bigoffs.pdaremake.ui.customview.ImageLoader
 import com.bigoffs.pdaremake.viewmodel.request.RequestQueryDetailViewModel
@@ -22,8 +26,9 @@ import com.kingja.loadsir.core.LoadService
 import com.lxj.xpopup.XPopup
 import me.hgj.jetpackmvvm.ext.parseState
 import me.hgj.jetpackmvvm.util.ActivityMessenger
+import java.lang.StringBuilder
 
-class PdaQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPdaQueryDetailBinding>() {
+class BarCodeQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityBarcodeQueryDetailBinding>() {
 
 
     //界面状态管理者
@@ -31,8 +36,9 @@ class PdaQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPdaQue
     private val requestQueryDetailViewModel: RequestQueryDetailViewModel by viewModels()
     var uniqueCode = ""
 
-    override fun layoutId(): Int = R.layout.activity_pda_query_detail
+    override fun layoutId(): Int = R.layout.activity_barcode_query_detail
     lateinit var image: ImageView
+    lateinit var recyclerView: RecyclerView
     lateinit var ex: ExplainLinearLayout
     override fun setStatusBar() {
         initTitle(statusBarDarkFont = false, biaoti = "查询", rightBitaoti = "配置价签") {
@@ -49,15 +55,16 @@ class PdaQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPdaQue
         loadsir = loadServiceInit(findViewById(R.id.ll_content)) {
             //点击重试时触发的操作
             loadsir.showLoading()
-            requestQueryDetailViewModel.queryDetail("", "")
+            requestQueryDetailViewModel.queryBarcodeDetail(uniqueCode)
         }
 
         //设置界面 加载中
         loadsir.showLoading()
-        requestQueryDetailViewModel.queryDetail("", uniqueCode)
+        requestQueryDetailViewModel.queryBarcodeDetail( uniqueCode)
 
         image = findViewById(R.id.iv)
         ex = findViewById(R.id.ex)
+        recyclerView = findViewById(R.id.recyclerView)
 
 
         image.setOnClickListener() {
@@ -84,7 +91,7 @@ class PdaQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPdaQue
     }
 
     override fun createObserver() {
-        requestQueryDetailViewModel.queryDetail.observe(this, Observer {
+        requestQueryDetailViewModel.barcodeDetail.observe(this, Observer {
 
             parseState(it, { list ->
 
@@ -92,6 +99,14 @@ class PdaQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPdaQue
                 mViewModel.barcode.value = list.barcode
                 mViewModel.uniqueCode.value = list.unique_code
                 mViewModel.queryDetail.value = list
+                mViewModel.stockNum.value = "库存：${list.stock_num}"
+                val spec  = StringBuilder()
+                spec.append("规格：")
+                for (item in list.spec_list){
+                    spec.append(item.spec_value+"/")
+                }
+                mViewModel.spec.value = spec.toString()
+                recyclerView.init(LinearLayoutManager(mContext),BarcodeDetailAdapter(list.stock_map as ArrayList<StockMap>))
                 ex.setContent(list)
                 ex.foldOrUnfold()
 
@@ -108,10 +123,10 @@ class PdaQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPdaQue
     }
 
     fun goFindSame(){
-        ActivityMessenger.startActivity<PdaUniqueQueryFindSamelActivity>(this,"unique" to mViewModel.barcode.value)
+        ActivityMessenger.startActivity<PdaBarcodeQueryFindSamelActivity>(this,"barcode" to mViewModel.barcode.value)
     }
     fun goFindGood(){
-        ActivityMessenger.startActivity<FindGoodByEpcActivity>(this,
+        ActivityMessenger.startActivity<FindEpcByBarcodeActivity>(this,
            "unique" to mViewModel.barcode.value ,"shelf_code" to mViewModel.shelfcode.value)
     }
 

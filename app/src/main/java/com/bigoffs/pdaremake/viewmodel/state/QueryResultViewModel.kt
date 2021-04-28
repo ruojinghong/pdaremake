@@ -12,11 +12,13 @@ class QueryResultViewModel : BaseViewModel() {
     var barcode = StringLiveData()
     var shelfcode = StringLiveData()
     var salePrice = StringLiveData()
+    var stockNum = StringLiveData()
     var spuName = StringLiveData()
     var spuNo = StringLiveData()
     var spuId = StringLiveData()
     var skuId = StringLiveData()
     var brandName = StringLiveData()
+    var spec = StringLiveData()
     var queryDetail: MutableLiveData<QueryResultBean> = MutableLiveData()
 
 }

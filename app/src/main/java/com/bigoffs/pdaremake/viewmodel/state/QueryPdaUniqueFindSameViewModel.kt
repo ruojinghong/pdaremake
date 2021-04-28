@@ -8,6 +8,9 @@ import me.hgj.jetpackmvvm.callback.livedata.StringLiveData
 
 class QueryPdaUniqueFindSameViewModel : BaseViewModel() {
     var uniqueCode  = StringLiveData()
+    var salePrice  = StringLiveData()
     var queryDetail: MutableLiveData<FindSame> = MutableLiveData()
+    var spec = StringLiveData()
+    var stockNum = StringLiveData()
 
 }
