@@ -1,5 +1,6 @@
 package com.bigoffs.pdaremake.ui.activity
 
+import android.app.ActivityManager
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -15,10 +16,12 @@ import com.bigoffs.pdaremake.app.service.ScanServiceControl
 import com.bigoffs.pdaremake.databinding.ActivityNewMainBinding
 import com.bigoffs.pdaremake.ui.activity.rfid.RfidQueryActivity
 import com.bigoffs.pdaremake.ui.activity.pda.PdaQueryActivity
+import com.bigoffs.pdaremake.ui.activity.rfid.InStoreActivity
 import com.bigoffs.pdaremake.ui.adapter.MainAdapter
 import com.bigoffs.pdaremake.ui.customview.SpaceItemDecoration
 import com.bigoffs.pdaremake.viewmodel.state.MainViewModel
 import com.blankj.utilcode.util.*
+import me.hgj.jetpackmvvm.util.ActivityMessenger
 
 class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
     override fun layoutId(): Int = R.layout.activity_new_main
@@ -55,6 +58,10 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
             }
 
 
+        }
+
+        mDatabind.tvTaskNum.setOnClickListener(){
+            ActivityMessenger.startActivity<TaskActivity>(this)
         }
 
     }
@@ -116,7 +123,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
         val scanService = ScanServiceControl.getScanService()
         scanService.init(this)
 
-            scanService.openReader()
+        scanService.openReader()
 
         startRfidActivity()
 
@@ -138,6 +145,10 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
     fun startRfidActivity() {
         adapter.setOnItemClickListener { adapter, view, position ->
             when (position) {
+
+                0 -> {
+                    ActivityMessenger.startActivity<InStoreActivity>(this)
+                }
                 4 -> {
                     startActivity(Intent(this, RfidQueryActivity::class.java))
                 }
@@ -148,6 +159,10 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
     fun startPdaActivity() {
         adapter.setOnItemClickListener { adapter, view, position ->
             when (position) {
+
+                0 -> {
+                    ActivityMessenger.startActivity<InStoreActivity>(this)
+                }
                 4 -> {
 
                     startActivity(Intent(this, PdaQueryActivity::class.java))

@@ -43,6 +43,8 @@
         <activity android:name=".ui.activity.rfid.FindEpcByBarcodeActivity" />
         <activity android:name=".ui.activity.pda.BarCodeQueryDetailActivity" />
         <activity android:name=".ui.activity.rfid.FindEpcByUniqueActivity" />
+        <activity android:name=".ui.activity.rfid.InStoreActivity" />
+        <activity android:name=".ui.activity.TaskActivity" />
     </application>
 
 </manifest>

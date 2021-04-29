@@ -4,15 +4,19 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -23,6 +27,7 @@ import com.bigoffs.pdaremake.app.util.SettingUtil
 import com.bigoffs.pdaremake.app.weight.loadCallBack.EmptyCallback
 import com.bigoffs.pdaremake.app.weight.loadCallBack.ErrorCallback
 import com.bigoffs.pdaremake.app.weight.loadCallBack.LoadingCallback
+import com.bigoffs.pdaremake.app.weight.recyclerview.DefineLoadMoreView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.kingja.loadsir.core.LoadService
@@ -32,7 +37,6 @@ import com.lxj.xpopup.enums.PopupAnimation
 import com.lxj.xpopup.interfaces.OnSelectListener
 import com.yanzhenjie.recyclerview.SwipeRecyclerView
 import me.hgj.jetpackmvvm.base.appContext
-import com.bigoffs.pdaremake.app.weight.recyclerview.DefineLoadMoreView
 import me.hgj.jetpackmvvm.demo.app.weight.viewpager.ScaleTransitionPagerTitleView
 import me.hgj.jetpackmvvm.ext.util.toHtml
 import net.lucode.hackware.magicindicator.MagicIndicator
@@ -42,6 +46,8 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNav
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.BadgeAnchor
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.BadgeRule
 
 /**
  * 隐藏软键盘
@@ -59,32 +65,59 @@ fun hideSoftKeyboard(activity: Activity?) {
         }
     }
 }
-fun AppCompatActivity.showBottomSheedList( context: Context,data : Array<String>,listener: OnSelectListener){
+fun AppCompatActivity.showBottomSheedList(
+    context: Context,
+    data: Array<String>,
+    listener: OnSelectListener
+){
     XPopup.Builder(context)
         .isDestroyOnDismiss(false) //对于只使用一次的弹窗，推荐设置这个
         .asBottomList(
-            "选择仓库", data,
-            null, 2,false,listener
-        , R.layout._xpopup_bottom_impl_list,R.layout._xpopup_adapter_text_match)
+            "选择仓库",
+            data,
+            null,
+            2,
+            false,
+            listener,
+            R.layout._xpopup_bottom_impl_list,
+            R.layout._xpopup_adapter_text_match
+        )
         .show()
 }
 
-fun Fragment.showBottomSheedList( context: Context,data : Array<String>,listener: OnSelectListener){
+fun Fragment.showBottomSheedList(context: Context, data: Array<String>, listener: OnSelectListener){
     XPopup.Builder(context)
         .isDestroyOnDismiss(false) //对于只使用一次的弹窗，推荐设置这个
         .asBottomList(
-            "选择仓库", data,
-            null, 2,false,listener
-            , R.layout._xpopup_bottom_impl_list,R.layout._xpopup_adapter_text_match)
+            "选择仓库",
+            data,
+            null,
+            2,
+            false,
+            listener,
+            R.layout._xpopup_bottom_impl_list,
+            R.layout._xpopup_adapter_text_match
+        )
         .show()
 }
 
-fun AppCompatActivity.showSpinner(v: View, context: Context, data : List<String>, listener: OnSelectListener){
+fun AppCompatActivity.showSpinner(
+    v: View,
+    context: Context,
+    data: List<String>,
+    listener: OnSelectListener
+){
     XPopup.Builder(context).popupAnimation(PopupAnimation.ScrollAlphaFromTop)
         .isDestroyOnDismiss(false) //对于只使用一次的弹窗，推荐设置这个
         .hasShadowBg(false)
         .atView(v)
-        .asAttachList(data.toTypedArray(),null,listener,R.layout._xpopup_down_impl_list,R.layout._xpopup_adapter_text_match).show()
+        .asAttachList(
+            data.toTypedArray(),
+            null,
+            listener,
+            R.layout._xpopup_down_impl_list,
+            R.layout._xpopup_adapter_text_match
+        ).show()
 
 
 }
@@ -135,7 +168,7 @@ fun LoadService<*>.showLoading() {
 /**
  *
  */
-fun EditText.addOnEditorActionListener(action:(String) -> Unit){
+fun EditText.addOnEditorActionListener(action: (String) -> Unit){
         setOnEditorActionListener { p0, p1, p2 ->
             if (p1 == EditorInfo.IME_ACTION_SEARCH) {
                 action(p0.text.toString().trim())
@@ -241,8 +274,11 @@ fun BaseQuickAdapter<*, *>.setAdapterAnimation(mode: Int) {
 fun MagicIndicator.bindViewPager2(
     viewPager: ViewPager2,
     mStringList: List<String> = arrayListOf(),
-    action: (index: Int) -> Unit = {}) {
+    action: (index: Int) -> Unit = {}
+) {
     val commonNavigator = CommonNavigator(appContext)
+    //我吐了，下边属性用来控制weight
+    commonNavigator.isAdjustMode = true
     commonNavigator.adapter = object : CommonNavigatorAdapter() {
 
         override fun getCount(): Int {
@@ -253,17 +289,72 @@ fun MagicIndicator.bindViewPager2(
                 //设置文本
                 text = mStringList[index].toHtml()
                 //字体大小
-                textSize = 17f
+                textSize = 16f
                 //未选中颜色
-                normalColor = Color.WHITE
+                normalColor = Color.parseColor("#999999")
                 //选中颜色
-                selectedColor = Color.WHITE
+                selectedColor = ContextCompat.getColor(context, R.color.colorPrimary)
                 //点击事件
                 setOnClickListener {
                     viewPager.currentItem = index
                     action.invoke(index)
                 }
             }
+
+
+            // setup badge
+
+//            // setup badge
+//            if (index != 2) {
+//                val badgeTextView = LayoutInflater.from(context)
+//                    .inflate(R.layout.simple_count_badge_layout, null) as TextView
+//                badgeTextView.text = "" + (index + 1)
+//                badgePagerTitleView.setBadgeView(badgeTextView)
+//            } else {
+//                val badgeImageView = LayoutInflater.from(context)
+//                    .inflate(R.layout.simple_red_dot_badge_layout, null) as ImageView
+//                badgePagerTitleView.setBadgeView(badgeImageView)
+//            }
+//
+//            // set badge position
+//
+//            // set badge position
+//            if (index == 0) {
+//                badgePagerTitleView.setXBadgeRule(
+//                    BadgeRule(
+//                        BadgeAnchor.CONTENT_LEFT,
+//                        -UIUtil.dip2px(context, 6.0)
+//                    )
+//                )
+//                badgePagerTitleView.setYBadgeRule(BadgeRule(BadgeAnchor.CONTENT_TOP, 0))
+//            } else if (index == 1) {
+//                badgePagerTitleView.setXBadgeRule(
+//                    BadgeRule(
+//                        BadgeAnchor.CONTENT_RIGHT,
+//                        -UIUtil.dip2px(context, 6.0)
+//                    )
+//                )
+//                badgePagerTitleView.setYBadgeRule(BadgeRule(BadgeAnchor.CONTENT_TOP, 0))
+//            } else if (index == 2) {
+//                badgePagerTitleView.setXBadgeRule(
+//                    BadgeRule(
+//                        BadgeAnchor.CENTER_X,
+//                        -UIUtil.dip2px(context, 3.0)
+//                    )
+//                )
+//                badgePagerTitleView.setYBadgeRule(
+//                    BadgeRule(
+//                        BadgeAnchor.CONTENT_BOTTOM,
+//                        UIUtil.dip2px(context, 2.0)
+//                    )
+//                )
+//            }
+//
+//            // don't cancel badge when tab selected
+//
+//            // don't cancel badge when tab selected
+//            badgePagerTitleView.setAutoCancelBadge(false)
+
         }
         override fun getIndicator(context: Context): IPagerIndicator {
             return LinePagerIndicator(context).apply {
@@ -276,9 +367,13 @@ fun MagicIndicator.bindViewPager2(
                 startInterpolator = AccelerateInterpolator()
                 endInterpolator = DecelerateInterpolator(2.0f)
                 //线条的颜色
-                setColors(Color.WHITE)
+                setColors(ContextCompat.getColor(context, R.color.colorPrimary))
             }
         }
+
+
+
+
     }
     this.navigator = commonNavigator
 
@@ -316,6 +411,22 @@ fun ViewPager2.init(
     adapter = object : FragmentStateAdapter(fragment) {
         override fun createFragment(position: Int) = fragments[position]
         override fun getItemCount() = fragments.size
+    }
+    return this
+}
+
+fun ViewPager2.init(
+    activity: FragmentActivity,
+    fragments: ArrayList<Fragment>,
+    isUserInputEnabled: Boolean = true
+): ViewPager2 {
+    //是否可滑动
+    this.isUserInputEnabled = isUserInputEnabled
+    //设置适配器
+    adapter = object : FragmentStateAdapter(activity) {
+        override fun createFragment(position: Int) = fragments[position]
+        override fun getItemCount() = fragments.size
+
     }
     return this
 }
