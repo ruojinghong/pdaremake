@@ -45,6 +45,8 @@ class InStoreActivity : BaseActivity<BaseViewModel, ActivityPadInstoreBinding>()
         magic_indicator.bindViewPager2(view_pager, arrayListOf("新品入库","调拨入库"))
         view_pager.offscreenPageLimit = fragments.size
 
+        view_pager.currentItem
+
 
     }
 
