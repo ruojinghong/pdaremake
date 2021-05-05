@@ -11,6 +11,8 @@ import com.bigoffs.pdaremake.app.ext.init
 import com.bigoffs.pdaremake.app.ext.initTitle
 import com.bigoffs.pdaremake.databinding.ActivityPadInstoreBinding
 import com.bigoffs.pdaremake.ui.fragment.LoginFragment
+import com.bigoffs.pdaremake.ui.fragment.PdaNewInstoreFragment
+import com.bigoffs.pdaremake.ui.fragment.PdaTransferInstoreFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import me.hgj.jetpackmvvm.base.activity.BaseVmDbActivity
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
@@ -39,13 +41,12 @@ class InStoreActivity : BaseActivity<BaseViewModel, ActivityPadInstoreBinding>()
         view_pager = findViewById(R.id.view_pager)
         magic_indicator = findViewById(R.id.magic_indicator)
 
-        fragments.add(LoginFragment())
-        fragments.add(LoginFragment())
+        fragments.add(PdaNewInstoreFragment())
+        fragments.add(PdaTransferInstoreFragment())
         view_pager.init(this,fragments)
         magic_indicator.bindViewPager2(view_pager, arrayListOf("新品入库","调拨入库"))
         view_pager.offscreenPageLimit = fragments.size
 
-        view_pager.currentItem
 
 
     }

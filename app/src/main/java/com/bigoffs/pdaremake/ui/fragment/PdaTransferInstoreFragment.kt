@@ -7,6 +7,7 @@ import com.bigoffs.pdaremake.app.base.BaseFragment
 import com.bigoffs.pdaremake.app.base.BaseInStoreFragment
 import com.bigoffs.pdaremake.app.ext.showSpinner
 import com.bigoffs.pdaremake.databinding.FragmentPdaNewinstoreBinding
+import com.bigoffs.pdaremake.databinding.FragmentPdaTransferinstoreBinding
 import com.bigoffs.pdaremake.viewmodel.state.PdaNewInstoreViewModel
 import com.bigoffs.pdaremake.viewmodel.state.RfidQueryViewModel
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
@@ -14,24 +15,24 @@ import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 /**
  *User:Kirito
  *Time:2021/5/5  23:40
- *Desc:新品入库
+ *Desc:调拨入库
  */
-class PdaNewInstoreFragment : BaseInStoreFragment<PdaNewInstoreViewModel,FragmentPdaNewinstoreBinding>(){
+class PdaTransferInstoreFragment : BaseInStoreFragment<RfidQueryViewModel,FragmentPdaTransferinstoreBinding>(){
 
 
-    var select = arrayListOf<String>("条形码", "供应商", "入库批次")
+    var select = arrayListOf<String>("店内码", "箱号", "调拨单")
 
 
     override fun goInStoreDetail() {
 
     }
 
-    override fun layoutId(): Int  = R.layout.fragment_pda_newinstore
+    override fun layoutId(): Int  = R.layout.fragment_pda_transferinstore
 
     override fun initView(savedInstanceState: Bundle?) {
 
         mDatabind.viewmodel = mViewModel
-        activity?.findViewById<LinearLayout>(R.id.ll_select_new)?.setOnClickListener {
+        activity?.findViewById<LinearLayout>(R.id.ll_select)?.setOnClickListener {
 
             context?.let { it1 ->
                 showSpinner(it, it1, select) { position, text ->

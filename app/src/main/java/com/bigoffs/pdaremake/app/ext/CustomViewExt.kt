@@ -122,6 +122,27 @@ fun AppCompatActivity.showSpinner(
 
 }
 
+fun Fragment.showSpinner(
+    v: View,
+    context: Context,
+    data: List<String>,
+    listener: OnSelectListener
+){
+    XPopup.Builder(context).popupAnimation(PopupAnimation.ScrollAlphaFromTop)
+        .isDestroyOnDismiss(false) //对于只使用一次的弹窗，推荐设置这个
+        .hasShadowBg(false)
+        .atView(v)
+        .asAttachList(
+            data.toTypedArray(),
+            null,
+            listener,
+            R.layout._xpopup_down_impl_list,
+            R.layout._xpopup_adapter_text_match
+        ).show()
+
+
+}
+
 
 fun loadServiceInit(view: View, callback: () -> Unit): LoadService<Any> {
     val loadsir = LoadSir.getDefault().register(view) {

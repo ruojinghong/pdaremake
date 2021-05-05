@@ -62,4 +62,12 @@ class LoginFragment : BaseRfidFragment<LoginRegisterViewModel,FragmentLoginBindi
         }
 
     }
+
+    override fun initScan() {
+
+    }
+
+    override fun readOrClose() {
+
+    }
 }

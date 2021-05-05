@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.bigoffs.pdaremake.viewmodel.state.PdaNewInstoreViewModel" />
+            type="com.bigoffs.pdaremake.viewmodel.state.RfidQueryViewModel" />
     </data>
 
 
@@ -17,9 +17,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/ll_content_new"
+            android:id="@+id/ll_content"
             android:orientation="vertical">
-            <include layout="@layout/common_choose_edittext_newinstore"
+            <include layout="@layout/common_choose_edittext"
                 app:viewmode="@{viewmodel}"/>
         </LinearLayout>
 

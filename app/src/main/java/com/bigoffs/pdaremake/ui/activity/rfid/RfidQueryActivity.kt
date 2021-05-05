@@ -44,8 +44,6 @@ class RfidQueryActivity : BaseRfidFActivity<RfidQueryViewModel, ActivityRfidQuer
             }
 
         }
-        val sum = {x:Int,y:Int -> x+y}
-        val finish = {onFinish("11")}
 
 
         findViewById<EditText>(R.id.common_et).addOnEditorActionListener{

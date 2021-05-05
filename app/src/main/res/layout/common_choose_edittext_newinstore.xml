@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="viewmode"
+            type="com.bigoffs.pdaremake.viewmodel.state.PdaNewInstoreViewModel" />
+
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:orientation="horizontal"
+            android:background="#F7F8FA"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_select_new"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_name_new"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewmode.currentCodeText}"
+                    android:textSize="11dp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/black" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_expansion"
+                    android:layout_marginLeft="7.5dp" />
+            </LinearLayout>
+
+            <EditText
+                android:inputType="text"
+                android:id="@+id/common_et_new"
+                android:imeOptions="actionSearch"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="22dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="请扫描或输入"
+                android:textColorHint="#C8C8C8"
+                android:textColor="@color/black"
+                android:background="@null"
+                android:textSize="11dp"
+                android:lines="1" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>
