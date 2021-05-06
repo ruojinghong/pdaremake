@@ -2,12 +2,14 @@ package com.bigoffs.pdaremake.ui.fragment
 
 import android.os.Bundle
 import android.widget.LinearLayout
+import androidx.fragment.app.viewModels
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseFragment
 import com.bigoffs.pdaremake.app.base.BaseInStoreFragment
 import com.bigoffs.pdaremake.app.ext.showSpinner
 import com.bigoffs.pdaremake.databinding.FragmentPdaNewinstoreBinding
 import com.bigoffs.pdaremake.databinding.FragmentPdaTransferinstoreBinding
+import com.bigoffs.pdaremake.viewmodel.request.RequestInstoreViewmodel
 import com.bigoffs.pdaremake.viewmodel.state.PdaNewInstoreViewModel
 import com.bigoffs.pdaremake.viewmodel.state.RfidQueryViewModel
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
@@ -22,7 +24,7 @@ class PdaTransferInstoreFragment : BaseInStoreFragment<RfidQueryViewModel,Fragme
 
     var select = arrayListOf<String>("店内码", "箱号", "调拨单")
 
-
+    val requestInstoreViewmodel : RequestInstoreViewmodel by viewModels()
     override fun goInStoreDetail() {
 
     }
@@ -32,7 +34,7 @@ class PdaTransferInstoreFragment : BaseInStoreFragment<RfidQueryViewModel,Fragme
     override fun initView(savedInstanceState: Bundle?) {
 
         mDatabind.viewmodel = mViewModel
-        activity?.findViewById<LinearLayout>(R.id.ll_select)?.setOnClickListener {
+        mDatabind.root.findViewById<LinearLayout>(R.id.ll_select)?.setOnClickListener {
 
             context?.let { it1 ->
                 showSpinner(it, it1, select) { position, text ->
@@ -52,5 +54,10 @@ class PdaTransferInstoreFragment : BaseInStoreFragment<RfidQueryViewModel,Fragme
         }
         mViewModel.currentCodeText.value = select[position]
 
+    }
+
+    override fun lazyLoadData() {
+        super.lazyLoadData()
+        requestInstoreViewmodel.getTransferInstoreList("","","")
     }
 }

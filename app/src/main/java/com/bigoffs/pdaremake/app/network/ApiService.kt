@@ -62,4 +62,10 @@ interface ApiService {
     suspend fun findEpcByUnicode(
         @Body  body : RequestBody
     ):ApiResponse<FindEpcByUnicodeBean>
+
+
+    @POST("v1/inStore/list")
+    suspend fun getInStoreList(
+        @Body  body : RequestBody
+    ):ApiResponse<List<Any>>
 }
