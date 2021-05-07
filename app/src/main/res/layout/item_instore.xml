@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+    <TextView
+        android:id="@+id/tv_no"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="A-TJZZC-1495-DX3-14-2021011301"
+        android:textColor="@color/black"
+        android:layout_marginTop="10dp"
+        android:textSize="13dp"/>
+    <TextView
+        android:id="@+id/tv_supplier"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="供应商"
+        android:textColor="#999999"
+        android:layout_marginTop="7dp"/>
+    <TextView
+        android:id="@+id/tv_warehouse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="仓库"
+        android:textColor="#999999"
+        android:layout_marginTop="2dp"/>
+    <TextView
+        android:id="@+id/tv_make_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="仓库"
+        android:textColor="#999999"
+        android:layout_marginTop="2dp"/>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="78dp"
+        android:background="#EBEFFB"
+        android:orientation="vertical"
+        android:padding="10dp">
+        <TextView
+           android:id="@+id/tv_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="共200件"
+            android:textColor="@color/black"/>
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/tv_go_detail"
+            android:text="入库"
+            android:gravity="center"
+            android:layout_width="66dp"
+            android:layout_height="32dp"
+            android:layout_gravity="right"
+            android:background="@color/colorPrimary"/>
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

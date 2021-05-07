@@ -2,9 +2,12 @@ package com.bigoffs.pdaremake.viewmodel.request
 
 import androidx.lifecycle.MutableLiveData
 import com.bigoffs.pdaremake.app.network.apiService
+import com.bigoffs.pdaremake.data.model.bean.ApiPagerResponse
 import com.bigoffs.pdaremake.data.model.bean.BarcodeFind
+import com.bigoffs.pdaremake.data.model.bean.InStoreBean
 import com.google.gson.Gson
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
+import me.hgj.jetpackmvvm.callback.livedata.BooleanLiveData
 import me.hgj.jetpackmvvm.ext.request
 import me.hgj.jetpackmvvm.state.ResultState
 import okhttp3.MediaType
@@ -17,9 +20,17 @@ import okhttp3.RequestBody
  */
 class RequestInstoreViewmodel : BaseViewModel() {
 
-    var data  =  MutableLiveData<ResultState<List<Any>>>()
+    var pageNo = 0
 
-    fun getNewInstoreList(type : String,search_type:String,search_value : String){
+    var data  =  MutableLiveData<ResultState<MutableList<InStoreBean>>>()
+
+    var isfresh = true;
+
+    fun getNewInstoreList(type : String,search_type:String,search_value : String,isfresh:Boolean){
+        this.isfresh = isfresh
+        if(isfresh){
+            pageNo = 0
+        }
         val map  = hashMapOf<String,Any>()
         //（1=新品入库,3=调拨入库）
         map.put("type","1")
@@ -34,7 +45,11 @@ class RequestInstoreViewmodel : BaseViewModel() {
 
     }
 
-    fun getTransferInstoreList(type : String,search_type:String,search_value : String){
+    fun getTransferInstoreList(type : String,search_type:String,search_value : String,isfresh:Boolean){
+        this.isfresh = isfresh
+        if(isfresh){
+            pageNo = 0
+        }
         val map  = hashMapOf<String,Any>()
         //（1=新品入库,3=调拨入库）
         map["type"] = "3"

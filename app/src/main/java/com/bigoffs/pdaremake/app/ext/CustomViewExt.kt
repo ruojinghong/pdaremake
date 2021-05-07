@@ -23,6 +23,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.bigoffs.pdaremake.R
+import com.bigoffs.pdaremake.app.network.ListDataUiState
 import com.bigoffs.pdaremake.app.util.SettingUtil
 import com.bigoffs.pdaremake.app.weight.loadCallBack.EmptyCallback
 import com.bigoffs.pdaremake.app.weight.loadCallBack.ErrorCallback
@@ -450,6 +451,48 @@ fun ViewPager2.init(
 
     }
     return this
+}
+
+
+/**
+ * 加载列表数据
+ */
+fun <T> loadListData(
+    data: ListDataUiState<T>,
+    baseQuickAdapter: BaseQuickAdapter<T, *>,
+    loadService: LoadService<*>,
+    recyclerView: SwipeRecyclerView,
+    swipeRefreshLayout: SwipeRefreshLayout
+) {
+    swipeRefreshLayout.isRefreshing = false
+    recyclerView.loadMoreFinish(data.isEmpty, data.hasMore)
+    if (data.isSuccess) {
+        //成功
+        when {
+            //第一页并没有数据 显示空布局界面
+            data.isFirstEmpty -> {
+                loadService.showEmpty()
+            }
+            //是第一页
+            data.isRefresh -> {
+                baseQuickAdapter.setList(data.listData)
+                loadService.showSuccess()
+            }
+            //不是第一页
+            else -> {
+                baseQuickAdapter.addData(data.listData)
+                loadService.showSuccess()
+            }
+        }
+    } else {
+        //失败
+        if (data.isRefresh) {
+            //如果是第一页，则显示错误界面，并提示错误信息
+            loadService.showError(data.errMessage)
+        } else {
+            recyclerView.loadMoreError(0, data.errMessage)
+        }
+    }
 }
 
 

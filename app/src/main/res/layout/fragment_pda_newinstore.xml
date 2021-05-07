@@ -21,6 +21,8 @@
             android:orientation="vertical">
             <include layout="@layout/common_choose_edittext_newinstore"
                 app:viewmode="@{viewmodel}"/>
+
+            <include layout="@layout/include_list"/>
         </LinearLayout>
 
 
