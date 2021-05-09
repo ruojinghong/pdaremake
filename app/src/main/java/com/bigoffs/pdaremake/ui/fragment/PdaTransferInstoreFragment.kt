@@ -41,15 +41,13 @@ class PdaTransferInstoreFragment : BaseInStoreFragment<RfidQueryViewModel,Fragme
     lateinit var swipeRefresh: SwipeRefreshLayout;
     lateinit var recyclerView: SwipeRecyclerView;
     lateinit var floatbtn: FloatingActionButton;
-    override fun goInStoreDetail() {
 
-    }
 
     override fun layoutId(): Int  = R.layout.fragment_pda_transferinstore
 
 
     //适配器
-    private val articleAdapter: InstoreAdapter by lazy { InstoreAdapter(arrayListOf()) }
+    private val articleAdapter: InstoreAdapter by lazy { InstoreAdapter(arrayListOf(),1) }
 
     //界面状态管理者
     private lateinit var loadsir: LoadService<Any>
@@ -134,7 +132,7 @@ class PdaTransferInstoreFragment : BaseInStoreFragment<RfidQueryViewModel,Fragme
                     //当前数据是refresh
                     requestInstoreViewmodel.pageNo++
                     //如果是刷新的，有数据
-                    articleAdapter.setList(it)
+                    articleAdapter.setList(it.list)
                     if(articleAdapter.data.size > 0){
                         loadsir.showSuccess()
                     }else{
@@ -142,8 +140,8 @@ class PdaTransferInstoreFragment : BaseInStoreFragment<RfidQueryViewModel,Fragme
                     }
                 }else{
                     loadsir.showSuccess()
-                    articleAdapter.addData(it)
-                    recyclerView.loadMoreFinish(it.isEmpty(),it.size <10)
+                    articleAdapter.addData(it.list)
+                    recyclerView.loadMoreFinish(it.list.isEmpty(),it.list.size <it.limit)
 
                 }
 
@@ -162,5 +160,9 @@ class PdaTransferInstoreFragment : BaseInStoreFragment<RfidQueryViewModel,Fragme
             })
 //            loadListData(it, articleAdapter, loadsir, recyclerView,swipeRefresh)
         })
+    }
+
+    override fun goInStoreDetail(code: String) {
+       showMessage(mViewModel.currentCodeText.value+code)
     }
 }

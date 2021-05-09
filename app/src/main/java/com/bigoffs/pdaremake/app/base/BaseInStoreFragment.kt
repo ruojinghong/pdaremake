@@ -11,5 +11,5 @@ import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
  */
 abstract class BaseInStoreFragment<VM: BaseViewModel,DB: ViewDataBinding> : BaseFragment<VM, DB>(){
 
-    abstract fun goInStoreDetail()
+    abstract fun goInStoreDetail(code:String)
 }

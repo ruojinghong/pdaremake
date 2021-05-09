@@ -15,7 +15,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
  *Time:2021/5/7  23:17
  *Desc:
  */
-class InstoreAdapter(data: MutableList<InStoreBean>?) :
+class InstoreAdapter(data: MutableList<InStoreBean>?,private var type:Int) :
     BaseQuickAdapter<InStoreBean, BaseViewHolder>(R.layout.item_instore,data) {
 
 
@@ -24,11 +24,22 @@ class InstoreAdapter(data: MutableList<InStoreBean>?) :
 
     override fun convert(holder: BaseViewHolder, item: InStoreBean) {
        item.run {
-                holder.setText(R.id.tv_no,arrival_no)
-           holder.setText(R.id.tv_supplier,"供应商：${sup_name}")
-           holder.setText(R.id.tv_warehouse,"仓库：${ware_name}")
-           holder.setText(R.id.tv_make_data,"生成时间：${created_at}")
-           holder.setText(R.id.tv_count,"共${total_num}件，已入${final_num}件")
+
+           if(type == 1){
+               //新品入庫
+               holder.setText(R.id.tv_no,arrival_no)
+               holder.setText(R.id.tv_supplier,"供应商：${sup_name}")
+               holder.setText(R.id.tv_warehouse,"仓库：${ware_name}")
+               holder.setText(R.id.tv_make_data,"生成时间：${created_at}")
+               holder.setText(R.id.tv_count,"共${total_num}件，已入${final_num}件")
+           }else{
+               holder.setText(R.id.tv_no,arrival_no)
+               holder.setText(R.id.tv_supplier,"调出方：${sup_name}")
+               holder.setText(R.id.tv_warehouse,"调入方：${ware_name}")
+               holder.setText(R.id.tv_make_data,"发货时间：${created_at}")
+               holder.setText(R.id.tv_count,"共${total_num}件，已入${final_num}件")
+           }
+
        }
 //        holder.getView<TextView>(R.id.tv_go_detail).setOnClickListener(){
 //            clickAction.invoke(item,it,holder.adapterPosition)

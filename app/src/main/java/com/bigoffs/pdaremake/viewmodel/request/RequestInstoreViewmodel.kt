@@ -5,6 +5,7 @@ import com.bigoffs.pdaremake.app.network.apiService
 import com.bigoffs.pdaremake.data.model.bean.ApiPagerResponse
 import com.bigoffs.pdaremake.data.model.bean.BarcodeFind
 import com.bigoffs.pdaremake.data.model.bean.InStoreBean
+import com.bigoffs.pdaremake.data.model.bean.InStoreBeanList
 import com.google.gson.Gson
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.callback.livedata.BooleanLiveData
@@ -22,7 +23,8 @@ class RequestInstoreViewmodel : BaseViewModel() {
 
     var pageNo = 0
 
-    var data  =  MutableLiveData<ResultState<MutableList<InStoreBean>>>()
+
+    var data  =  MutableLiveData<ResultState<InStoreBeanList>>()
 
     var isfresh = true;
 
@@ -38,6 +40,7 @@ class RequestInstoreViewmodel : BaseViewModel() {
         map.put("search_type","1")
         //mock: 1=条形码：3333 2=供应商：耐克 3=批次号：2112012110000000001 4=店内码 ：ST1021213 5=箱号：27或28 6=调拨单号：33332133
         map.put("search_value","3333")
+        map.put("page",pageNo)
 
         val requestBody: RequestBody =
             RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))
@@ -57,6 +60,8 @@ class RequestInstoreViewmodel : BaseViewModel() {
         map["search_type"] = "6"
         //mock: 1=条形码：3333 2=供应商：耐克 3=批次号：2112012110000000001 4=店内码 ：ST1021213 5=箱号：27或28 6=调拨单号：33332133
         map["search_value"] = "33332133"
+
+        map["page"] = pageNo
         val requestBody: RequestBody =
             RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))
         request({ apiService.getInStoreList(requestBody)},data,true,"加载中...")

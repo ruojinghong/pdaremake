@@ -67,5 +67,5 @@ interface ApiService {
     @POST("v1/inStore/list")
     suspend fun getInStoreList(
         @Body  body : RequestBody
-    ):ApiResponse<MutableList<InStoreBean>>
+    ):ApiResponse<InStoreBeanList>
 }
