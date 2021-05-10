@@ -21,7 +21,7 @@ import okhttp3.RequestBody
  */
 class RequestInstoreViewmodel : BaseViewModel() {
 
-    var pageNo = 0
+    var pageNo = 1
 
 
     var data  =  MutableLiveData<ResultState<InStoreBeanList>>()
@@ -31,7 +31,7 @@ class RequestInstoreViewmodel : BaseViewModel() {
     fun getNewInstoreList(type : String,search_type:String,search_value : String,isfresh:Boolean){
         this.isfresh = isfresh
         if(isfresh){
-            pageNo = 0
+            pageNo = 1
         }
         val map  = hashMapOf<String,Any>()
         //（1=新品入库,3=调拨入库）
@@ -51,7 +51,7 @@ class RequestInstoreViewmodel : BaseViewModel() {
     fun getTransferInstoreList(type : String,search_type:String,search_value : String,isfresh:Boolean){
         this.isfresh = isfresh
         if(isfresh){
-            pageNo = 0
+            pageNo = 1
         }
         val map  = hashMapOf<String,Any>()
         //（1=新品入库,3=调拨入库）

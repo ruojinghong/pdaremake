@@ -13,6 +13,7 @@ import com.bigoffs.pdaremake.app.base.BaseInStoreFragment
 import com.bigoffs.pdaremake.app.ext.*
 import com.bigoffs.pdaremake.app.weight.loadCallBack.ErrorCallback
 import com.bigoffs.pdaremake.databinding.FragmentPdaNewinstoreBinding
+import com.bigoffs.pdaremake.ui.activity.NewInStoreDetailActivity
 import com.bigoffs.pdaremake.ui.adapter.InstoreAdapter
 import com.bigoffs.pdaremake.viewmodel.request.RequestInstoreViewmodel
 import com.bigoffs.pdaremake.viewmodel.state.PdaNewInstoreViewModel
@@ -26,6 +27,7 @@ import com.yanzhenjie.recyclerview.SwipeRecyclerView
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.demo.app.weight.recyclerview.SpaceItemDecoration
 import me.hgj.jetpackmvvm.ext.parseState
+import me.hgj.jetpackmvvm.util.ActivityMessenger
 
 /**
  *User:Kirito
@@ -101,7 +103,7 @@ class PdaNewInstoreFragment : BaseInStoreFragment<PdaNewInstoreViewModel,Fragmen
         articleAdapter.setOnItemChildClickListener{adapter, view, position ->
                 when(view.id){
                         R.id.tv_go_detail ->{
-                            showMessage(articleAdapter.data[position].admin_name)
+                            ActivityMessenger.startActivity<NewInStoreDetailActivity>(requireActivity())
                         }
                 }
         }
@@ -130,7 +132,7 @@ class PdaNewInstoreFragment : BaseInStoreFragment<PdaNewInstoreViewModel,Fragmen
 
                 swipeRefresh.isRefreshing = false
                 //请求成功，页码+1
-                if(requestInstoreViewmodel.pageNo == 0){
+                if(requestInstoreViewmodel.pageNo == 1){
                     //当前数据是refresh
                     requestInstoreViewmodel.pageNo++
                     //如果是刷新的，有数据
@@ -165,6 +167,6 @@ class PdaNewInstoreFragment : BaseInStoreFragment<PdaNewInstoreViewModel,Fragmen
     }
 
     override fun goInStoreDetail(code: String) {
-        showMessage(mViewModel.currentCodeText.value+code)
+
     }
 }

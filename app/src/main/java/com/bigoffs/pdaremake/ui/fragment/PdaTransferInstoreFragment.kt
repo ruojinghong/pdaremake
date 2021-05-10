@@ -13,6 +13,7 @@ import com.bigoffs.pdaremake.app.ext.*
 import com.bigoffs.pdaremake.app.weight.loadCallBack.ErrorCallback
 import com.bigoffs.pdaremake.databinding.FragmentPdaNewinstoreBinding
 import com.bigoffs.pdaremake.databinding.FragmentPdaTransferinstoreBinding
+import com.bigoffs.pdaremake.ui.activity.NewInStoreDetailActivity
 import com.bigoffs.pdaremake.ui.adapter.InstoreAdapter
 import com.bigoffs.pdaremake.viewmodel.request.RequestInstoreViewmodel
 import com.bigoffs.pdaremake.viewmodel.state.PdaNewInstoreViewModel
@@ -24,6 +25,7 @@ import com.yanzhenjie.recyclerview.SwipeRecyclerView
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.demo.app.weight.recyclerview.SpaceItemDecoration
 import me.hgj.jetpackmvvm.ext.parseState
+import me.hgj.jetpackmvvm.util.ActivityMessenger
 
 /**
  *User:Kirito
@@ -128,7 +130,7 @@ class PdaTransferInstoreFragment : BaseInStoreFragment<RfidQueryViewModel,Fragme
 
                 swipeRefresh.isRefreshing = false
                 //请求成功，页码+1
-                if(requestInstoreViewmodel.pageNo == 0){
+                if(requestInstoreViewmodel.pageNo == 1){
                     //当前数据是refresh
                     requestInstoreViewmodel.pageNo++
                     //如果是刷新的，有数据
@@ -163,6 +165,6 @@ class PdaTransferInstoreFragment : BaseInStoreFragment<RfidQueryViewModel,Fragme
     }
 
     override fun goInStoreDetail(code: String) {
-       showMessage(mViewModel.currentCodeText.value+code)
+        ActivityMessenger.startActivity<NewInStoreDetailActivity>(requireActivity())
     }
 }

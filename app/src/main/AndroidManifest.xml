@@ -45,6 +45,8 @@
         <activity android:name=".ui.activity.rfid.FindEpcByUniqueActivity" />
         <activity android:name=".ui.activity.rfid.InStoreActivity" />
         <activity android:name=".ui.activity.TaskActivity" />
+        <activity android:name=".ui.activity.NewInStoreDetailActivity"
+            android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest>

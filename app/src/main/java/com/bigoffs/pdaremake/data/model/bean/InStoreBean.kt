@@ -17,6 +17,8 @@ data class InStoreBean(
     val in_stock_no: String = "",
     val order_no: String = "",
     val serial_no: String = "",
+    val in_ware_name: String = "",
+    val out_ware_name: String = "",
     val status: Int = 0,
     val status_name: String = "",
     val sup_id: Int = 0,
