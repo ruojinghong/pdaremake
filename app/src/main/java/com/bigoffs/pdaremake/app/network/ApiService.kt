@@ -68,4 +68,10 @@ interface ApiService {
     suspend fun getInStoreList(
         @Body  body : RequestBody
     ):ApiResponse<InStoreBeanList>
+
+
+    @POST("/v1/inStore/refData")
+    suspend fun getInStoreDetail(
+        @Body  body : RequestBody
+    ):ApiResponse<NewInStoreDetail>
 }

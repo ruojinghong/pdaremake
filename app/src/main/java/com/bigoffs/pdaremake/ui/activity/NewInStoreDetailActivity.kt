@@ -2,14 +2,24 @@ package com.bigoffs.pdaremake.ui.activity
 
 import android.graphics.Color
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.collection.arraySetOf
+import androidx.lifecycle.Observer
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseScanActivity
 import com.bigoffs.pdaremake.app.ext.initTitle
+import com.bigoffs.pdaremake.app.ext.showMessage
+import com.bigoffs.pdaremake.app.util.SoundUtils
+import com.bigoffs.pdaremake.data.model.bean.NewInStoreErrorBean
+import com.bigoffs.pdaremake.data.model.bean.NewInStoreNormalBean
 import com.bigoffs.pdaremake.databinding.ActivityMainBinding
 import com.bigoffs.pdaremake.databinding.ActivityMainBindingImpl
 import com.bigoffs.pdaremake.databinding.ActivityNewInstoreDetailBinding
+import com.bigoffs.pdaremake.viewmodel.request.RequestInStroreDetailViewModel
 import com.bigoffs.pdaremake.viewmodel.state.NewInStoreDetailViewModel
+import com.blankj.utilcode.util.ToastUtils
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
+import me.hgj.jetpackmvvm.ext.parseState
 
 /**
  *User:Kirito
@@ -17,6 +27,11 @@ import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
  *Desc:新品入库detailactivity
  */
 class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, ActivityNewInstoreDetailBinding>() {
+
+    val set = arraySetOf<String>()
+
+    val requestInStroreDetailViewModel:RequestInStroreDetailViewModel by viewModels()
+
     override fun layoutId(): Int = R.layout.activity_new_instore_detail
 
     override fun setStatusBar() {
@@ -26,14 +41,30 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
     override fun onReceiverData(data: String) {
                 when(mViewModel.currentFocus.value){
                     1->{
+                        if(mViewModel.currentUniqueSet.add(data)){
 
-                        mDatabind.etUnique.setText(data)
-                        mDatabind.etBarcode.requestFocus()
+
+                            mDatabind.etUnique.setText(data)
+                            mDatabind.etBarcode.requestFocus()
+                        }else{
+                           beep()
+                        }
+
 
                     }
                     2->{
-                        mDatabind.etBarcode.setText(data)
-                        mDatabind.etUnique.requestFocus()
+                        if(mViewModel.currentBarCodeSet.add(data)){
+                            mDatabind.etBarcode.setText(data)
+                            addErrorOrNormalList("2222")
+                            mDatabind.etUnique.requestFocus()
+
+
+
+
+                        }else{
+                           beep()
+                        }
+
                     }
                     3->{
                         mDatabind.etShelf.setText(data)
@@ -47,7 +78,7 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
         super.initView(savedInstanceState)
 
 
-
+        mDatabind.vm = mViewModel
         mDatabind.etUnique.setOnFocusChangeListener(){v,hasFocus ->
             if(hasFocus){
                 mViewModel.currentFocus.value = 1
@@ -73,5 +104,52 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
             }
         }
 
+        requestInStroreDetailViewModel.getInStoreDetail(1)
+
     }
+
+    override fun createObserver() {
+        super.createObserver()
+
+        requestInStroreDetailViewModel.detail.observe(this, Observer {
+
+                parseState(it,{ storeDetail ->
+                    mViewModel.goodsCount.value = storeDetail.task_list.unique_code_list.size+storeDetail.in_store_list.unique_code_list.size
+                    mViewModel.inStoreCount.value = storeDetail.in_store_list.unique_code_list.size
+                    mViewModel.thisCount.value = 0
+                    mViewModel.detail.value = storeDetail
+
+
+
+                },{
+
+                   ToastUtils.showShort(it.errorMsg)
+                   finish()
+
+                })
+
+        })
+
+    }
+
+
+
+    fun addErrorOrNormalList(barcode:String){
+
+            if(mViewModel.detail.value?.barcode_sku_map?.get(barcode) == null){
+                    mViewModel.currenErrorList.add(NewInStoreErrorBean(barcode))
+            }else{
+                val sku = mViewModel.detail.value?.barcode_sku_map?.get(barcode)
+                if(mViewModel.detail.value!!.in_store_list.sku_list.get(sku.toString()) == null){
+                    mViewModel.currenErrorList.add(NewInStoreErrorBean(barcode))
+                }else{
+                    mViewModel.currenNormalList.add(NewInStoreNormalBean("",mDatabind.etUnique.text.toString(),barcode,mViewModel.detail.value!!.in_store_list.sku_list.get(sku.toString())!!))
+                }
+
+
+            }
+
+    }
+
+
 }

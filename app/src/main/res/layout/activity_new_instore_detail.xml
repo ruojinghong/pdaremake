@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+            <variable
+                name="vm"
+                type="com.bigoffs.pdaremake.viewmodel.state.NewInStoreDetailViewModel" />
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -219,7 +221,7 @@
                 app:layout_constraintLeft_toLeftOf="@id/tv_good_num"
                 app:layout_constraintRight_toRightOf="@+id/tv_good_num"
                 app:layout_constraintTop_toBottomOf="@+id/tv_good_num"
-                android:text="980"
+                android:text="@{vm.goodsCount.toString()}"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                />
@@ -230,7 +232,7 @@
                 app:layout_constraintLeft_toLeftOf="@id/tv_finish_num"
                 app:layout_constraintRight_toRightOf="@+id/tv_finish_num"
                 app:layout_constraintTop_toBottomOf="@+id/tv_good_num"
-                android:text="0"
+                android:text="@{vm.inStoreCount.toString()}"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"/>
             <TextView
@@ -240,7 +242,7 @@
                 app:layout_constraintLeft_toLeftOf="@id/tv_this_num"
                 app:layout_constraintRight_toRightOf="@+id/tv_this_num"
                 app:layout_constraintTop_toBottomOf="@+id/tv_good_num"
-                android:text="980"
+                android:text="@{vm.thisCount.toString()}"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"/>
 
