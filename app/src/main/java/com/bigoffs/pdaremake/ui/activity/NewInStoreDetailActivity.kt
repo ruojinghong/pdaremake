@@ -42,10 +42,15 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
                 when(mViewModel.currentFocus.value){
                     1->{
                         if(mViewModel.currentUniqueSet.add(data)){
+                                if(mViewModel.alReadyInStoreSet.contains(data)){
+                                    beep()
+                                    ToastUtils.showShort("店内码已入库")
+                                }else{
+                                    mDatabind.etUnique.setText(data)
+                                    mDatabind.etBarcode.requestFocus()
+                                }
 
 
-                            mDatabind.etUnique.setText(data)
-                            mDatabind.etBarcode.requestFocus()
                         }else{
                            beep()
                         }
@@ -118,6 +123,13 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
                     mViewModel.inStoreCount.value = storeDetail.in_store_list.unique_code_list.size
                     mViewModel.thisCount.value = 0
                     mViewModel.detail.value = storeDetail
+                    mViewModel.alReadyInStoreSet.addAll(storeDetail.in_store_list.unique_code_list)
+                    for (map in storeDetail.task_list.sku_list){
+                        if(storeDetail.in_store_list.sku_list.containsKey(map.key)){
+                                mViewModel.currentSkuNumMap.put(map.key,map.value - storeDetail.in_store_list.sku_list.get(map.key)!!)
+                        }
+
+                    }
 
 
 
@@ -136,16 +148,29 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
 
     fun addErrorOrNormalList(barcode:String){
 
-            if(mViewModel.detail.value?.barcode_sku_map?.get(barcode) == null){
-                    mViewModel.currenErrorList.add(NewInStoreErrorBean(barcode))
-            }else{
-                val sku = mViewModel.detail.value?.barcode_sku_map?.get(barcode)
-                if(mViewModel.detail.value!!.in_store_list.sku_list.get(sku.toString()) == null){
+            if(mViewModel.detail.value?.barcode_sku_map?.containsKey(barcode) == true){
+                val sku = mViewModel.detail.value?.barcode_sku_map?.get(barcode).toString()
+                if(mViewModel.detail.value!!.in_store_list.sku_list.get(sku) == null){
                     mViewModel.currenErrorList.add(NewInStoreErrorBean(barcode))
                 }else{
-                    mViewModel.currenNormalList.add(NewInStoreNormalBean("",mDatabind.etUnique.text.toString(),barcode,mViewModel.detail.value!!.in_store_list.sku_list.get(sku.toString())!!))
-                }
+                    if(mViewModel.currentSkuNumMap.containsKey(sku)){
+                        var num = mViewModel.currentSkuNumMap.get(sku)
+                        if (num != null) {
+                            if(num <= 0){
+                                mViewModel.currenErrorList.add(NewInStoreErrorBean(barcode))
+                            }else{
+                                num--?.let { mViewModel.currentSkuNumMap.put(sku, it) }
+                                mViewModel.currenNormalList.add(NewInStoreNormalBean("",mDatabind.etUnique.text.toString(),barcode,mViewModel.detail.value!!.in_store_list.sku_list.get(sku)!!))
+                            }
+                        }
 
+                    }else{
+                        mViewModel.currenErrorList.add(NewInStoreErrorBean(barcode))
+                    }
+
+                }
+            }else{
+                mViewModel.currenErrorList.add(NewInStoreErrorBean(barcode))
 
             }
 

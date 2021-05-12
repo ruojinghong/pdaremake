@@ -41,6 +41,8 @@ class NewInStoreDetailViewModel : BaseViewModel() {
     val currenErrorList = arrayListOf<NewInStoreErrorBean>()
     //当前扫描的正常列表
     val currenNormalList = arrayListOf<NewInStoreNormalBean>()
+    val alReadyInStoreSet = arraySetOf<String>()
+    val currentSkuNumMap = mutableMapOf<String,Int>()
 
 
 
