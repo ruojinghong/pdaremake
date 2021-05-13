@@ -19,6 +19,7 @@ import com.bigoffs.pdaremake.viewmodel.request.RequestInstoreViewmodel
 import com.bigoffs.pdaremake.viewmodel.state.PdaNewInstoreViewModel
 import com.bigoffs.pdaremake.viewmodel.state.RfidQueryViewModel
 import com.blankj.utilcode.util.ConvertUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.kingja.loadsir.core.LoadService
@@ -161,6 +162,7 @@ class PdaNewInstoreFragment : BaseInStoreFragment<PdaNewInstoreViewModel,Fragmen
                 } else {
                     recyclerView.loadMoreError(0, it.errorMsg)
                 }
+                ToastUtils.showShort(it.errorMsg)
             })
 //            loadListData(it, articleAdapter, loadsir, recyclerView,swipeRefresh)
         })

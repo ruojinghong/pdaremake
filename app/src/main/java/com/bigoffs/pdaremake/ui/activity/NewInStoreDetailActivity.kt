@@ -17,6 +17,7 @@ import com.bigoffs.pdaremake.databinding.ActivityMainBindingImpl
 import com.bigoffs.pdaremake.databinding.ActivityNewInstoreDetailBinding
 import com.bigoffs.pdaremake.viewmodel.request.RequestInStroreDetailViewModel
 import com.bigoffs.pdaremake.viewmodel.state.NewInStoreDetailViewModel
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.ext.parseState
@@ -40,37 +41,40 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
 
     override fun onReceiverData(data: String) {
                 when(mViewModel.currentFocus.value){
+                    //添加店内码
                     1->{
-                        if(mViewModel.currentUniqueSet.add(data)){
-                                if(mViewModel.alReadyInStoreSet.contains(data)){
-                                    beep()
-                                    ToastUtils.showShort("店内码已入库")
-                                }else{
-                                    mDatabind.etUnique.setText(data)
-                                    mDatabind.etBarcode.requestFocus()
-                                }
+                        if(mViewModel.currentUniqueSet.contains(data)){
 
+                            ToastUtils.showShort("店内码已存在")
+                            beep()
 
                         }else{
-                           beep()
+                            mViewModel.currentUniqueSet.add(data)
+                            if(mViewModel.alReadyInStoreSet.contains(data)){
+                                beep()
+                                ToastUtils.showShort("店内码已入库")
+                            }else{
+                                mDatabind.etUnique.setText(data)
+                                mDatabind.etBarcode.requestFocus()
+                            }
+
                         }
-
-
                     }
+                    //添加条形码
                     2->{
-                        if(mViewModel.currentBarCodeSet.add(data)){
+                        if(mViewModel.currentBarCodeSet.contains(data)){
+                          beep()
+                            ToastUtils.showShort("条形码已存在")
+                        }else{
+                            mViewModel.currentBarCodeSet.add(data)
                             mDatabind.etBarcode.setText(data)
-                            addErrorOrNormalList("2222")
+                            addErrorOrNormalList(data)
                             mDatabind.etUnique.requestFocus()
 
-
-
-
-                        }else{
-                           beep()
                         }
 
                     }
+                    //添加货架号
                     3->{
                         mDatabind.etShelf.setText(data)
                         mDatabind.etUnique.requestFocus()
@@ -124,6 +128,9 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
                     mViewModel.thisCount.value = 0
                     mViewModel.detail.value = storeDetail
                     mViewModel.alReadyInStoreSet.addAll(storeDetail.in_store_list.unique_code_list)
+                    for (i in 1..2000){
+                        storeDetail.barcode_sku_map.put(i.toString(),i)
+                    }
                     for (map in storeDetail.task_list.sku_list){
                         if(storeDetail.in_store_list.sku_list.containsKey(map.key)){
                                 mViewModel.currentSkuNumMap.put(map.key,map.value - storeDetail.in_store_list.sku_list.get(map.key)!!)
@@ -173,6 +180,7 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
                 mViewModel.currenErrorList.add(NewInStoreErrorBean(barcode))
 
             }
+        LogUtils.i("normalsize${mViewModel.currenNormalList.size}++errorsize${mViewModel.currenErrorList.size}")
 
     }
 

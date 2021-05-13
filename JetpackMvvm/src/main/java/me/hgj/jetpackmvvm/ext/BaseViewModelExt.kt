@@ -1,5 +1,6 @@
 package me.hgj.jetpackmvvm.ext
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
@@ -13,6 +14,7 @@ import me.hgj.jetpackmvvm.network.ExceptionHandle
 import me.hgj.jetpackmvvm.state.ResultState
 import me.hgj.jetpackmvvm.state.paresException
 import me.hgj.jetpackmvvm.state.paresResult
+import me.hgj.jetpackmvvm.util.ActivityMessenger
 
 /**
  * 作者　: hegaojian

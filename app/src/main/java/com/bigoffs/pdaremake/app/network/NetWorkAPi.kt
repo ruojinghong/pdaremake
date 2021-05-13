@@ -56,6 +56,8 @@ class NetworkApi : BaseNetworkApi() {
             addInterceptor(CacheInterceptor())
             // 日志拦截器
             addInterceptor(LogInterceptor())
+            //token失效
+            addInterceptor(TokenInterceptor())
             //超时时间 连接、读、写
             connectTimeout(30, TimeUnit.SECONDS)
             readTimeout(30, TimeUnit.SECONDS)

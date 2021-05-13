@@ -4,15 +4,18 @@ import android.content.Context
 import android.os.Bundle
 import android.widget.TextView
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.Observer
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.event.AppViewModel
 import com.bigoffs.pdaremake.app.event.EventViewModel
 import com.bigoffs.pdaremake.app.ext.dismissLoadingExt
 import com.bigoffs.pdaremake.app.ext.showLoadingExt
+import com.bigoffs.pdaremake.ui.activity.LoginActivity
 import com.gyf.immersionbar.ktx.immersionBar
 import me.hgj.jetpackmvvm.base.activity.BaseVmDbActivity
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.ext.getAppViewModel
+import me.hgj.jetpackmvvm.util.ActivityMessenger
 
 /**
  *  描述　: 你项目中的Activity基类，在这里实现显示弹窗，吐司，还有加入自己的需求操作 ，如果不想用Databind，请继承
@@ -41,7 +44,11 @@ abstract class BaseActivity<VM : BaseViewModel,DB : ViewDataBinding> : BaseVmDbA
     /**
      * 创建liveData观察者
      */
-    override fun createObserver() {}
+    override fun createObserver() {
+
+
+
+    }
 
     /**
      * 打开等待框
