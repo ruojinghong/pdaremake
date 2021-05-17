@@ -19,6 +19,7 @@ import com.bigoffs.pdaremake.viewmodel.request.RequestInStroreDetailViewModel
 import com.bigoffs.pdaremake.viewmodel.state.NewInStoreDetailViewModel
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.chad.library.adapter.base.entity.SectionEntity
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.ext.parseState
 
@@ -128,9 +129,6 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
                     mViewModel.thisCount.value = 0
                     mViewModel.detail.value = storeDetail
                     mViewModel.alReadyInStoreSet.addAll(storeDetail.in_store_list.unique_code_list)
-                    for (i in 1..2000){
-                        storeDetail.barcode_sku_map.put(i.toString(),i)
-                    }
                     for (map in storeDetail.task_list.sku_list){
                         if(storeDetail.in_store_list.sku_list.containsKey(map.key)){
                                 mViewModel.currentSkuNumMap.put(map.key,map.value - storeDetail.in_store_list.sku_list.get(map.key)!!)
