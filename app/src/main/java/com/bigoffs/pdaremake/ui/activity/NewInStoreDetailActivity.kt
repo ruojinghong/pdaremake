@@ -5,16 +5,21 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.collection.arraySetOf
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseScanActivity
+import com.bigoffs.pdaremake.app.ext.init
 import com.bigoffs.pdaremake.app.ext.initTitle
 import com.bigoffs.pdaremake.app.ext.showMessage
 import com.bigoffs.pdaremake.app.util.SoundUtils
+import com.bigoffs.pdaremake.data.model.bean.NewInSoreErrorNode
 import com.bigoffs.pdaremake.data.model.bean.NewInStoreErrorBean
 import com.bigoffs.pdaremake.data.model.bean.NewInStoreNormalBean
 import com.bigoffs.pdaremake.databinding.ActivityMainBinding
 import com.bigoffs.pdaremake.databinding.ActivityMainBindingImpl
 import com.bigoffs.pdaremake.databinding.ActivityNewInstoreDetailBinding
+import com.bigoffs.pdaremake.ui.adapter.InStoreErrorAdapter
+import com.bigoffs.pdaremake.ui.adapter.InstoreAdapter
 import com.bigoffs.pdaremake.viewmodel.request.RequestInStroreDetailViewModel
 import com.bigoffs.pdaremake.viewmodel.state.NewInStoreDetailViewModel
 import com.blankj.utilcode.util.LogUtils
@@ -33,6 +38,10 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
     val set = arraySetOf<String>()
 
     val requestInStroreDetailViewModel:RequestInStroreDetailViewModel by viewModels()
+
+    //适配器
+    private val errorAdapter: InStoreErrorAdapter by lazy { InStoreErrorAdapter() }
+    private val normalAdapter: InStoreErrorAdapter by lazy { InStoreErrorAdapter() }
 
     override fun layoutId(): Int = R.layout.activity_new_instore_detail
 
@@ -79,6 +88,12 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
                     3->{
                         mDatabind.etShelf.setText(data)
                         mDatabind.etUnique.requestFocus()
+                       errorAdapter.nodeAddData(errorAdapter.data[0],0,mViewModel.currenErrorList)
+                        normalAdapter.nodeAddData(normalAdapter.data[0],0,mViewModel.currenErrorList)
+
+                        mViewModel.currenErrorList.clear()
+
+
                     }
 
                 }
@@ -115,6 +130,11 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
         }
 
         requestInStroreDetailViewModel.getInStoreDetail(1)
+
+        mDatabind.errorRecycler.init(LinearLayoutManager(mContext),errorAdapter)
+        errorAdapter.addData(NewInSoreErrorNode())
+        mDatabind.norMalRecycler.init(LinearLayoutManager(mContext),normalAdapter)
+        normalAdapter.addData(NewInSoreErrorNode())
 
     }
 
