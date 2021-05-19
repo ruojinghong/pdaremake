@@ -25,6 +25,9 @@ class NewInStoreDetailViewModel : BaseViewModel() {
 
     val detail = MutableLiveData<NewInStoreDetail>()
 
+    val errorNum = IntLiveData()
+    val normalNum = IntLiveData()
+
 
     var currentFocus = IntLiveData()
     //当前扫描过的店内码

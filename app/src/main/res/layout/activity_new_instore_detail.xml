@@ -6,6 +6,9 @@
             <variable
                 name="vm"
                 type="com.bigoffs.pdaremake.viewmodel.state.NewInStoreDetailViewModel" />
+        <variable
+            name="click"
+            type="com.bigoffs.pdaremake.ui.activity.NewInStoreDetailActivity.ProxyClick" />
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -249,23 +252,83 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <LinearLayout
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:onClick="@{ () -> click.openErrorBottomSheet()}">
+            <View
+                android:layout_marginLeft="10dp"
+                android:layout_width="4dp"
+                android:layout_height="14dp"
+                android:background="#FF3300"/>
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/errorRecycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/norMalRecycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+                android:text="差异数量"
+                android:textColor="@color/black"
+                android:layout_marginLeft="5dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:layout_height="wrap_content"
+                android:text="@{vm.errorNum.toString()}"
+                android:textColor="@color/black"
+                android:layout_marginLeft="5dp"
+                android:textStyle="bold"
+                android:layout_marginRight="5dp"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/unfold"
+                android:layout_marginRight="10dp"/>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="#eeeeee" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:onClick="@{ () -> click.openNormalBottomSheet()}">
+            <View
+                android:layout_marginLeft="10dp"
+                android:layout_width="4dp"
+                android:layout_height="14dp"
+                android:background="@color/colorPrimary"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="正常数量"
+                android:textColor="@color/black"
+                android:layout_marginLeft="5dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:layout_height="wrap_content"
+                android:text="@{vm.normalNum.toString()}"
+                android:textColor="@color/black"
+                android:layout_marginLeft="5dp"
+                android:textStyle="bold"
+                android:layout_marginRight="5dp"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/unfold"
+                android:layout_marginRight="10dp"/>
+        </LinearLayout>
 
 
     </LinearLayout>

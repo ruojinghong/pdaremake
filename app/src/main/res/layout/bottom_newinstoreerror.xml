@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="@color/white"
+       >
+        <View
+            android:layout_marginLeft="10dp"
+            android:layout_width="4dp"
+            android:layout_height="14dp"
+            android:background="#FF3300"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="差异数量"
+            android:textColor="@color/black"
+            android:layout_marginLeft="5dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/tv_bottom_error_num"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colororange"
+            android:layout_marginLeft="5dp"
+            android:textStyle="bold"
+            android:layout_marginRight="5dp"
+            android:text="0"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/unfold"
+            android:layout_marginRight="10dp"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#eeeeee" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:layout_marginLeft="10dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="货架号"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="条形号"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#eeeeee" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/dialog_recycleView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

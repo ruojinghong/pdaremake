@@ -2,30 +2,26 @@ package com.bigoffs.pdaremake.ui.activity
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.collection.arraySetOf
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseScanActivity
 import com.bigoffs.pdaremake.app.ext.init
 import com.bigoffs.pdaremake.app.ext.initTitle
-import com.bigoffs.pdaremake.app.ext.showMessage
-import com.bigoffs.pdaremake.app.util.SoundUtils
-import com.bigoffs.pdaremake.data.model.bean.NewInSoreErrorNode
 import com.bigoffs.pdaremake.data.model.bean.NewInStoreErrorBean
 import com.bigoffs.pdaremake.data.model.bean.NewInStoreNormalBean
-import com.bigoffs.pdaremake.databinding.ActivityMainBinding
-import com.bigoffs.pdaremake.databinding.ActivityMainBindingImpl
 import com.bigoffs.pdaremake.databinding.ActivityNewInstoreDetailBinding
-import com.bigoffs.pdaremake.ui.adapter.InStoreErrorAdapter
-import com.bigoffs.pdaremake.ui.adapter.InstoreAdapter
+import com.bigoffs.pdaremake.ui.adapter.NewInStoreErrorAdapter
+import com.bigoffs.pdaremake.ui.adapter.NewInStoreNormalAdapter
 import com.bigoffs.pdaremake.viewmodel.request.RequestInStroreDetailViewModel
 import com.bigoffs.pdaremake.viewmodel.state.NewInStoreDetailViewModel
-import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
-import com.chad.library.adapter.base.entity.SectionEntity
-import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import me.hgj.jetpackmvvm.ext.parseState
 
 /**
@@ -39,9 +35,14 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
 
     val requestInStroreDetailViewModel:RequestInStroreDetailViewModel by viewModels()
 
+    private lateinit var errorRecyclerView : RecyclerView
+    private lateinit var normalRecyclerView : RecyclerView
+    private lateinit var errorBottomsheetDialog : BottomSheetDialog
+    private lateinit var normalBottomsheetDialog : BottomSheetDialog
+
     //适配器
-    private val errorAdapter: InStoreErrorAdapter by lazy { InStoreErrorAdapter() }
-    private val normalAdapter: InStoreErrorAdapter by lazy { InStoreErrorAdapter() }
+    private val errorAdapter: NewInStoreErrorAdapter by lazy { NewInStoreErrorAdapter(arrayListOf()) }
+    private val normalAdapter: NewInStoreNormalAdapter by lazy { NewInStoreNormalAdapter(arrayListOf()) }
 
     override fun layoutId(): Int = R.layout.activity_new_instore_detail
 
@@ -50,6 +51,7 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
     }
 
     override fun onReceiverData(data: String) {
+
                 when(mViewModel.currentFocus.value){
                     //添加店内码
                     1->{
@@ -88,15 +90,33 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
                     3->{
                         mDatabind.etShelf.setText(data)
                         mDatabind.etUnique.requestFocus()
-                       errorAdapter.nodeAddData(errorAdapter.data[0],0,mViewModel.currenErrorList)
-                        normalAdapter.nodeAddData(normalAdapter.data[0],0,mViewModel.currenErrorList)
-
-                        mViewModel.currenErrorList.clear()
-
+//                        addNormalList(data)
+                        normalAdapter.data.forEach{
+                            if(it.shelf == ""){
+                                it.shelf = data
+                            }
+                        }
+                        normalAdapter.notifyDataSetChanged()
 
                     }
 
                 }
+    }
+
+    private fun initBottomSheet() {
+        var view1= View.inflate(this,R.layout.bottom_newinstoreerror,null)
+        errorRecyclerView  = view1.findViewById(R.id.dialog_recycleView)
+        errorRecyclerView.init(LinearLayoutManager(this),errorAdapter)
+        errorBottomsheetDialog = BottomSheetDialog(this,R.style.dialog)
+        errorBottomsheetDialog.setContentView(view1)
+        BottomSheetBehavior.from(view1.parent as View).peekHeight = getPeekHeight()
+
+        var view2= View.inflate(this,R.layout.bottom_newinstorenormal,null)
+        normalRecyclerView  = view2.findViewById(R.id.dialog_recycleView)
+        normalRecyclerView.init(LinearLayoutManager(this),normalAdapter)
+        normalBottomsheetDialog = BottomSheetDialog(this,R.style.dialog)
+        normalBottomsheetDialog.setContentView(view2)
+        BottomSheetBehavior.from(view2.parent as View).peekHeight = getPeekHeight()
     }
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -104,6 +124,7 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
 
 
         mDatabind.vm = mViewModel
+        mDatabind.click = ProxyClick()
         mDatabind.etUnique.setOnFocusChangeListener(){v,hasFocus ->
             if(hasFocus){
                 mViewModel.currentFocus.value = 1
@@ -131,10 +152,7 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
 
         requestInStroreDetailViewModel.getInStoreDetail(1)
 
-        mDatabind.errorRecycler.init(LinearLayoutManager(mContext),errorAdapter)
-        errorAdapter.addData(NewInSoreErrorNode())
-        mDatabind.norMalRecycler.init(LinearLayoutManager(mContext),normalAdapter)
-        normalAdapter.addData(NewInSoreErrorNode())
+        initBottomSheet();
 
     }
 
@@ -152,6 +170,8 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
                     for (map in storeDetail.task_list.sku_list){
                         if(storeDetail.in_store_list.sku_list.containsKey(map.key)){
                                 mViewModel.currentSkuNumMap.put(map.key,map.value - storeDetail.in_store_list.sku_list.get(map.key)!!)
+                        }else{
+                            mViewModel.currentSkuNumMap.put(map.key,map.value)
                         }
 
                     }
@@ -175,32 +195,73 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
 
             if(mViewModel.detail.value?.barcode_sku_map?.containsKey(barcode) == true){
                 val sku = mViewModel.detail.value?.barcode_sku_map?.get(barcode).toString()
-                if(mViewModel.detail.value!!.in_store_list.sku_list.get(sku) == null){
-                    mViewModel.currenErrorList.add(NewInStoreErrorBean(barcode))
-                }else{
+//                if(mViewModel.detail.value!!.in_store_list.sku_list.get(sku) == null){
+//                    addErrorList(barcode)
+//                }else{
                     if(mViewModel.currentSkuNumMap.containsKey(sku)){
                         var num = mViewModel.currentSkuNumMap.get(sku)
                         if (num != null) {
                             if(num <= 0){
-                                mViewModel.currenErrorList.add(NewInStoreErrorBean(barcode))
+                                addErrorList(barcode)
                             }else{
                                 num--?.let { mViewModel.currentSkuNumMap.put(sku, it) }
-                                mViewModel.currenNormalList.add(NewInStoreNormalBean("",mDatabind.etUnique.text.toString(),barcode,mViewModel.detail.value!!.in_store_list.sku_list.get(sku)!!))
+
+                                normalAdapter.data.forEach{
+                                    if(it.barcode == barcode){
+                                        it.num++
+                                        normalAdapter.notifyDataSetChanged()
+                                        return
+                                    }
+                                }
+
+                                normalAdapter.addData(NewInStoreNormalBean("",barcode,mDatabind.etUnique.text.toString(),1))
                             }
                         }
 
                     }else{
-                        mViewModel.currenErrorList.add(NewInStoreErrorBean(barcode))
+                        addErrorList(barcode)
                     }
 
-                }
+//                }
             }else{
-                mViewModel.currenErrorList.add(NewInStoreErrorBean(barcode))
+                addErrorList(barcode)
 
             }
-        LogUtils.i("normalsize${mViewModel.currenNormalList.size}++errorsize${mViewModel.currenErrorList.size}")
 
     }
+    /**
+     * 弹窗高度，默认为屏幕高度的四分之三
+     * 子类可重写该方法返回peekHeight
+     *
+     * @return height
+     */
+    protected fun getPeekHeight(): Int {
+        val peekHeight = resources.displayMetrics.heightPixels
+        //设置弹窗高度为屏幕高度的3/4
+        return peekHeight - peekHeight / 3
+    }
 
+    fun addErrorList(barcode: String){
+        errorAdapter.addData(NewInStoreErrorBean(barcode))
+    }
+
+    fun addNormalList(shelf:String){
+        mViewModel.currenNormalList.forEach {
+            it.shelf = shelf
+        }
+        normalAdapter.addData(mViewModel.currenNormalList)
+        mViewModel.currenNormalList.clear()
+    }
+
+    inner class ProxyClick{
+        fun openErrorBottomSheet(){
+            errorBottomsheetDialog.show()
+        }
+        fun openNormalBottomSheet(){
+            normalBottomsheetDialog.show()
+
+        }
+
+    }
 
 }
