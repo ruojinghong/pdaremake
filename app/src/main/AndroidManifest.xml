@@ -15,18 +15,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pdaremake" >
-        <activity android:name=".NavMainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/FullscreenThemse">
-
-        </activity>
         <activity android:name=".ui.activity.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/FullscreenThemse">
 
 
         </activity>
-        <activity android:name=".ui.activity.SplashActivity" >
+        <activity android:name=".ui.activity.BottomSheetActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
