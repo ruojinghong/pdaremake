@@ -15,6 +15,5 @@ class NewInStoreNormalAdapter(data : ArrayList<NewInStoreNormalBean>) : BaseQuic
         holder.setText(R.id.tv_shelf,item.shelf)
         holder.setText(R.id.tv_unique,item.unique)
         holder.setText(R.id.tv_barcode,item.barcode)
-        holder.setText(R.id.tv_count,item.num.toString())
     }
 }

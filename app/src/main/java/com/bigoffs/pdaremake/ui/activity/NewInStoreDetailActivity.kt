@@ -206,15 +206,15 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
                             }else{
                                 num--?.let { mViewModel.currentSkuNumMap.put(sku, it) }
 
-                                normalAdapter.data.forEach{
-                                    if(it.barcode == barcode){
-                                        it.num++
-                                        normalAdapter.notifyDataSetChanged()
-                                        return
-                                    }
-                                }
+//                                normalAdapter.data.forEach{
+//                                    if(it.barcode == barcode){
+//                                        it.num++
+//                                        normalAdapter.notifyDataSetChanged()
+//                                        return
+//                                    }
+//                                }
 
-                                normalAdapter.addData(NewInStoreNormalBean("",barcode,mDatabind.etUnique.text.toString(),1))
+                                normalAdapter.addData(NewInStoreNormalBean("",barcode,mDatabind.etUnique.text.toString()))
                             }
                         }
 
