@@ -7,22 +7,18 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bigoffs.pdaremake.R
-import com.bigoffs.pdaremake.app.base.BaseFragment
 import com.bigoffs.pdaremake.app.base.BaseInStoreFragment
 import com.bigoffs.pdaremake.app.ext.*
 import com.bigoffs.pdaremake.app.weight.loadCallBack.ErrorCallback
-import com.bigoffs.pdaremake.databinding.FragmentPdaNewinstoreBinding
 import com.bigoffs.pdaremake.databinding.FragmentPdaTransferinstoreBinding
-import com.bigoffs.pdaremake.ui.activity.NewInStoreDetailActivity
+import com.bigoffs.pdaremake.ui.activity.NewInStoreByUniqueDetailActivity
 import com.bigoffs.pdaremake.ui.adapter.InstoreAdapter
 import com.bigoffs.pdaremake.viewmodel.request.RequestInstoreViewmodel
-import com.bigoffs.pdaremake.viewmodel.state.PdaNewInstoreViewModel
 import com.bigoffs.pdaremake.viewmodel.state.RfidQueryViewModel
 import com.blankj.utilcode.util.ConvertUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.kingja.loadsir.core.LoadService
 import com.yanzhenjie.recyclerview.SwipeRecyclerView
-import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.demo.app.weight.recyclerview.SpaceItemDecoration
 import me.hgj.jetpackmvvm.ext.parseState
 import me.hgj.jetpackmvvm.util.ActivityMessenger
@@ -165,6 +161,6 @@ class PdaTransferInstoreFragment : BaseInStoreFragment<RfidQueryViewModel,Fragme
     }
 
     override fun goInStoreDetail(code: String) {
-        ActivityMessenger.startActivity<NewInStoreDetailActivity>(requireActivity())
+        ActivityMessenger.startActivity<NewInStoreByUniqueDetailActivity>(requireActivity())
     }
 }

@@ -16,6 +16,7 @@ import me.hgj.jetpackmvvm.callback.livedata.StringLiveData
  *Desc:
  */
 class NewInStoreDetailViewModel : BaseViewModel() {
+    var taskNo = StringLiveData()
     //货品数
     var goodsCount  = IntLiveData()
     //已入库数

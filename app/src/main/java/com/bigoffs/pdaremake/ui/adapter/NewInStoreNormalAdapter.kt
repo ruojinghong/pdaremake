@@ -10,7 +10,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
  *Time:2021/5/19  4:16 下午
  *Desc:
  */
-class NewInStoreNormalAdapter(data : ArrayList<NewInStoreNormalBean>) : BaseQuickAdapter<NewInStoreNormalBean,BaseViewHolder>(R.layout.item_sheet2,data) {
+class NewInStoreNormalAdapter(data : MutableList<NewInStoreNormalBean>) : BaseQuickAdapter<NewInStoreNormalBean,BaseViewHolder>(R.layout.item_sheet2,data) {
     override fun convert(holder: BaseViewHolder, item: NewInStoreNormalBean) {
         holder.setText(R.id.tv_shelf,item.shelf)
         holder.setText(R.id.tv_unique,item.unique)

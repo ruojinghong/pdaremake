@@ -36,6 +36,7 @@
             android:layout_marginRight="5dp"
             android:text="0"/>
         <ImageView
+            android:id="@+id/iv_unfold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/unfold"
@@ -66,14 +67,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="商品编码"
+            android:text="条形码"
             android:textColor="@color/colorPrimary"
             android:textStyle="bold"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="数量"
+            android:text="店内码"
             android:textColor="@color/colorPrimary"
             android:textStyle="bold"/>
 

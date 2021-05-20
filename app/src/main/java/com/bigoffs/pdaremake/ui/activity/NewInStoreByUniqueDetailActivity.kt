@@ -1,8 +1,11 @@
 package com.bigoffs.pdaremake.ui.activity
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.collection.arraySetOf
 import androidx.lifecycle.Observer
@@ -12,6 +15,7 @@ import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseScanActivity
 import com.bigoffs.pdaremake.app.ext.init
 import com.bigoffs.pdaremake.app.ext.initTitle
+import com.bigoffs.pdaremake.data.model.bean.InStoreBean
 import com.bigoffs.pdaremake.data.model.bean.NewInStoreErrorBean
 import com.bigoffs.pdaremake.data.model.bean.NewInStoreNormalBean
 import com.bigoffs.pdaremake.databinding.ActivityNewInstoreDetailBinding
@@ -29,7 +33,7 @@ import me.hgj.jetpackmvvm.ext.parseState
  *Time:2021/5/10  22:18
  *Desc:新品入库detailactivity
  */
-class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, ActivityNewInstoreDetailBinding>() {
+class NewInStoreByUniqueDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, ActivityNewInstoreDetailBinding>() {
 
     val set = arraySetOf<String>()
 
@@ -40,6 +44,10 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
     private lateinit var errorBottomsheetDialog : BottomSheetDialog
     private lateinit var normalBottomsheetDialog : BottomSheetDialog
 
+    private lateinit var errorBottomSheetNum : TextView
+    private lateinit var normalBottomSheetNum : TextView
+    lateinit var task : InStoreBean
+
     //适配器
     private val errorAdapter: NewInStoreErrorAdapter by lazy { NewInStoreErrorAdapter(arrayListOf()) }
     private val normalAdapter: NewInStoreNormalAdapter by lazy { NewInStoreNormalAdapter(arrayListOf()) }
@@ -49,6 +57,8 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
     override fun setStatusBar() {
         initTitle(false, biaoti = "新品入库")
     }
+
+
 
     override fun onReceiverData(data: String) {
 
@@ -80,7 +90,7 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
                         }else{
                             mViewModel.currentBarCodeSet.add(data)
                             mDatabind.etBarcode.setText(data)
-                            addErrorOrNormalList(data)
+                            addErrorOrNormalList("29aaaaaaa")
                             mDatabind.etUnique.requestFocus()
 
                         }
@@ -109,13 +119,22 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
         errorRecyclerView.init(LinearLayoutManager(this),errorAdapter)
         errorBottomsheetDialog = BottomSheetDialog(this,R.style.dialog)
         errorBottomsheetDialog.setContentView(view1)
+        view1.findViewById<ImageView>(R.id.iv_unfold).setOnClickListener{
+            errorBottomsheetDialog.dismiss()
+        }
+
+        errorBottomSheetNum = view1.findViewById(R.id.tv_bottom_error_num)
         BottomSheetBehavior.from(view1.parent as View).peekHeight = getPeekHeight()
 
         var view2= View.inflate(this,R.layout.bottom_newinstorenormal,null)
         normalRecyclerView  = view2.findViewById(R.id.dialog_recycleView)
+        view2.findViewById<ImageView>(R.id.iv_unfold).setOnClickListener{
+            normalBottomsheetDialog.dismiss()
+        }
         normalRecyclerView.init(LinearLayoutManager(this),normalAdapter)
         normalBottomsheetDialog = BottomSheetDialog(this,R.style.dialog)
         normalBottomsheetDialog.setContentView(view2)
+        normalBottomSheetNum = view2.findViewById(R.id.tv_bottom_normal_num)
         BottomSheetBehavior.from(view2.parent as View).peekHeight = getPeekHeight()
     }
 
@@ -125,6 +144,11 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
 
         mDatabind.vm = mViewModel
         mDatabind.click = ProxyClick()
+        task = intent.getParcelableExtra<InStoreBean>("task")!!
+        if(task != null){
+            mViewModel.taskNo.value = "入库批次：${task.in_stock_no}"
+        }
+
         mDatabind.etUnique.setOnFocusChangeListener(){v,hasFocus ->
             if(hasFocus){
                 mViewModel.currentFocus.value = 1
@@ -162,8 +186,16 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
         requestInStroreDetailViewModel.detail.observe(this, Observer {
 
                 parseState(it,{ storeDetail ->
-                    mViewModel.goodsCount.value = storeDetail.task_list.unique_code_list.size+storeDetail.in_store_list.unique_code_list.size
-                    mViewModel.inStoreCount.value = storeDetail.in_store_list.unique_code_list.size
+                    var allNum : Int = 0
+                    storeDetail.task_list.sku_list.forEach{ map ->
+                        allNum += map.value
+                    }
+                    mViewModel.goodsCount.value = allNum
+                    var alReadyNum : Int = 0
+                    storeDetail.in_store_list.sku_list.forEach{ map ->
+                        alReadyNum += map.value
+                    }
+                    mViewModel.inStoreCount.value = alReadyNum
                     mViewModel.thisCount.value = 0
                     mViewModel.detail.value = storeDetail
                     mViewModel.alReadyInStoreSet.addAll(storeDetail.in_store_list.unique_code_list)
@@ -215,6 +247,8 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
 //                                }
 
                                 normalAdapter.addData(NewInStoreNormalBean("",barcode,mDatabind.etUnique.text.toString()))
+                                mViewModel.normalNum.value = normalAdapter.data.size
+                                normalBottomSheetNum.text = mViewModel.normalNum.value.toString()
                             }
                         }
 
@@ -227,6 +261,8 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
                 addErrorList(barcode)
 
             }
+
+        mViewModel.thisCount.value = errorAdapter.data.size+normalAdapter.data.size
 
     }
     /**
@@ -243,6 +279,8 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
 
     fun addErrorList(barcode: String){
         errorAdapter.addData(NewInStoreErrorBean(barcode))
+        mViewModel.errorNum.value = errorAdapter.data.size
+        errorBottomSheetNum.text = mViewModel.errorNum.value.toString()
     }
 
     fun addNormalList(shelf:String){
@@ -261,6 +299,67 @@ class NewInStoreDetailActivity : BaseScanActivity<NewInStoreDetailViewModel, Act
             normalBottomsheetDialog.show()
 
         }
+        fun onDelete(){
+            deleteItem("29aaaaaaa")
+        }
+
+    }
+
+    fun deleteItem(barcode : String){
+        val errorIterator = errorAdapter.data.iterator()
+        while (errorIterator.hasNext()){
+            var next = errorIterator.next()
+            if(next.unique == barcode){
+                    errorIterator.remove()
+                errorAdapter.notifyDataSetChanged()
+                updateNum()
+                return
+            }
+        }
+        val normalIterator = normalAdapter.data.iterator()
+        while (normalIterator.hasNext()){
+            var next = normalIterator.next()
+            if(next.barcode == barcode){
+                normalIterator.remove()
+                normalAdapter.notifyDataSetChanged()
+                updateNum()
+                return
+
+            }
+        }
+
+
+//        var position = -1
+//        errorList@ for(i in errorAdapter.data.indices){
+//            if(errorAdapter.data[i].unique == barcode){
+//                position = i
+//                break@errorList
+//            }
+//            if(position >= 0){
+//                errorAdapter.data.removeAt(position)
+//            }
+//
+//
+//
+//        }
+//         errorAdapter.data.forEach { errorData ->
+//            if(errorData.unique  == barcode){
+//                position = errorData.
+//            }
+//
+//        }
+
+        beep()
+
+    }
+
+    private fun updateNum() {
+        mViewModel.thisCount.value = errorAdapter.data.size+normalAdapter.data.size
+        normalBottomSheetNum.text = normalAdapter.data.size.toString()
+        mViewModel.normalNum.value = normalAdapter.data.size
+        errorBottomSheetNum.text = errorAdapter.data.size.toString()
+        mViewModel.errorNum.value = errorAdapter.data.size
+
 
     }
 

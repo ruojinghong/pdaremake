@@ -8,7 +8,7 @@
                 type="com.bigoffs.pdaremake.viewmodel.state.NewInStoreDetailViewModel" />
         <variable
             name="click"
-            type="com.bigoffs.pdaremake.ui.activity.NewInStoreDetailActivity.ProxyClick" />
+            type="com.bigoffs.pdaremake.ui.activity.NewInStoreByUniqueDetailActivity.ProxyClick" />
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -57,7 +57,7 @@
                 android:layout_marginTop="5dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title"
-                android:text="DH-3232333-22332"
+                android:text="@{vm.taskNo}"
                 android:gravity="bottom"
                 android:textColor="#999999" />
 
@@ -347,7 +347,8 @@
                 android:text="剔除货品"
                 android:textColor="@color/black"
                 android:gravity="center"
-                android:background="@color/white"/>
+                android:background="@color/white"
+                android:onClick="@{()->click.onDelete()}"/>
             <TextView
                 android:id="@+id/tv_right"
                 android:layout_width="0dp"
