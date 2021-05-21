@@ -23,4 +23,8 @@
 
     <color name="transparent">#00ffffff</color>
 
+
+    <color name="wyze_input_border_color">#7E8D92</color>
+    <color name="wyze_text_color">#666666</color>
+
 </resources>

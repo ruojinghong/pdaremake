@@ -55,4 +55,16 @@
         <!--选择菜单的高度/屏幕高度 占比， 默认0.5-->
         <attr name="ddm_menuHeightPercent" format="float" />
     </declare-styleable>
+
+
+    <declare-styleable name="WpkEditText">
+        <attr name="input_style">
+            <enum name="custom_style" value="0" />
+            <enum name="clear_style_dark" value="1" />
+            <enum name="clear_style_light" value="2" />
+            <enum name="hide_style_dark" value="3" />
+            <enum name="hide_style_light" value="4" />
+            <enum name="count_style" value="5" />
+        </attr>
+    </declare-styleable>
 </resources>
