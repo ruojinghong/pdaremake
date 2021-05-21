@@ -2,8 +2,10 @@ package com.bigoffs.pdaremake.viewmodel.request
 
 import androidx.lifecycle.MutableLiveData
 import com.bigoffs.pdaremake.app.network.apiService
+import com.bigoffs.pdaremake.data.model.bean.ApiResponse
 import com.bigoffs.pdaremake.data.model.bean.NewInStoreDetail
 import com.bigoffs.pdaremake.data.model.bean.User
+import com.blankj.utilcode.util.LogUtils
 import com.google.gson.Gson
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.ext.request
@@ -20,6 +22,7 @@ import okhttp3.RequestBody
 class RequestInStroreDetailViewModel : BaseViewModel() {
 
     var detail = MutableLiveData<ResultState<NewInStoreDetail>>()
+    var uploadResult = MutableLiveData<ResultState<Any>>()
 
 
     fun getInStoreDetail(instoreId: Int) {
@@ -34,6 +37,23 @@ class RequestInStroreDetailViewModel : BaseViewModel() {
             true,//是否显示等待框，，默认false不显示 可以默认不传
             "加载中..."//等待框内容，可以默认不填请求网络中...
         )
+    }
+
+    fun upload(inStoreId:String,batchType : Int,dataList:String){
+        val map = HashMap<String, Any>()
+        map.put("in_store_id",inStoreId)
+        map.put("batch_type",batchType)
+        map.put("data_list",dataList)
+        LogUtils.i("----------",Gson().toJson(map))
+        val requestBody: RequestBody =
+            RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))
+        request(
+            { apiService.newInStoreByUnique(requestBody) }//请求体
+            , uploadResult,//请求的返回结果，请求成功与否都会改变该值，在Activity或fragment中监听回调结果，具体可看loginActivity中的回调
+            true,//是否显示等待框，，默认false不显示 可以默认不传
+            "加载中..."//等待框内容，可以默认不填请求网络中...
+        )
+
     }
 
 }

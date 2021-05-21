@@ -74,4 +74,10 @@ interface ApiService {
     suspend fun getInStoreDetail(
         @Body  body : RequestBody
     ):ApiResponse<NewInStoreDetail>
+
+
+    @POST("/v1/inStore/save")
+    suspend fun newInStoreByUnique(
+        @Body  body : RequestBody
+    ):ApiResponse<Any>
 }

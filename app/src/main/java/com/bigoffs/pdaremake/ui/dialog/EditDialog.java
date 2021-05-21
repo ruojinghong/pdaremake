@@ -99,7 +99,7 @@ public class EditDialog extends Dialog{
                     mTextChangeListener.afterTextChanged(s);
                 }
 
-                tvTextNum.setText(s.length()+"/"+limitNum);
+//                tvTextNum.setText(s.length()+"/"+limitNum);
 //                if(s.length()>limitNum){
 //                    tbRight.setEnabled(false);
 //                    tbRight.setTextColor(getContext().getResources().getColor(R.color.wyze_off_disabled));
@@ -271,7 +271,6 @@ public class EditDialog extends Dialog{
     @Override
     public void show() {
         super.show();
-        etContent.requestFocus();
         etContent.setSelection(etContent.getText().toString().length());
     }
 
@@ -308,6 +307,10 @@ public class EditDialog extends Dialog{
 
         void afterTextChanged(Editable s);
 
+    }
+
+    public String genContentText(){
+        return etContent.getText().toString().trim();
     }
 
 }

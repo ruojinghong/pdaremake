@@ -48,7 +48,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:text="取消入库"
                 android:gravity="right"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/colorPrimary"
+                android:onClick="@{ () -> click.onCancel()}"/>
 
             <TextView
                 android:id="@+id/tv_no"
@@ -359,7 +360,7 @@
                 android:textColor="@color/white"
                 android:gravity="center"
                 android:background="@color/colorPrimary"
-              />
+              android:onClick="@{ () -> click.onUpload()}"/>
 
 
         </LinearLayout>

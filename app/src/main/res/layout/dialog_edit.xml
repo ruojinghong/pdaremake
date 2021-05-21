@@ -52,7 +52,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="6dp"
                 android:text="24/24"
-                android:textColor="#6A737D"/>
+                android:textColor="#6A737D"
+                android:visibility="gone"/>
 
         </RelativeLayout>
 
@@ -77,8 +78,8 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/colorGray" />
+            android:layout_height="0.5px"
+            android:background="#eeeeee" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -100,9 +101,10 @@
 
             <View
                 android:id="@+id/view_stand"
-                android:layout_width="1px"
+                android:layout_width="0.5px"
+                android:background="#eeeeee"
                 android:layout_height="match_parent"
-                android:background="@color/colorGray" />
+                 />
 
             <TextView
                 android:id="@+id/tb_right"
@@ -111,8 +113,8 @@
                 android:layout_height="wrap_content"
                 android:padding="15dp"
                 android:gravity="center"
-                android:text="确定"
-                android:textColor="#1C9E90"
+                android:text="剔除"
+                android:textColor="@color/colorPrimary"
                 android:textSize="15sp" />
         </LinearLayout>
 
