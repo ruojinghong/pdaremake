@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="#f5f5f5">
+            <include layout="@layout/common_title_bar_arrow"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="部分已入库"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="超量无法入库货品明细"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="#FF6600"
+                android:textSize="16dp"
+
+                />
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </HorizontalScrollView>
+
+
+
+
+
+
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:id="@+id/tv_save"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimary"
+            android:text="保存为TXT"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:textColor="@color/white"
+            />
+    </RelativeLayout>
+    
+</layout>
