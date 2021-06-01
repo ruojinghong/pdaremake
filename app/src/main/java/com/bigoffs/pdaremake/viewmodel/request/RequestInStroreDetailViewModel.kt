@@ -1,9 +1,11 @@
 package com.bigoffs.pdaremake.viewmodel.request
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.bigoffs.pdaremake.app.network.apiService
 import com.bigoffs.pdaremake.data.model.bean.ApiResponse
 import com.bigoffs.pdaremake.data.model.bean.NewInStoreDetail
+import com.bigoffs.pdaremake.data.model.bean.NewInStoreNormalBean
 import com.bigoffs.pdaremake.data.model.bean.User
 import com.blankj.utilcode.util.LogUtils
 import com.google.gson.Gson
@@ -39,7 +41,7 @@ class RequestInStroreDetailViewModel : BaseViewModel() {
         )
     }
 
-    fun upload(inStoreId:String,batchType : Int,dataList:String){
+    fun upload(inStoreId:String,batchType : Int,dataList:List<NewInStoreNormalBean>){
         val map = HashMap<String, Any>()
         map.put("in_store_id",inStoreId)
         map.put("batch_type",batchType)

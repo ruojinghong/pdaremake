@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.TextView
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.ext.setAdapterAnimation
+import com.bigoffs.pdaremake.app.util.DeviceUtil
 import com.bigoffs.pdaremake.app.util.SettingUtil
 import com.bigoffs.pdaremake.data.model.bean.InStoreBean
 import com.chad.library.adapter.base.BaseDelegateMultiAdapter
@@ -32,12 +33,15 @@ class InstoreAdapter(data: MutableList<InStoreBean>?,private var type:Int) :
                holder.setText(R.id.tv_warehouse,"仓库：${ware_name}")
                holder.setText(R.id.tv_make_data,"生成时间：${created_at}")
                holder.setText(R.id.tv_count,"共${total_num}件，已入${final_num}件")
+               holder.setVisible(R.id.tv_go_rfid_detail,false)
            }else{
+               //调拨入库
                holder.setText(R.id.tv_no,order_no)
                holder.setText(R.id.tv_supplier,"调出方：${out_ware_name}")
                holder.setText(R.id.tv_warehouse,"调入方：${in_ware_name}")
                holder.setText(R.id.tv_make_data,"发货时间：${created_at}")
                holder.setText(R.id.tv_count,"共${total_num}件，已入${final_num}件")
+               holder.setVisible(R.id.tv_go_rfid_detail,DeviceUtil.isRfidDevice())
            }
 
        }

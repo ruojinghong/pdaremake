@@ -11,6 +11,7 @@ import com.bigoffs.pdaremake.app.base.BaseInStoreFragment
 import com.bigoffs.pdaremake.app.ext.*
 import com.bigoffs.pdaremake.app.weight.loadCallBack.ErrorCallback
 import com.bigoffs.pdaremake.databinding.FragmentPdaNewinstoreBinding
+import com.bigoffs.pdaremake.ui.activity.NewInStoreByBarCodeDetailActivity
 import com.bigoffs.pdaremake.ui.activity.NewInStoreByUniqueDetailActivity
 import com.bigoffs.pdaremake.ui.adapter.InstoreAdapter
 import com.bigoffs.pdaremake.viewmodel.request.RequestInstoreViewmodel
@@ -69,7 +70,7 @@ class PdaNewInstoreFragment : BaseInStoreFragment<PdaNewInstoreViewModel,Fragmen
 
         }
 
-        mViewModel.currentCodeText.value = select[0]
+        mViewModel.currentCodeType.value = select[0]
 
         //状态页配置
         loadsir = loadServiceInit(swipeRefresh) {
@@ -98,13 +99,22 @@ class PdaNewInstoreFragment : BaseInStoreFragment<PdaNewInstoreViewModel,Fragmen
         articleAdapter.setOnItemChildClickListener{adapter, view, position ->
                 when(view.id){
                         R.id.tv_go_detail ->{
-                            ActivityMessenger
-                                .startActivity<NewInStoreByUniqueDetailActivity>(requireActivity(),
-                                    Pair("task",articleAdapter.data[position])
-                                )
+                            if(mViewModel.currentCodeType.value == "条形码"){
+                                ActivityMessenger
+                                    .startActivity<NewInStoreByBarCodeDetailActivity>(requireActivity(),
+                                        Pair("task",articleAdapter.data[position])
+                                    )
+                            }else{
+                                ActivityMessenger
+                                    .startActivity<NewInStoreByUniqueDetailActivity>(requireActivity(),
+                                        Pair("task",articleAdapter.data[position])
+                                    )
+                            }
+
                         }
                 }
         }
+
 
     }
 
@@ -113,7 +123,7 @@ class PdaNewInstoreFragment : BaseInStoreFragment<PdaNewInstoreViewModel,Fragmen
         if (position >= select.size) {
             return
         }
-        mViewModel.currentCodeText.value = select[position]
+        mViewModel.currentCodeType.value = select[position]
 
     }
 
@@ -166,6 +176,22 @@ class PdaNewInstoreFragment : BaseInStoreFragment<PdaNewInstoreViewModel,Fragmen
     }
 
     override fun goInStoreDetail(code: String) {
+        requestInstoreViewmodel.getNewInstoreList("1",getSearchType().toString(),code,true)
+    }
+
+    fun getSearchType():Int{
+        return when(mViewModel.currentCodeType.value){
+            "条形码"->{
+                1
+            }
+            "供应商"->{
+                2
+            }
+            //入库批次
+            else ->{
+                3
+            }
+        }
 
     }
 }

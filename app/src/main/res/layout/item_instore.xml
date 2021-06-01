@@ -49,15 +49,35 @@
             android:gravity="right"
             android:text="共200件"
             android:textColor="@color/black"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="10dp">
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/tv_go_rfid_detail"
+                android:text="RFID入库"
+                android:gravity="center"
+                android:layout_width="66dp"
+                android:layout_height="32dp"
+                android:layout_gravity="right"
+                android:background="@color/colorPrimary"
+                android:visibility="gone"/>
         <TextView
-            android:layout_marginTop="10dp"
             android:id="@+id/tv_go_detail"
+            android:layout_marginLeft="20dp"
             android:text="入库"
             android:gravity="center"
             android:layout_width="66dp"
             android:layout_height="32dp"
             android:layout_gravity="right"
             android:background="@color/colorPrimary"/>
+        </LinearLayout>
 
 
 

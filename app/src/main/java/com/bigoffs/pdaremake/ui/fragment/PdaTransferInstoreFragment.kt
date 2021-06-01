@@ -69,7 +69,7 @@ class PdaTransferInstoreFragment : BaseInStoreFragment<RfidQueryViewModel,Fragme
 
         }
 
-        mViewModel.currentCodeText.value = select[0]
+        mViewModel.currentCodeType.value = select[0]
 
 
         //状态页配置
@@ -102,6 +102,9 @@ class PdaTransferInstoreFragment : BaseInStoreFragment<RfidQueryViewModel,Fragme
                 R.id.tv_go_detail ->{
                     showMessage(articleAdapter.data[position].admin_name)
                 }
+                R.id.tv_go_rfid_detail ->{
+                    showMessage(articleAdapter.data[position].admin_name)
+                }
             }
         }
     }
@@ -111,7 +114,7 @@ class PdaTransferInstoreFragment : BaseInStoreFragment<RfidQueryViewModel,Fragme
         if (position >= select.size) {
             return
         }
-        mViewModel.currentCodeText.value = select[position]
+        mViewModel.currentCodeType.value = select[position]
 
     }
 
@@ -161,6 +164,22 @@ class PdaTransferInstoreFragment : BaseInStoreFragment<RfidQueryViewModel,Fragme
     }
 
     override fun goInStoreDetail(code: String) {
-        ActivityMessenger.startActivity<NewInStoreByUniqueDetailActivity>(requireActivity())
+        requestInstoreViewmodel.getNewInstoreList("2",getSearchType().toString(),code,true)
+    }
+
+    fun getSearchType():Int{
+        return when(mViewModel.currentCodeType.value){
+            "店内码"->{
+                4
+            }
+            "箱号"->{
+                5
+            }
+            //调拨单号
+            else ->{
+                6
+            }
+        }
+
     }
 }

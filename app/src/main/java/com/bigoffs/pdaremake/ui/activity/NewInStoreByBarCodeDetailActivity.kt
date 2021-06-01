@@ -19,11 +19,13 @@ import com.bigoffs.pdaremake.app.ext.initTitle
 import com.bigoffs.pdaremake.data.model.bean.InStoreBean
 import com.bigoffs.pdaremake.data.model.bean.NewInStoreErrorBean
 import com.bigoffs.pdaremake.data.model.bean.NewInStoreNormalBean
+import com.bigoffs.pdaremake.databinding.ActivityNewInstoreByBarcodeDetailBinding
 import com.bigoffs.pdaremake.databinding.ActivityNewInstoreDetailBinding
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreErrorAdapter
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreNormalAdapter
 import com.bigoffs.pdaremake.ui.dialog.EditDialog
 import com.bigoffs.pdaremake.ui.dialog.HintDialog
+import com.bigoffs.pdaremake.ui.dialog.InputDialog
 import com.bigoffs.pdaremake.viewmodel.request.RequestInStroreDetailViewModel
 import com.bigoffs.pdaremake.viewmodel.state.NewInStoreDetailViewModel
 import com.blankj.utilcode.util.LogUtils
@@ -36,10 +38,10 @@ import me.hgj.jetpackmvvm.ext.parseState
 /**
  *User:Kirito
  *Time:2021/5/10  22:18
- *Desc:新品入库detailactivity
+ *Desc:新品入库(条形码)detailactivity
  */
-class NewInStoreByUniqueDetailActivity :
-    BaseScanActivity<NewInStoreDetailViewModel, ActivityNewInstoreDetailBinding>() {
+class NewInStoreByBarCodeDetailActivity :
+    BaseScanActivity<NewInStoreDetailViewModel, ActivityNewInstoreByBarcodeDetailBinding>() {
 
     val set = arraySetOf<String>()
 
@@ -74,24 +76,24 @@ class NewInStoreByUniqueDetailActivity :
         }else{
             when (mViewModel.currentFocus.value) {
                 //添加店内码
-                1 -> {
-                    if (mViewModel.currentUniqueSet.contains(data)) {
-
-                        ToastUtils.showShort("店内码已存在")
-                        beep()
-
-                    } else {
-                        mViewModel.currentUniqueSet.add(data)
-                        if (mViewModel.alReadyInStoreSet.contains(data)) {
-                            beep()
-                            ToastUtils.showShort("店内码已入库")
-                        } else {
-                            mDatabind.etUnique.setText(data)
-                            mDatabind.etBarcode.requestFocus()
-                        }
-
-                    }
-                }
+//                1 -> {
+//                    if (mViewModel.currentUniqueSet.contains(data)) {
+//
+//                        ToastUtils.showShort("店内码已存在")
+//                        beep()
+//
+//                    } else {
+//                        mViewModel.currentUniqueSet.add(data)
+//                        if (mViewModel.alReadyInStoreSet.contains(data)) {
+//                            beep()
+//                            ToastUtils.showShort("店内码已入库")
+//                        } else {
+//                            mDatabind.etUnique.setText(data)
+//                            mDatabind.etBarcode.requestFocus()
+//                        }
+//
+//                    }
+//                }
                 //添加条形码
                 2 -> {
                     if (mViewModel.currentBarCodeSet.contains(data)) {
@@ -100,8 +102,19 @@ class NewInStoreByUniqueDetailActivity :
                     } else {
                         mViewModel.currentBarCodeSet.add(data)
                         mDatabind.etBarcode.setText(data)
+                        InputDialog.create(this)
+                         .setTitle("test")
+                            .setOnClickListener(object : InputDialog.OnHintDialogListener{
+                                override fun onClickOk(content: String?) {
+                                    ToastUtils.showShort(content)
+                                }
+
+                                override fun onClickCancel() {
+
+                                }
+                            })
                         addErrorOrNormalList("29aaaaaaa")
-                        mDatabind.etUnique.requestFocus()
+                        mDatabind.etBarcode.requestFocus()
 
                     }
 
@@ -109,7 +122,7 @@ class NewInStoreByUniqueDetailActivity :
                 //添加货架号
                 3 -> {
                     mDatabind.etShelf.setText(data)
-                    mDatabind.etUnique.requestFocus()
+                    mDatabind.etBarcode.requestFocus()
 //                        addNormalList(data)
                     normalAdapter.data.forEach {
                         if (it.shelf_code == "") {
@@ -162,14 +175,6 @@ class NewInStoreByUniqueDetailActivity :
             mViewModel.taskNo.value = "入库批次：${task.in_stock_no}"
         }
 
-        mDatabind.etUnique.setOnFocusChangeListener() { v, hasFocus ->
-            if (hasFocus) {
-                mViewModel.currentFocus.value = 1
-                mDatabind.devideUnique.setBackgroundColor(Color.parseColor("#0033cc"))
-            } else {
-                mDatabind.devideUnique.setBackgroundColor(Color.parseColor("#EEEEEE"))
-            }
-        }
         mDatabind.etBarcode.setOnFocusChangeListener() { v, hasFocus ->
             if (hasFocus) {
                 mViewModel.currentFocus.value = 2
@@ -288,7 +293,7 @@ class NewInStoreByUniqueDetailActivity :
                             NewInStoreNormalBean(
                                 "",
                                 barcode,
-                                mDatabind.etUnique.text.toString()
+                              ""
                             )
                         )
                         mViewModel.normalNum.value = normalAdapter.data.size

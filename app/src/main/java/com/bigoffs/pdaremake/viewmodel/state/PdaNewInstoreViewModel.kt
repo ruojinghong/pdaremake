@@ -10,6 +10,7 @@ import me.hgj.jetpackmvvm.callback.livedata.StringLiveData
  */
 class PdaNewInstoreViewModel : BaseViewModel() {
 
+    var currentCodeType = StringLiveData()
     var currentCodeText = StringLiveData()
 
 

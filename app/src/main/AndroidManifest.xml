@@ -43,6 +43,7 @@
         <activity android:name=".ui.activity.NewInStoreByUniqueDetailActivity"
             android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".ui.activity.InStoreResultActivity" />
+        <activity android:name=".ui.activity.NewInStoreByBarCodeDetailActivity" />
     </application>
 
 </manifest>
