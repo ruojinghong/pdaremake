@@ -34,6 +34,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
 import me.hgj.jetpackmvvm.ext.parseState
+import org.w3c.dom.Text
 
 /**
  *User:Kirito
@@ -54,7 +55,7 @@ class NewInStoreByBarCodeDetailActivity :
 
     private lateinit var errorBottomSheetNum: TextView
     private lateinit var normalBottomSheetNum: TextView
-    lateinit var task: InStoreBean
+     var task:InStoreBean? = null
     private lateinit var editDialog: EditDialog
 
 
@@ -62,7 +63,7 @@ class NewInStoreByBarCodeDetailActivity :
     private val errorAdapter: NewInStoreErrorAdapter by lazy { NewInStoreErrorAdapter(arrayListOf()) }
     private val normalAdapter: NewInStoreNormalAdapter by lazy { NewInStoreNormalAdapter(arrayListOf()) }
 
-    override fun layoutId(): Int = R.layout.activity_new_instore_detail
+    override fun layoutId(): Int = R.layout.activity_new_instore_by_barcode_detail
 
     override fun setStatusBar() {
         initTitle(false, biaoti = "新品入库")
@@ -102,20 +103,7 @@ class NewInStoreByBarCodeDetailActivity :
                     } else {
                         mViewModel.currentBarCodeSet.add(data)
                         mDatabind.etBarcode.setText(data)
-                        InputDialog.create(this)
-                         .setTitle("test")
-                            .setOnClickListener(object : InputDialog.OnHintDialogListener{
-                                override fun onClickOk(content: String?) {
-                                    ToastUtils.showShort(content)
-                                }
-
-                                override fun onClickCancel() {
-
-                                }
-                            })
                         addErrorOrNormalList("29aaaaaaa")
-                        mDatabind.etBarcode.requestFocus()
-
                     }
 
                 }
@@ -154,6 +142,8 @@ class NewInStoreByBarCodeDetailActivity :
 
         var view2 = View.inflate(this, R.layout.bottom_newinstorenormal, null)
         normalRecyclerView = view2.findViewById(R.id.dialog_recycleView)
+        view2.findViewById<TextView>(R.id.title2).setText("商品编码")
+        view2.findViewById<TextView>(R.id.title3).setText("数量")
         view2.findViewById<ImageView>(R.id.iv_unfold).setOnClickListener {
             normalBottomsheetDialog.dismiss()
         }
@@ -170,10 +160,10 @@ class NewInStoreByBarCodeDetailActivity :
 
         mDatabind.vm = mViewModel
         mDatabind.click = ProxyClick()
-        task = intent.getParcelableExtra<InStoreBean>("task")!!
-        if (task != null) {
-            mViewModel.taskNo.value = "入库批次：${task.in_stock_no}"
-        }
+        task = intent.getParcelableExtra<InStoreBean>("task")
+
+        mViewModel.taskNo.value = "入库批次：${task?.in_stock_no}"
+
 
         mDatabind.etBarcode.setOnFocusChangeListener() { v, hasFocus ->
             if (hasFocus) {
@@ -278,37 +268,54 @@ class NewInStoreByBarCodeDetailActivity :
                 if (num != null) {
                     if (num <= 0) {
                         addErrorList(barcode)
+                        showErrorDialog(barcode,"没有可入库的数量")
+
                     } else {
-                        num--?.let { mViewModel.currentSkuNumMap.put(sku, it) }
+                        InputDialog.create(this)
+                            .setTitle("条形码${barcode}")
+                            .setRightBtnText("确定")
+                            .setOnClickListener(object : InputDialog.OnHintDialogListener{
+                                override fun onClickOk(content: String) {
+                                    val inputNum = content.toInt()
+                                    if (num!! < inputNum){
+                                        beep()
+                                        ToastUtils.showShort("${barcode}条码已超量入库，请及时联系买手确认")
+                                        mViewModel.currentBarCodeSet.remove(barcode)
+                                    }else{
+                                        num = num!!- inputNum
+//                                        mViewModel.currentSkuNumMap.put(sku, num!!)
+                                        normalAdapter.addData(
+                                            NewInStoreNormalBean(
+                                                "",
+                                                barcode,
+                                                content
+                                            )
+                                        )
+                                        mViewModel.normalNum.value = normalAdapter.data.size
+                                        normalBottomSheetNum.text = mViewModel.normalNum.value.toString()
+                                    }
 
-//                                normalAdapter.data.forEach{
-//                                    if(it.barcode == barcode){
-//                                        it.num++
-//                                        normalAdapter.notifyDataSetChanged()
-//                                        return
-//                                    }
-//                                }
 
-                        normalAdapter.addData(
-                            NewInStoreNormalBean(
-                                "",
-                                barcode,
-                              ""
-                            )
-                        )
-                        mViewModel.normalNum.value = normalAdapter.data.size
-                        normalBottomSheetNum.text = mViewModel.normalNum.value.toString()
+                                }
+
+                                override fun onClickCancel() {
+
+                                }
+                            }).show()
+
+
                     }
                 }
 
             } else {
                 addErrorList(barcode)
+                showErrorDialog(barcode,"获取不到商品信息")
             }
 
 //                }
         } else {
             addErrorList(barcode)
-
+            showErrorDialog(barcode,"获取不到商品信息")
         }
 
         mViewModel.thisCount.value = errorAdapter.data.size + normalAdapter.data.size
@@ -366,6 +373,8 @@ class NewInStoreByBarCodeDetailActivity :
     }
 
     fun deleteItem(barcode: String) {
+        mViewModel.currentBarCodeSet.remove(barcode)
+        mViewModel.currentUniqueSet.remove(barcode)
         val errorIterator = errorAdapter.data.iterator()
         while (errorIterator.hasNext()) {
             var next = errorIterator.next()
@@ -423,6 +432,25 @@ class NewInStoreByBarCodeDetailActivity :
 
     fun upload(){
             var string = Gson().toJson(normalAdapter.data)
-       requestInStroreDetailViewModel.upload(task.in_stock_no,1,normalAdapter.data)
+       requestInStroreDetailViewModel.upload(task?.id.toString(),1,normalAdapter.data)
+    }
+
+    fun showErrorDialog(barcode: String,content:String){
+        HintDialog.create(this,HintDialog.STYLE_ONLY_OK).setTitle(barcode).setContent(content)
+            .setLeftBtnText("取消")
+            .setRightBtnText("删除")
+            .setDialogListener(object : HintDialog.OnHintDialogListener{
+            override fun onClickOk() {
+                deleteItem(barcode)
+            }
+
+            override fun onClickCancel() {
+
+            }
+
+            override fun onClickOther() {
+
+            }
+        }).show()
     }
 }

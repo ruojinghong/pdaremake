@@ -123,8 +123,8 @@ public class HintDialog extends Dialog {
             }
         });
 
-        setCancelable(false);
-        setCanceledOnTouchOutside(false);
+        setCancelable(true);
+        setCanceledOnTouchOutside(true);
 
 //        mHintDialog = this;
     }

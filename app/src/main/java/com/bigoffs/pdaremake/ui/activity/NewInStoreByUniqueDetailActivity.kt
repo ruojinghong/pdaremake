@@ -100,7 +100,7 @@ class NewInStoreByUniqueDetailActivity :
                     } else {
                         mViewModel.currentBarCodeSet.add(data)
                         mDatabind.etBarcode.setText(data)
-                        addErrorOrNormalList("29aaaaaaa")
+                        addErrorOrNormalList(data)
                         mDatabind.etUnique.requestFocus()
 
                     }
@@ -361,6 +361,8 @@ class NewInStoreByUniqueDetailActivity :
     }
 
     fun deleteItem(barcode: String) {
+        mViewModel.currentBarCodeSet.remove(barcode)
+        mViewModel.currentUniqueSet.remove(barcode)
         val errorIterator = errorAdapter.data.iterator()
         while (errorIterator.hasNext()) {
             var next = errorIterator.next()
