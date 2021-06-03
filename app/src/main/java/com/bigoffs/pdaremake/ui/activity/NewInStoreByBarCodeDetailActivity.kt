@@ -101,8 +101,14 @@ class NewInStoreByBarCodeDetailActivity :
                         beep()
                         ToastUtils.showShort("条形码已存在")
                     } else {
-                        mViewModel.currentBarCodeSet.add(data)
-                        mDatabind.etBarcode.setText(data)
+                        for (i in normalAdapter.data.indices){
+                            if(normalAdapter.data[i].equals(data)){
+                                showChangeNumDialog(i,data)
+                                return
+                            }
+
+                        }
+
                         addErrorOrNormalList("29aaaaaaa")
                     }
 
@@ -291,7 +297,11 @@ class NewInStoreByBarCodeDetailActivity :
                                                 content
                                             )
                                         )
-                                        mViewModel.normalNum.value = normalAdapter.data.size
+                                        var count = 0
+                                        for (i in normalAdapter.data){
+                                            count += i.unique_code.toInt()
+                                        }
+                                        mViewModel.normalNum.value = count
                                         normalBottomSheetNum.text = mViewModel.normalNum.value.toString()
                                     }
 
@@ -452,5 +462,34 @@ class NewInStoreByBarCodeDetailActivity :
 
             }
         }).show()
+    }
+
+    fun showChangeNumDialog(position:Int,barcode:String){
+
+
+        InputDialog.create(this)
+            .setTitle("条形码${barcode}已被扫描，是否需要修改数量")
+            .setRightBtnText("确定")
+            .setOnClickListener(object : InputDialog.OnHintDialogListener{
+                override fun onClickOk(content: String) {
+                  normalAdapter.data[position].unique_code = content
+                    var num = 0
+                        for (i in normalAdapter.data){
+                            num += i.unique_code.toInt()
+                        }
+                        mViewModel.normalNum.value = num
+                        normalBottomSheetNum.text =  num.toString()
+                    normalAdapter.notifyDataSetChanged()
+
+
+
+
+                }
+
+                override fun onClickCancel() {
+
+                }
+            }).show()
+
     }
 }
