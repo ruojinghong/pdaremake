@@ -5,7 +5,7 @@
     <data>
             <variable
                 name="vm"
-                type="com.bigoffs.pdaremake.viewmodel.state.NewInStoreDetailViewModel" />
+                type="com.bigoffs.pdaremake.viewmodel.state.NewInStoreBarcodeDetailViewModel" />
         <variable
             name="click"
             type="com.bigoffs.pdaremake.ui.activity.NewInStoreByBarCodeDetailActivity.ProxyClick" />

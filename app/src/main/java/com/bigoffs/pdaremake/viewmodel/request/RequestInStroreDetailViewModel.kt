@@ -3,10 +3,7 @@ package com.bigoffs.pdaremake.viewmodel.request
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.bigoffs.pdaremake.app.network.apiService
-import com.bigoffs.pdaremake.data.model.bean.ApiResponse
-import com.bigoffs.pdaremake.data.model.bean.NewInStoreDetail
-import com.bigoffs.pdaremake.data.model.bean.NewInStoreNormalBean
-import com.bigoffs.pdaremake.data.model.bean.User
+import com.bigoffs.pdaremake.data.model.bean.*
 import com.blankj.utilcode.util.LogUtils
 import com.google.gson.Gson
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
@@ -44,7 +41,26 @@ class RequestInStroreDetailViewModel : BaseViewModel() {
     fun upload(inStoreId:String,batchType : Int,dataList:List<NewInStoreNormalBean>){
         val map = HashMap<String, Any>()
         map.put("in_store_id",inStoreId)
-        map.put("batch_type",batchType)
+        //1是店内码
+        map.put("batch_type",1)
+        map.put("data_list",dataList)
+        LogUtils.i("----------",Gson().toJson(map))
+        val requestBody: RequestBody =
+            RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))
+        request(
+            { apiService.newInStoreByUnique(requestBody) }//请求体
+            , uploadResult,//请求的返回结果，请求成功与否都会改变该值，在Activity或fragment中监听回调结果，具体可看loginActivity中的回调
+            true,//是否显示等待框，，默认false不显示 可以默认不传
+            "加载中..."//等待框内容，可以默认不填请求网络中...
+        )
+
+    }
+
+    fun uploadBarcode(inStoreId:String,batchType : Int,dataList:List<NewInStoreNormalBarcodeBean>){
+        val map = HashMap<String, Any>()
+        map.put("in_store_id",inStoreId)
+        //2是条码
+        map.put("batch_type",2)
         map.put("data_list",dataList)
         LogUtils.i("----------",Gson().toJson(map))
         val requestBody: RequestBody =

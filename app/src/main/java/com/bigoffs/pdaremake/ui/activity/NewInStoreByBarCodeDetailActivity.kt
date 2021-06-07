@@ -18,15 +18,18 @@ import com.bigoffs.pdaremake.app.ext.init
 import com.bigoffs.pdaremake.app.ext.initTitle
 import com.bigoffs.pdaremake.data.model.bean.InStoreBean
 import com.bigoffs.pdaremake.data.model.bean.NewInStoreErrorBean
+import com.bigoffs.pdaremake.data.model.bean.NewInStoreNormalBarcodeBean
 import com.bigoffs.pdaremake.data.model.bean.NewInStoreNormalBean
 import com.bigoffs.pdaremake.databinding.ActivityNewInstoreByBarcodeDetailBinding
 import com.bigoffs.pdaremake.databinding.ActivityNewInstoreDetailBinding
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreErrorAdapter
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreNormalAdapter
+import com.bigoffs.pdaremake.ui.adapter.NewInStoreNormalBarcodeAdapter
 import com.bigoffs.pdaremake.ui.dialog.EditDialog
 import com.bigoffs.pdaremake.ui.dialog.HintDialog
 import com.bigoffs.pdaremake.ui.dialog.InputDialog
 import com.bigoffs.pdaremake.viewmodel.request.RequestInStroreDetailViewModel
+import com.bigoffs.pdaremake.viewmodel.state.NewInStoreBarcodeDetailViewModel
 import com.bigoffs.pdaremake.viewmodel.state.NewInStoreDetailViewModel
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
@@ -42,7 +45,7 @@ import org.w3c.dom.Text
  *Desc:新品入库(条形码)detailactivity
  */
 class NewInStoreByBarCodeDetailActivity :
-    BaseScanActivity<NewInStoreDetailViewModel, ActivityNewInstoreByBarcodeDetailBinding>() {
+    BaseScanActivity<NewInStoreBarcodeDetailViewModel, ActivityNewInstoreByBarcodeDetailBinding>() {
 
     val set = arraySetOf<String>()
 
@@ -61,7 +64,7 @@ class NewInStoreByBarCodeDetailActivity :
 
     //适配器
     private val errorAdapter: NewInStoreErrorAdapter by lazy { NewInStoreErrorAdapter(arrayListOf()) }
-    private val normalAdapter: NewInStoreNormalAdapter by lazy { NewInStoreNormalAdapter(arrayListOf()) }
+    private val normalAdapter: NewInStoreNormalBarcodeAdapter by lazy { NewInStoreNormalBarcodeAdapter(arrayListOf()) }
 
     override fun layoutId(): Int = R.layout.activity_new_instore_by_barcode_detail
 
@@ -102,7 +105,7 @@ class NewInStoreByBarCodeDetailActivity :
                         ToastUtils.showShort("条形码已存在")
                     } else {
                         for (i in normalAdapter.data.indices){
-                            if(normalAdapter.data[i].equals(data)){
+                            if(normalAdapter.data[i].barcode == "29aaaaaaa"){
                                 showChangeNumDialog(i,data)
                                 return
                             }
@@ -288,18 +291,19 @@ class NewInStoreByBarCodeDetailActivity :
                                         ToastUtils.showShort("${barcode}条码已超量入库，请及时联系买手确认")
                                         mViewModel.currentBarCodeSet.remove(barcode)
                                     }else{
-                                        num = num!!- inputNum
-//                                        mViewModel.currentSkuNumMap.put(sku, num!!)
                                         normalAdapter.addData(
-                                            NewInStoreNormalBean(
+                                            NewInStoreNormalBarcodeBean(
                                                 "",
                                                 barcode,
-                                                content
+                                                content,
+                                                maxNum = num!!
                                             )
                                         )
+                                        num = num!!- inputNum
+//                                        mViewModel.currentSkuNumMap.put(sku, num!!)
                                         var count = 0
                                         for (i in normalAdapter.data){
-                                            count += i.unique_code.toInt()
+                                            count += i.num.toInt()
                                         }
                                         mViewModel.normalNum.value = count
                                         normalBottomSheetNum.text = mViewModel.normalNum.value.toString()
@@ -442,7 +446,7 @@ class NewInStoreByBarCodeDetailActivity :
 
     fun upload(){
             var string = Gson().toJson(normalAdapter.data)
-       requestInStroreDetailViewModel.upload(task?.id.toString(),1,normalAdapter.data)
+       requestInStroreDetailViewModel.uploadBarcode(task?.id.toString(),2,normalAdapter.data)
     }
 
     fun showErrorDialog(barcode: String,content:String){
@@ -472,17 +476,20 @@ class NewInStoreByBarCodeDetailActivity :
             .setRightBtnText("确定")
             .setOnClickListener(object : InputDialog.OnHintDialogListener{
                 override fun onClickOk(content: String) {
-                  normalAdapter.data[position].unique_code = content
-                    var num = 0
+                    var maxNum = normalAdapter.data[position].maxNum
+                    if(content.toInt() <=  normalAdapter.data[position].maxNum){
+                        normalAdapter.data[position].num = content
+                        var num = 0
                         for (i in normalAdapter.data){
-                            num += i.unique_code.toInt()
+                            num += i.num.toInt()
                         }
                         mViewModel.normalNum.value = num
                         normalBottomSheetNum.text =  num.toString()
-                    normalAdapter.notifyDataSetChanged()
-
-
-
+                        normalAdapter.notifyDataSetChanged()
+                    }else{
+                        beep()
+                        ToastUtils.showShort("${barcode}条码已超量入库，请及时联系买手确认")
+                    }
 
                 }
 
