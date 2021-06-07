@@ -105,14 +105,14 @@ class NewInStoreByBarCodeDetailActivity :
                         ToastUtils.showShort("条形码已存在")
                     } else {
                         for (i in normalAdapter.data.indices){
-                            if(normalAdapter.data[i].barcode == "29aaaaaaa"){
+                            if(normalAdapter.data[i].barcode == data){
                                 showChangeNumDialog(i,data)
                                 return
                             }
 
                         }
-
-                        addErrorOrNormalList("29aaaaaaa")
+                            //测试数据  29aaaaaaa
+                        addErrorOrNormalList(data)
                     }
 
                 }
