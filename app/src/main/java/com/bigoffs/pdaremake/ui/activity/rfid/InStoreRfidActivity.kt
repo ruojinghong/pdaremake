@@ -1,6 +1,7 @@
 package com.bigoffs.pdaremake.ui.activity.rfid
 
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.Toolbar
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -8,7 +9,10 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseActivity
 import com.bigoffs.pdaremake.app.base.BaseInStoreFragment
+import com.bigoffs.pdaremake.app.base.BaseRfidFActivity
 import com.bigoffs.pdaremake.app.base.BaseScanActivity
+import com.bigoffs.pdaremake.app.event.RfidViewModel
+import com.bigoffs.pdaremake.app.ext.addOnEditorActionListener
 import com.bigoffs.pdaremake.app.ext.bindViewPager2
 import com.bigoffs.pdaremake.app.ext.init
 import com.bigoffs.pdaremake.app.ext.initTitle
@@ -26,7 +30,7 @@ import net.lucode.hackware.magicindicator.MagicIndicator
  *Time:2021/4/29  22:11
  *Desc:入库activity
  */
-class InStoreActivity : BaseScanActivity<BaseViewModel, ActivityPadInstoreBinding>() {
+class InStoreRfidActivity : BaseRfidFActivity<BaseViewModel, ActivityPadInstoreBinding>() {
 
     lateinit var view_pager: ViewPager2
     lateinit var magic_indicator: MagicIndicator
@@ -40,12 +44,9 @@ class InStoreActivity : BaseScanActivity<BaseViewModel, ActivityPadInstoreBindin
         initTitle(false, biaoti = "入库")
     }
 
-    override fun onReceiverData(data: String) {
-        (fragments.get(view_pager.currentItem) as BaseInStoreFragment<BaseViewModel, ViewDataBinding>).goInStoreDetail(data)
-    }
+
 
     override fun initView(savedInstanceState: Bundle?) {
-        super.initView(savedInstanceState)
         view_pager = findViewById(R.id.view_pager)
         magic_indicator = findViewById(R.id.magic_indicator)
 
@@ -56,6 +57,27 @@ class InStoreActivity : BaseScanActivity<BaseViewModel, ActivityPadInstoreBindin
         view_pager.offscreenPageLimit = fragments.size
 
 
+
+    }
+
+    private fun onReceiverData( data :String){
+        (fragments[view_pager.currentItem] as BaseInStoreFragment<BaseViewModel, ViewDataBinding>).goInStoreDetail(data)
+
+    }
+
+    override fun onFinish(data: String) {
+
+    }
+
+    override fun initScan() {
+        rfidViewModel.initData()
+        rfidViewModel.setReadDataModel(0)
+        rfidViewModel.setMode(1)
+        rfidViewModel.setCurrentSetting(RfidViewModel.Setting.stockRead)
+        rfidViewModel.setListener(this)
+    }
+
+    override fun readOrClose() {
 
     }
 

@@ -1,6 +1,7 @@
 package com.bigoffs.pdaremake.ui.fragment
 
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -9,6 +10,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseInStoreFragment
 import com.bigoffs.pdaremake.app.ext.*
+import com.bigoffs.pdaremake.app.util.DeviceUtil
 import com.bigoffs.pdaremake.app.weight.loadCallBack.ErrorCallback
 import com.bigoffs.pdaremake.databinding.FragmentPdaTransferinstoreBinding
 import com.bigoffs.pdaremake.ui.activity.NewInStoreByUniqueDetailActivity
@@ -105,6 +107,13 @@ class PdaTransferInstoreFragment : BaseInStoreFragment<RfidQueryViewModel,Fragme
                 R.id.tv_go_rfid_detail ->{
                     showMessage(articleAdapter.data[position].admin_name)
                 }
+            }
+        }
+
+        if(DeviceUtil.isRfidDevice()){
+            mDatabind.root.findViewById<EditText>(R.id.common_et).addOnEditorActionListener{
+
+                goInStoreDetail(it)
             }
         }
     }

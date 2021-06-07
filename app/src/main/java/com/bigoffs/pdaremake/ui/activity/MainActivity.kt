@@ -1,6 +1,5 @@
 package com.bigoffs.pdaremake.ui.activity
 
-import android.app.ActivityManager
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -16,7 +15,8 @@ import com.bigoffs.pdaremake.app.service.ScanServiceControl
 import com.bigoffs.pdaremake.databinding.ActivityNewMainBinding
 import com.bigoffs.pdaremake.ui.activity.rfid.RfidQueryActivity
 import com.bigoffs.pdaremake.ui.activity.pda.PdaQueryActivity
-import com.bigoffs.pdaremake.ui.activity.rfid.InStoreActivity
+import com.bigoffs.pdaremake.ui.activity.pda.InStoreActivity
+import com.bigoffs.pdaremake.ui.activity.rfid.InStoreRfidActivity
 import com.bigoffs.pdaremake.ui.adapter.MainAdapter
 import com.bigoffs.pdaremake.ui.customview.SpaceItemDecoration
 import com.bigoffs.pdaremake.viewmodel.state.MainViewModel
@@ -114,12 +114,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
      */
     fun initRfid() {
         val setting = findViewById<ImageButton>(R.id.iv_right_btn);
-        setting.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(p0: View?) {
-                showMessage("设置")
-            }
-
-        })
+        setting.setOnClickListener { showMessage("设置") }
         val scanService = ScanServiceControl.getScanService()
         scanService.init(this)
 
@@ -147,7 +142,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
             when (position) {
 
                 0 -> {
-                    ActivityMessenger.startActivity<InStoreActivity>(this)
+                    ActivityMessenger.startActivity<InStoreRfidActivity>(this)
                 }
                 4 -> {
                     startActivity(Intent(this, RfidQueryActivity::class.java))

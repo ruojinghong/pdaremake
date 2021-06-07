@@ -1,6 +1,7 @@
 package com.bigoffs.pdaremake.ui.fragment
 
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -9,9 +10,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseInStoreFragment
 import com.bigoffs.pdaremake.app.ext.*
+import com.bigoffs.pdaremake.app.util.DeviceUtil
 import com.bigoffs.pdaremake.app.weight.loadCallBack.ErrorCallback
 import com.bigoffs.pdaremake.databinding.FragmentPdaNewinstoreBinding
 import com.bigoffs.pdaremake.ui.activity.NewInStoreByBarCodeDetailActivity
+import com.bigoffs.pdaremake.ui.activity.NewInStoreByBarCodeDetailRfidActivity
 import com.bigoffs.pdaremake.ui.activity.NewInStoreByUniqueDetailActivity
 import com.bigoffs.pdaremake.ui.adapter.InstoreAdapter
 import com.bigoffs.pdaremake.viewmodel.request.RequestInstoreViewmodel
@@ -99,20 +102,42 @@ class PdaNewInstoreFragment : BaseInStoreFragment<PdaNewInstoreViewModel,Fragmen
         articleAdapter.setOnItemChildClickListener{adapter, view, position ->
                 when(view.id){
                         R.id.tv_go_detail ->{
-                            if(mViewModel.currentCodeType.value == "条形码"){
-                                ActivityMessenger
-                                    .startActivity<NewInStoreByBarCodeDetailActivity>(requireActivity(),
-                                        Pair("task",articleAdapter.data[position])
-                                    )
+                            if(DeviceUtil.isPdaDevice()){
+                                if(mViewModel.currentCodeType.value == "条形码"){
+                                    ActivityMessenger
+                                        .startActivity<NewInStoreByBarCodeDetailActivity>(requireActivity(),
+                                            Pair("task",articleAdapter.data[position])
+                                        )
+                                }else{
+                                    ActivityMessenger
+                                        .startActivity<NewInStoreByUniqueDetailActivity>(requireActivity(),
+                                            Pair("task",articleAdapter.data[position])
+                                        )
+                                }
                             }else{
-                                ActivityMessenger
-                                    .startActivity<NewInStoreByUniqueDetailActivity>(requireActivity(),
-                                        Pair("task",articleAdapter.data[position])
-                                    )
+                                if(mViewModel.currentCodeType.value == "条形码"){
+                                    ActivityMessenger
+                                        .startActivity<NewInStoreByBarCodeDetailRfidActivity>(requireActivity(),
+                                            Pair("task",articleAdapter.data[position])
+                                        )
+                                }else{
+                                    ActivityMessenger
+                                        .startActivity<NewInStoreByUniqueDetailActivity>(requireActivity(),
+                                            Pair("task",articleAdapter.data[position])
+                                        )
+                                }
                             }
+
 
                         }
                 }
+        }
+
+        if(DeviceUtil.isRfidDevice()){
+            mDatabind.root.findViewById<EditText>(R.id.common_et_new).addOnEditorActionListener{
+
+                goInStoreDetail(it)
+            }
         }
 
 
