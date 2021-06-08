@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AccelerateInterpolator
@@ -29,6 +30,7 @@ import com.bigoffs.pdaremake.app.weight.loadCallBack.EmptyCallback
 import com.bigoffs.pdaremake.app.weight.loadCallBack.ErrorCallback
 import com.bigoffs.pdaremake.app.weight.loadCallBack.LoadingCallback
 import com.bigoffs.pdaremake.app.weight.recyclerview.DefineLoadMoreView
+import com.blankj.utilcode.util.LogUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.kingja.loadsir.core.LoadService
@@ -199,6 +201,19 @@ fun EditText.addOnEditorActionListener(action: (String) -> Unit){
             }
             true
         }
+
+
+}
+
+//监听rfid信息扫描到输入框
+fun EditText.addOnNoneEditorActionListener(action: (String) -> Unit){
+    setOnEditorActionListener { p0, p1, p2 ->
+        LogUtils.i("----------------",p1)
+        if(p2.action == EditorInfo.IME_ACTION_NONE){
+            action(p0.text.toString().trim())
+        }
+        true
+    }
 
 
 }

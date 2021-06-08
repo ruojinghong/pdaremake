@@ -45,6 +45,8 @@
         <activity android:name=".ui.activity.InStoreResultActivity" />
         <activity android:name=".ui.activity.NewInStoreByBarCodeDetailActivity" />
         <activity android:name=".ui.activity.rfid.InStoreRfidActivity" />
+        <activity android:name=".ui.activity.NewInStoreByBarCodeDetailRfidActivity" />
+        <activity android:name=".ui.activity.NewInStoreByUniqueDetailRfidActivity" />
     </application>
 
 </manifest>

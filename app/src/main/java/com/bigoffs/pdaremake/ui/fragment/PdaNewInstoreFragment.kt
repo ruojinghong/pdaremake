@@ -16,6 +16,7 @@ import com.bigoffs.pdaremake.databinding.FragmentPdaNewinstoreBinding
 import com.bigoffs.pdaremake.ui.activity.NewInStoreByBarCodeDetailActivity
 import com.bigoffs.pdaremake.ui.activity.NewInStoreByBarCodeDetailRfidActivity
 import com.bigoffs.pdaremake.ui.activity.NewInStoreByUniqueDetailActivity
+import com.bigoffs.pdaremake.ui.activity.NewInStoreByUniqueDetailRfidActivity
 import com.bigoffs.pdaremake.ui.adapter.InstoreAdapter
 import com.bigoffs.pdaremake.viewmodel.request.RequestInstoreViewmodel
 import com.bigoffs.pdaremake.viewmodel.state.PdaNewInstoreViewModel
@@ -122,7 +123,7 @@ class PdaNewInstoreFragment : BaseInStoreFragment<PdaNewInstoreViewModel,Fragmen
                                         )
                                 }else{
                                     ActivityMessenger
-                                        .startActivity<NewInStoreByUniqueDetailActivity>(requireActivity(),
+                                        .startActivity<NewInStoreByUniqueDetailRfidActivity>(requireActivity(),
                                             Pair("task",articleAdapter.data[position])
                                         )
                                 }

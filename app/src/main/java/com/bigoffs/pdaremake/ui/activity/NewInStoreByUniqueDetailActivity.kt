@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -14,8 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseScanActivity
+import com.bigoffs.pdaremake.app.ext.addOnEditorActionListener
+import com.bigoffs.pdaremake.app.ext.addOnNoneEditorActionListener
 import com.bigoffs.pdaremake.app.ext.init
 import com.bigoffs.pdaremake.app.ext.initTitle
+import com.bigoffs.pdaremake.app.util.DeviceUtil
 import com.bigoffs.pdaremake.data.model.bean.InStoreBean
 import com.bigoffs.pdaremake.data.model.bean.NewInStoreErrorBean
 import com.bigoffs.pdaremake.data.model.bean.NewInStoreNormalBean
@@ -86,7 +90,7 @@ class NewInStoreByUniqueDetailActivity :
                             beep()
                             ToastUtils.showShort("店内码已入库")
                         } else {
-                            mDatabind.etUnique.setText(data)
+//                            mDatabind.etUnique.setText(data)
                             mDatabind.etBarcode.requestFocus()
                         }
 
@@ -99,7 +103,7 @@ class NewInStoreByUniqueDetailActivity :
                         ToastUtils.showShort("条形码已存在")
                     } else {
                         mViewModel.currentBarCodeSet.add(data)
-                        mDatabind.etBarcode.setText(data)
+//                        mDatabind.etBarcode.setText(data)
                         addErrorOrNormalList(data)
                         mDatabind.etUnique.requestFocus()
 
@@ -108,7 +112,7 @@ class NewInStoreByUniqueDetailActivity :
                 }
                 //添加货架号
                 3 -> {
-                    mDatabind.etShelf.setText(data)
+//                    mDatabind.etShelf.setText(data)
                     mDatabind.etUnique.requestFocus()
 //                        addNormalList(data)
                     normalAdapter.data.forEach {
@@ -206,6 +210,21 @@ class NewInStoreByUniqueDetailActivity :
                 }
 
             })
+
+        if(DeviceUtil.isRfidDevice()){
+            mDatabind.etBarcode.addOnNoneEditorActionListener{
+                mDatabind.etBarcode.setText("")
+                onReceiverData(it)
+            }
+            mDatabind.etShelf.addOnNoneEditorActionListener{
+                mDatabind.etShelf.setText("")
+                onReceiverData(it)
+            }
+            mDatabind.etUnique.addOnNoneEditorActionListener {
+                mDatabind.etUnique.setText("")
+                onReceiverData(it)
+            }
+        }
     }
 
     override fun createObserver() {

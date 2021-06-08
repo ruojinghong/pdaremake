@@ -17,6 +17,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import com.bigoffs.pdaremake.R;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.SizeUtils;
+import com.blankj.utilcode.util.ToastUtils;
 
 
 /**
@@ -196,10 +197,15 @@ public class WpkEditText extends AppCompatEditText {
             }
         }else if(inputStyle == COUNT_STYLE){
             if(!TextUtils.isEmpty(text)) {
-                count = Integer.parseInt(text.toString());
-                if(count > maxCount){
-                    count = maxCount;
+                try {
+                    count = Integer.parseInt(text.toString());
+                    if(count > maxCount){
+                        count = maxCount;
+                    }
+                }catch (Exception e){
+                    ToastUtils.showShort(e.getMessage());
                 }
+
             }
         }
     }
