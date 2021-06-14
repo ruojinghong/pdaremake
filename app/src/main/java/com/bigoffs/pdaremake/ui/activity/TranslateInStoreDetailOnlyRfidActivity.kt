@@ -1,36 +1,31 @@
 package com.bigoffs.pdaremake.ui.activity
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.text.Editable
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.viewModels
 import androidx.collection.arraySetOf
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseRfidFActivity
-import com.bigoffs.pdaremake.app.base.BaseScanActivity
+import com.bigoffs.pdaremake.app.event.RfidViewModel
 import com.bigoffs.pdaremake.app.ext.addOnNoneEditorActionListener
 import com.bigoffs.pdaremake.app.ext.init
 import com.bigoffs.pdaremake.app.ext.initTitle
 import com.bigoffs.pdaremake.app.util.DeviceUtil
-import com.bigoffs.pdaremake.data.model.bean.InStoreBean
-import com.bigoffs.pdaremake.data.model.bean.NewInStoreErrorBean
-import com.bigoffs.pdaremake.data.model.bean.NewInStoreNormalBean
-import com.bigoffs.pdaremake.databinding.ActivityNewInstoreDetailBinding
-import com.bigoffs.pdaremake.databinding.ActivityNewInstoreRfidDetailBinding
+import com.bigoffs.pdaremake.data.model.bean.*
+import com.bigoffs.pdaremake.databinding.ActivityTranslateInstoreOnlyrfidDetailBinding
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreErrorAdapter
-import com.bigoffs.pdaremake.ui.adapter.NewInStoreNormalAdapter
+import com.bigoffs.pdaremake.ui.adapter.NewInStoreNormalBarcodeAndUniqueAdapter
 import com.bigoffs.pdaremake.ui.dialog.EditDialog
 import com.bigoffs.pdaremake.ui.dialog.HintDialog
+import com.bigoffs.pdaremake.ui.dialog.InputDialog
 import com.bigoffs.pdaremake.viewmodel.request.RequestInStroreDetailViewModel
 import com.bigoffs.pdaremake.viewmodel.state.NewInStoreDetailViewModel
-import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -40,10 +35,10 @@ import me.hgj.jetpackmvvm.ext.parseState
 /**
  *User:Kirito
  *Time:2021/5/10  22:18
- *Desc:新品入库detailactivity
+ *Desc:调拨入库detailactivity
  */
-class NewInStoreByUniqueDetailRfidActivity :
-    BaseRfidFActivity<NewInStoreDetailViewModel, ActivityNewInstoreRfidDetailBinding>() {
+class TranslateInStoreDetailOnlyRfidActivity :
+    BaseRfidFActivity<NewInStoreDetailViewModel, ActivityTranslateInstoreOnlyrfidDetailBinding>() {
 
     val set = arraySetOf<String>()
 
@@ -56,78 +51,53 @@ class NewInStoreByUniqueDetailRfidActivity :
 
     private lateinit var errorBottomSheetNum: TextView
     private lateinit var normalBottomSheetNum: TextView
-    lateinit var task: InStoreBean
+    var task: InStoreBean? = null
     private lateinit var editDialog: EditDialog
 
 
     //适配器
     private val errorAdapter: NewInStoreErrorAdapter by lazy { NewInStoreErrorAdapter(arrayListOf()) }
-    private val normalAdapter: NewInStoreNormalAdapter by lazy { NewInStoreNormalAdapter(arrayListOf()) }
+    private val normalAdapter: NewInStoreNormalBarcodeAndUniqueAdapter by lazy {
+        NewInStoreNormalBarcodeAndUniqueAdapter(
+            arrayListOf()
+        )
+    }
 
-    override fun layoutId(): Int = R.layout.activity_new_instore_rfid_detail
+    override fun layoutId(): Int = R.layout.activity_translate_instore_onlyrfid_detail
 
     override fun setStatusBar() {
-        initTitle(false, biaoti = "新品入库")
+        initTitle(false, biaoti = "调拨入库")
     }
 
 
-     fun onReceiverData(data: String) {
+    fun onReceiverData(data: String) {
 
-        if(editDialog.isShowing){
-                editDialog.setContentText(data)
-        }else{
-            when (mViewModel.currentFocus.value) {
-                //添加店内码
-                1 -> {
-                    if (mViewModel.currentUniqueSet.contains(data)) {
+        if (editDialog.isShowing) {
+            editDialog.setContentText(data)
+        } else {
 
-                        ToastUtils.showShort("店内码已存在")
-                        beep()
 
-                    } else {
-                        mViewModel.currentUniqueSet.add(data)
-                        if (mViewModel.alReadyInStoreSet.contains(data)) {
-                            beep()
-                            ToastUtils.showShort("店内码已入库")
-                        } else {
-//                            mDatabind.etUnique.setText(data)
-                            mDatabind.etBarcode.requestFocus()
-                        }
-
-                    }
-                }
-                //添加条形码
-                2 -> {
-                    if (mViewModel.currentBarCodeSet.contains(data)) {
-                        beep()
-                        ToastUtils.showShort("条形码已存在")
-                    } else {
-                        mViewModel.currentBarCodeSet.add(data)
-//                        mDatabind.etBarcode.setText(data)
-                        addErrorOrNormalList(data)
-                        mDatabind.etUnique.requestFocus()
-
-                    }
-
-                }
-                //添加货架号
-                3 -> {
 //                    mDatabind.etShelf.setText(data)
-                    mDatabind.etUnique.requestFocus()
+
 //                        addNormalList(data)
-                    normalAdapter.data.forEach {
-                        if (it.shelf_code == "") {
-                            it.shelf_code = data
-                        }
-                    }
-                    normalAdapter.notifyDataSetChanged()
-
+            normalAdapter.data.forEach {
+                if (it.shelf_code == "") {
+                    it.shelf_code = data
                 }
-
             }
+            normalAdapter.notifyDataSetChanged()
+
+
         }
 
+        if (DeviceUtil.isRfidDevice()) {
 
+            mDatabind.etShelf.addOnNoneEditorActionListener {
+                mDatabind.etShelf.setText("")
+                onReceiverData(it)
+            }
+
+        }
     }
 
     private fun initBottomSheet() {
@@ -148,6 +118,8 @@ class NewInStoreByUniqueDetailRfidActivity :
         view2.findViewById<ImageView>(R.id.iv_unfold).setOnClickListener {
             normalBottomsheetDialog.dismiss()
         }
+        view2.findViewById<TextView>(R.id.title2).setText("商品编码")
+        view2.findViewById<TextView>(R.id.title3).setText("数量")
         normalRecyclerView.init(LinearLayoutManager(this), normalAdapter)
         normalBottomsheetDialog = BottomSheetDialog(this, R.style.dialog)
         normalBottomsheetDialog.setContentView(view2)
@@ -158,30 +130,15 @@ class NewInStoreByUniqueDetailRfidActivity :
     override fun initView(savedInstanceState: Bundle?) {
 
 
-
         mDatabind.vm = mViewModel
         mDatabind.click = ProxyClick()
-        task = intent.getParcelableExtra<InStoreBean>("task")!!
+        task = intent.getParcelableExtra<InStoreBean>("task")
         if (task != null) {
-            mViewModel.taskNo.value = "入库批次：${task.in_stock_no}"
+//            mViewModel.taskNo.value = "入库批次：${task.in_stock_no}"
+            mViewModel.taskNo.value = "入库批次："
         }
 
-        mDatabind.etUnique.setOnFocusChangeListener() { v, hasFocus ->
-            if (hasFocus) {
-                mViewModel.currentFocus.value = 1
-                mDatabind.devideUnique.setBackgroundColor(Color.parseColor("#0033cc"))
-            } else {
-                mDatabind.devideUnique.setBackgroundColor(Color.parseColor("#EEEEEE"))
-            }
-        }
-        mDatabind.etBarcode.setOnFocusChangeListener() { v, hasFocus ->
-            if (hasFocus) {
-                mViewModel.currentFocus.value = 2
-                mDatabind.devideBarcode.setBackgroundColor(Color.parseColor("#0033cc"))
-            } else {
-                mDatabind.devideBarcode.setBackgroundColor(Color.parseColor("#EEEEEE"))
-            }
-        }
+
         mDatabind.etShelf.setOnFocusChangeListener() { v, hasFocus ->
             if (hasFocus) {
                 mViewModel.currentFocus.value = 3
@@ -197,7 +154,7 @@ class NewInStoreByUniqueDetailRfidActivity :
         editDialog = EditDialog.create(mContext)
             .setTitle("请扫描剔除商品编码")
             .setHintText("请扫描店内码或条形码")
-            .setOnClickListener(object : EditDialog.OnHintDialogListener{
+            .setOnClickListener(object : EditDialog.OnHintDialogListener {
                 override fun onClickOk(content: String?) {
                     deleteItem(editDialog.genContentText())
                     editDialog.setContentText("")
@@ -206,25 +163,23 @@ class NewInStoreByUniqueDetailRfidActivity :
                 }
 
                 override fun onClickCancel() {
-                  editDialog.dismiss()
+                    editDialog.dismiss()
                 }
 
             })
 
-        if(DeviceUtil.isRfidDevice()){
-            mDatabind.etBarcode.addOnNoneEditorActionListener{
-                mDatabind.etBarcode.setText("")
-                onReceiverData(it)
-            }
-            mDatabind.etShelf.addOnNoneEditorActionListener{
+        if (DeviceUtil.isRfidDevice()) {
+
+            mDatabind.etShelf.addOnNoneEditorActionListener {
                 mDatabind.etShelf.setText("")
                 onReceiverData(it)
             }
-            mDatabind.etUnique.addOnNoneEditorActionListener {
-                mDatabind.etUnique.setText("")
-                onReceiverData(it)
-            }
+
         }
+
+
+
+
     }
 
     override fun createObserver() {
@@ -270,16 +225,17 @@ class NewInStoreByUniqueDetailRfidActivity :
 
         requestInStroreDetailViewModel.uploadResult.observe(this, Observer {
 
-            parseState(it,{
-               ToastUtils.showShort("入库成功")
-            },{ exception ->
-             ToastUtils.showShort(exception.errorMsg)
+            parseState(it, {
+                ToastUtils.showShort("入库成功")
+            }, { exception ->
+                ToastUtils.showShort(exception.errorMsg)
             })
         })
 
     }
 
     override fun onFinish(data: String) {
+        onReceiverData(data)
     }
 
 
@@ -295,37 +251,61 @@ class NewInStoreByUniqueDetailRfidActivity :
                 if (num != null) {
                     if (num <= 0) {
                         addErrorList(barcode)
+                        showErrorDialog(barcode, "没有可入库的数量")
+
                     } else {
-                        num--?.let { mViewModel.currentSkuNumMap.put(sku, it) }
+                        InputDialog.create(this)
+                            .setTitle("条形码${barcode}")
+                            .setRightBtnText("确定")
+                            .setOnClickListener(object : InputDialog.OnHintDialogListener {
+                                override fun onClickOk(content: String) {
+                                    val inputNum = content.toInt()
+                                    if (num!! < inputNum) {
+                                        beep()
+                                        ToastUtils.showShort("${barcode}条码已超量入库，请及时联系买手确认")
+                                        mViewModel.currentBarCodeSet.remove(barcode)
+                                    } else {
+                                        normalAdapter.addData(
+                                            NewInStoreNormalBarcodeAndUniqueBean(
+                                                "",
+                                                barcode,
+                                                "",
+                                                content,
+                                                maxNum = num!!
+                                            )
+                                        )
+                                        num = num!! - inputNum
+//                                        mViewModel.currentSkuNumMap.put(sku, num!!)
+                                        var count = 0
+                                        for (i in normalAdapter.data) {
+                                            count += i.num.toInt()
+                                        }
+                                        mViewModel.normalNum.value = count
+                                        normalBottomSheetNum.text =
+                                            mViewModel.normalNum.value.toString()
+                                    }
 
-//                                normalAdapter.data.forEach{
-//                                    if(it.barcode == barcode){
-//                                        it.num++
-//                                        normalAdapter.notifyDataSetChanged()
-//                                        return
-//                                    }
-//                                }
 
-                        normalAdapter.addData(
-                            NewInStoreNormalBean(
-                                "",
-                                barcode,
-                                mDatabind.etUnique.text.toString()
-                            )
-                        )
-                        mViewModel.normalNum.value = normalAdapter.data.size
-                        normalBottomSheetNum.text = mViewModel.normalNum.value.toString()
+                                }
+
+                                override fun onClickCancel() {
+
+                                }
+                            }).show()
+
+
                     }
                 }
 
             } else {
                 addErrorList(barcode)
+                showErrorDialog(barcode, "获取不到商品信息")
             }
 
 //                }
         } else {
             addErrorList(barcode)
-
+            showErrorDialog(barcode, "获取不到商品信息")
         }
 
         mViewModel.thisCount.value = errorAdapter.data.size + normalAdapter.data.size
@@ -350,13 +330,6 @@ class NewInStoreByUniqueDetailRfidActivity :
         errorBottomSheetNum.text = mViewModel.errorNum.value.toString()
     }
 
-    fun addNormalList(shelf: String) {
-        mViewModel.currenNormalList.forEach {
-            it.shelf_code = shelf
-        }
-        normalAdapter.addData(mViewModel.currenNormalList)
-        mViewModel.currenNormalList.clear()
-    }
 
     inner class ProxyClick {
         fun openErrorBottomSheet() {
@@ -372,11 +345,12 @@ class NewInStoreByUniqueDetailRfidActivity :
             editDialog.show()
 
         }
-        fun onCancel(){
+
+        fun onCancel() {
             finish()
         }
 
-        fun onUpload(){
+        fun onUpload() {
             upload()
         }
 
@@ -440,16 +414,96 @@ class NewInStoreByUniqueDetailRfidActivity :
 
     }
 
-    fun upload(){
-            var string = Gson().toJson(normalAdapter.data)
-       requestInStroreDetailViewModel.upload(task.in_stock_no,1,normalAdapter.data)
+    fun upload() {
+        var string = Gson().toJson(normalAdapter.data)
+        requestInStroreDetailViewModel.uploadBarcodeAndUnuqie(
+            task?.in_stock_no,
+            3,
+            normalAdapter.data
+        )
+    }
+
+
+    fun showChangeNumDialog(position: Int, barcode: String) {
+
+
+        InputDialog.create(this)
+            .setTitle("条形码${barcode}已被扫描，是否需要修改数量")
+            .setRightBtnText("确定")
+            .setOnClickListener(object : InputDialog.OnHintDialogListener {
+                override fun onClickOk(content: String) {
+                    var maxNum = normalAdapter.data[position].maxNum
+                    if (content.toInt() <= normalAdapter.data[position].maxNum) {
+                        normalAdapter.data[position].num = content
+                        var num = 0
+                        for (i in normalAdapter.data) {
+                            num += i.num.toInt()
+                        }
+                        mViewModel.normalNum.value = num
+                        normalBottomSheetNum.text = num.toString()
+                        normalAdapter.notifyDataSetChanged()
+                    } else {
+                        beep()
+                        ToastUtils.showShort("${barcode}条码已超量入库，请及时联系买手确认")
+                    }
+
+                }
+
+                override fun onClickCancel() {
+
+                }
+            }).show()
+
+    }
+
+    fun showErrorDialog(barcode: String, content: String) {
+        HintDialog.create(this, HintDialog.STYLE_ONLY_OK).setTitle(barcode).setContent(content)
+            .setLeftBtnText("取消")
+            .setRightBtnText("删除")
+            .setDialogListener(object : HintDialog.OnHintDialogListener {
+                override fun onClickOk() {
+                    deleteItem(barcode)
+                }
+
+                override fun onClickCancel() {
+
+                }
+
+                override fun onClickOther() {
+
+                }
+            }).show()
     }
 
     override fun initScan() {
-
+        rfidViewModel.initData()
+        rfidViewModel.setReadDataModel(0)
+        rfidViewModel.setMode(1)
+        rfidViewModel.setCurrentSetting(RfidViewModel.Setting.stockRead)
+        rfidViewModel.setListenerProtectModel(this)
     }
 
     override fun readOrClose() {
+            if(mDatabind.scanDesc.text == "点击扫描"){
 
+
+                rfidViewModel.startReadRfid()
+                mDatabind.rlScan.setBackgroundResource(R.mipmap.scan_open)
+                //                mActivity.tbCommon.setVisibility(View.INVISIBLE);
+                mDatabind.scanDesc.text = "点击关闭"
+            }else{
+                rfidViewModel.stopReadRfid()
+                mDatabind.rlScan.setBackgroundResource(R.mipmap.scan_close)
+                //            mActivity.tbCommon.setVisibility(View.VISIBLE);
+                mDatabind.scanDesc.text = "点击扫描"
+
+            }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (mDatabind.scanDesc.text.toString() == "停止扫描"){
+            readOrClose()
+        }
     }
 }

@@ -63,7 +63,7 @@
                 android:id="@+id/tv_go_rfid_detail"
                 android:text="RFID入库"
                 android:gravity="center"
-                android:layout_width="66dp"
+                android:layout_width="80dp"
                 android:layout_height="32dp"
                 android:layout_gravity="right"
                 android:background="@color/colorPrimary"
@@ -73,7 +73,7 @@
             android:layout_marginLeft="20dp"
             android:text="入库"
             android:gravity="center"
-            android:layout_width="66dp"
+            android:layout_width="80dp"
             android:layout_height="32dp"
             android:layout_gravity="right"
             android:background="@color/colorPrimary"/>

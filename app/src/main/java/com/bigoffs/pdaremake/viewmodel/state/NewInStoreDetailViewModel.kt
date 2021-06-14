@@ -23,6 +23,7 @@ class NewInStoreDetailViewModel : BaseViewModel() {
     var inStoreCount  = IntLiveData()
     //本次入库数
     var thisCount  = IntLiveData()
+    var scanNum  = IntLiveData()
 
     val detail = MutableLiveData<NewInStoreDetail>()
 
@@ -47,6 +48,7 @@ class NewInStoreDetailViewModel : BaseViewModel() {
     val currenNormalList = arrayListOf<NewInStoreNormalBean>()
     val alReadyInStoreSet = arraySetOf<String>()
     val currentSkuNumMap = hashMapOf<String,Int>()
+
 
 
 

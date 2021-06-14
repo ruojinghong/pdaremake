@@ -13,10 +13,7 @@ import com.bigoffs.pdaremake.app.ext.*
 import com.bigoffs.pdaremake.app.util.DeviceUtil
 import com.bigoffs.pdaremake.app.weight.loadCallBack.ErrorCallback
 import com.bigoffs.pdaremake.databinding.FragmentPdaTransferinstoreBinding
-import com.bigoffs.pdaremake.ui.activity.NewInStoreByBarCodeDetailActivity
-import com.bigoffs.pdaremake.ui.activity.NewInStoreByUniqueDetailActivity
-import com.bigoffs.pdaremake.ui.activity.TranslateInStoreByUniqueDetailActivity
-import com.bigoffs.pdaremake.ui.activity.TranslateInStoreByUniqueDetailRfidActivity
+import com.bigoffs.pdaremake.ui.activity.*
 import com.bigoffs.pdaremake.ui.adapter.InstoreAdapter
 import com.bigoffs.pdaremake.viewmodel.request.RequestInstoreViewmodel
 import com.bigoffs.pdaremake.viewmodel.state.RfidQueryViewModel
@@ -102,6 +99,7 @@ class PdaTransferInstoreFragment : BaseInStoreFragment<RfidQueryViewModel,Fragme
             requestInstoreViewmodel.getTransferInstoreList("","","",true)
         }
         articleAdapter.addChildClickViewIds(R.id.tv_go_detail)
+        articleAdapter.addChildClickViewIds(R.id.tv_go_rfid_detail)
         articleAdapter.setOnItemChildClickListener{adapter, view, position ->
             when(view.id){
                 R.id.tv_go_detail ->{
@@ -120,7 +118,10 @@ class PdaTransferInstoreFragment : BaseInStoreFragment<RfidQueryViewModel,Fragme
 
                 }
                 R.id.tv_go_rfid_detail ->{
-                    showMessage(articleAdapter.data[position].admin_name)
+                    ActivityMessenger
+                        .startActivity<TranslateInStoreDetailOnlyRfidActivity>(requireActivity(),
+                            Pair("task",articleAdapter.data[position])
+                        )
                 }
             }
         }

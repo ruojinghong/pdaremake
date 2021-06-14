@@ -8,7 +8,7 @@
                 type="com.bigoffs.pdaremake.viewmodel.state.NewInStoreDetailViewModel" />
         <variable
             name="click"
-            type="com.bigoffs.pdaremake.ui.activity.TranslateInStoreByUniqueDetailRfidActivity.ProxyClick" />
+            type="com.bigoffs.pdaremake.ui.activity.TranslateInStoreDetailOnlyRfidActivity.ProxyClick" />
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,8 +18,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/title"
-            >
+            android:layout_below="@+id/title">
             <LinearLayout
                 android:id="@+id/ll_content"
                 android:layout_width="match_parent"
@@ -27,7 +26,6 @@
                 android:background="#f5f5f5"
                 android:orientation="vertical"
                 android:layout_marginBottom="50dp">
-
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -74,89 +72,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="10dp"
-                    android:id="@+id/ll_unique"
-                    android:layout_width="match_parent"
-                    android:layout_height="36dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:gravity="center_vertical"
-                    android:background="@color/white">
-                    <RadioButton
-                        android:id="@+id/rb_unique"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="店内码"
-                        android:textColor="@color/black" />
-
-                    <EditText
-                        android:id="@+id/et_unique"
-                        android:layout_marginLeft="20dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="请扫描店内码"
-                        android:textColorHint="#c8c8c8"
-                        android:textColor="@color/black"
-                        android:background="@null"
-                        android:textSize="14dp"
-                        android:lines="1"/>
-
-
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/devide_unique"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="#eeeeee" />
-                <LinearLayout
-                    android:id="@+id/ll_barcode"
-                    android:layout_width="match_parent"
-                    android:layout_height="36dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:gravity="center_vertical"
-                    android:background="@color/white">
-                    <RadioButton
-                        android:id="@+id/rb_barcode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="条形码"
-                        android:textColor="@color/black" />
-
-                    <EditText
-                        android:id="@+id/et_barcode"
-                        android:layout_marginLeft="20dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="请扫描条形码"
-                        android:textColorHint="#c8c8c8"
-                        android:textColor="@color/black"
-                        android:background="@null"
-                        android:textSize="14dp"
-                        android:lines="1"/>
-
-
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/devide_barcode"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="#eeeeee" />
-                <LinearLayout
                     android:id="@+id/ll_shelf"
                     android:layout_width="match_parent"
                     android:layout_height="36dp"
@@ -169,7 +84,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="          货架号"
+                        android:text="货架号"
                         android:textColor="@color/black" />
 
                     <EditText
@@ -266,6 +181,31 @@
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_scan"
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@mipmap/scan_close"
+                    android:gravity="center_horizontal"
+                    android:onClick="readOrClose">
+                    <TextView
+                        android:id="@+id/tv_scan_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:text="@{vm.scanNum.toString()}"/>
+                    <TextView
+                        android:layout_marginTop="4dp"
+                        android:layout_below="@+id/tv_scan_num"
+                        android:id="@+id/scan_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="点击扫描"
+                        android:textSize="11dp"/>
+
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_marginTop="10dp"

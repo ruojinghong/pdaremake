@@ -49,6 +49,7 @@
         <activity android:name=".ui.activity.NewInStoreByUniqueDetailRfidActivity" />
         <activity android:name=".ui.activity.TranslateInStoreByUniqueDetailActivity" />
         <activity android:name=".ui.activity.TranslateInStoreByUniqueDetailRfidActivity" />
+        <activity android:name=".ui.activity.TranslateInStoreDetailOnlyRfidActivity" />
     </application>
 
 </manifest>

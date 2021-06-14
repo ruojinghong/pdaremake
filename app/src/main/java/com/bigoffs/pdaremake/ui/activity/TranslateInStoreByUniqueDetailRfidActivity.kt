@@ -66,7 +66,7 @@ class TranslateInStoreByUniqueDetailRfidActivity :
     private val errorAdapter: NewInStoreErrorAdapter by lazy { NewInStoreErrorAdapter(arrayListOf()) }
     private val normalAdapter: NewInStoreNormalBarcodeAndUniqueAdapter by lazy { NewInStoreNormalBarcodeAndUniqueAdapter(arrayListOf()) }
 
-    override fun layoutId(): Int = R.layout.activity_translate_instore_detail
+    override fun layoutId(): Int = R.layout.activity_translate_instore_detail_rfid
 
     override fun setStatusBar() {
         initTitle(false, biaoti = "调拨入库")
@@ -366,7 +366,6 @@ class TranslateInStoreByUniqueDetailRfidActivity :
     }
 
     override fun onFinish(data: String) {
-        TODO("Not yet implemented")
     }
 
 
