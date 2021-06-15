@@ -50,6 +50,7 @@
         <activity android:name=".ui.activity.TranslateInStoreByUniqueDetailActivity" />
         <activity android:name=".ui.activity.TranslateInStoreByUniqueDetailRfidActivity" />
         <activity android:name=".ui.activity.TranslateInStoreDetailOnlyRfidActivity" />
+        <activity android:name=".ui.activity.RfidTallyActivity" />
     </application>
 
 </manifest>

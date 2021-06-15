@@ -71,12 +71,13 @@ fun hideSoftKeyboard(activity: Activity?) {
 fun AppCompatActivity.showBottomSheedList(
     context: Context,
     data: Array<String>,
+    title:String = "选择仓库",
     listener: OnSelectListener
 ){
     XPopup.Builder(context)
         .isDestroyOnDismiss(false) //对于只使用一次的弹窗，推荐设置这个
         .asBottomList(
-            "选择仓库",
+            title,
             data,
             null,
             2,

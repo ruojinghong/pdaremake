@@ -10,8 +10,10 @@ import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseActivity
 import com.bigoffs.pdaremake.app.ext.DeviceType
 import com.bigoffs.pdaremake.app.ext.initTitle
+import com.bigoffs.pdaremake.app.ext.showBottomSheedList
 import com.bigoffs.pdaremake.app.ext.showMessage
 import com.bigoffs.pdaremake.app.service.ScanServiceControl
+import com.bigoffs.pdaremake.app.util.CacheUtil
 import com.bigoffs.pdaremake.databinding.ActivityNewMainBinding
 import com.bigoffs.pdaremake.ui.activity.rfid.RfidQueryActivity
 import com.bigoffs.pdaremake.ui.activity.pda.PdaQueryActivity
@@ -144,6 +146,27 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
                 0 -> {
                     ActivityMessenger.startActivity<InStoreRfidActivity>(this)
                 }
+                2->{
+                    showBottomSheedList(
+                        mContext, arrayOf("店内码理货","条形码理货","RFID理货"),"选择理货类型"
+                    ) { position, text ->
+                        //登录成功 通知账户数据发生改变鸟
+
+                       when(position){
+                            0 ->{
+
+                            }
+                           1->{
+
+                           }
+                           2 ->{
+                               ActivityMessenger.startActivity<RfidTallyActivity>(this)
+                           }
+
+                       }
+
+                    }
+                }
                 4 -> {
                     startActivity(Intent(this, RfidQueryActivity::class.java))
                 }
@@ -157,6 +180,27 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
 
                 0 -> {
                     ActivityMessenger.startActivity<InStoreActivity>(this)
+                }
+                2->{
+                    showBottomSheedList(
+                        mContext, arrayOf("店内码理货","条形码理货")
+                    ) { position, text ->
+                        //登录成功 通知账户数据发生改变鸟
+
+                        when(position){
+                            0 ->{
+
+                            }
+                            1->{
+
+                            }
+                            2 ->{
+
+                            }
+
+                        }
+                        ActivityMessenger.startActivity<MainActivity>(this)
+                    }
                 }
                 4 -> {
 
