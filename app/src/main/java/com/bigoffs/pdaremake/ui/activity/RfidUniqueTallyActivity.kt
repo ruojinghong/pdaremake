@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bigoffs.pdaremake.R
+import com.bigoffs.pdaremake.app.base.BaseRfidFActivity
 import com.bigoffs.pdaremake.app.base.BaseScanActivity
 import com.bigoffs.pdaremake.app.ext.addOnEditorActionListener
 import com.bigoffs.pdaremake.app.ext.addOnNoneEditorActionListener
@@ -27,6 +28,7 @@ import com.bigoffs.pdaremake.data.model.bean.TallyBean
 import com.bigoffs.pdaremake.databinding.ActivityNewInstoreDetailBinding
 
 import com.bigoffs.pdaremake.databinding.ActivityPdaUniqueTallyBinding
+import com.bigoffs.pdaremake.databinding.ActivityRfidUniqueTallyBinding
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreErrorAdapter
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreNormalAdapter
 import com.bigoffs.pdaremake.ui.dialog.EditDialog
@@ -47,8 +49,8 @@ import me.hgj.jetpackmvvm.ext.parseState
  *Time:2021/5/10  22:18
  *Desc:店内码理货
  */
-class PdaUniqueTallyActivity :
-    BaseScanActivity<TallyViewModel, ActivityPdaUniqueTallyBinding>() {
+class RfidUniqueTallyActivity :
+    BaseRfidFActivity<TallyViewModel, ActivityRfidUniqueTallyBinding>() {
 
     val set = arraySetOf<String>()
 
@@ -66,14 +68,14 @@ class PdaUniqueTallyActivity :
     private val errorAdapter: NewInStoreErrorAdapter by lazy { NewInStoreErrorAdapter(arrayListOf()) }
     private val normalAdapter: NewInStoreNormalAdapter by lazy { NewInStoreNormalAdapter(arrayListOf()) }
 
-    override fun layoutId(): Int = R.layout.activity_pda_unique_tally
+    override fun layoutId(): Int = R.layout.activity_rfid_unique_tally
 
     override fun setStatusBar() {
         initTitle(false, biaoti = "理货")
     }
 
 
-    override fun onReceiverData(data: String) {
+     fun onReceiverData(data: String) {
 
         if(editDialog.isShowing){
                 editDialog.setContentText(data)
@@ -124,7 +126,7 @@ class PdaUniqueTallyActivity :
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        super.initView(savedInstanceState)
+
 
 
         mDatabind.vm = mViewModel
@@ -189,7 +191,9 @@ class PdaUniqueTallyActivity :
 
     }
 
+    override fun onFinish(data: String) {
 
+    }
 
 
     /**
@@ -291,6 +295,14 @@ class PdaUniqueTallyActivity :
 
     fun upload(){
             var string = Gson().toJson(normalAdapter.data)
+
+    }
+
+    override fun initScan() {
+
+    }
+
+    override fun readOrClose() {
 
     }
 }

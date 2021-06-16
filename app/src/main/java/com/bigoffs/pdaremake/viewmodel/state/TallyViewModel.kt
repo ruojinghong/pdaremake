@@ -1,5 +1,6 @@
 package com.bigoffs.pdaremake.viewmodel.state
 
+import com.bigoffs.pdaremake.data.model.bean.TallyBean
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.callback.livedata.IntLiveData
 import me.hgj.jetpackmvvm.callback.livedata.StringLiveData
@@ -18,7 +19,9 @@ class TallyViewModel : BaseViewModel() {
     val errorNum = IntLiveData()
     val normalNum = IntLiveData()
     var openErrorBottomSheet = IntLiveData()
-    val scanList = arrayListOf<String>()
+    val scanList = arrayListOf<TallyBean>()
+    val currentUniqueSet = hashSetOf<String>()
+
 
 
 }

@@ -154,7 +154,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
 
                        when(position){
                             0 ->{
-
+                                ActivityMessenger.startActivity<RfidUniqueTallyActivity>(this)
                             }
                            1->{
 
@@ -183,13 +183,13 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
                 }
                 2->{
                     showBottomSheedList(
-                        mContext, arrayOf("店内码理货","条形码理货")
+                        mContext, arrayOf("店内码理货","条形码理货"),"选择理货类型"
                     ) { position, text ->
                         //登录成功 通知账户数据发生改变鸟
 
                         when(position){
                             0 ->{
-
+                                ActivityMessenger.startActivity<PdaUniqueTallyActivity>(this)
                             }
                             1->{
 
@@ -199,11 +199,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
                             }
 
                         }
-                        ActivityMessenger.startActivity<MainActivity>(this)
                     }
                 }
                 4 -> {
-
                     startActivity(Intent(this, PdaQueryActivity::class.java))
                 }
             }

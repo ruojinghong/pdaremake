@@ -51,6 +51,8 @@
         <activity android:name=".ui.activity.TranslateInStoreByUniqueDetailRfidActivity" />
         <activity android:name=".ui.activity.TranslateInStoreDetailOnlyRfidActivity" />
         <activity android:name=".ui.activity.RfidTallyActivity" />
+        <activity android:name=".ui.activity.PdaUniqueTallyActivity" />
+        <activity android:name=".ui.activity.RfidUniqueTallyActivity" />
     </application>
 
 </manifest>
