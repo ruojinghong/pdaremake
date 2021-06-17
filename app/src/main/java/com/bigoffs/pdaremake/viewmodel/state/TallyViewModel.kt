@@ -23,5 +23,8 @@ class TallyViewModel : BaseViewModel() {
     val currentUniqueSet = hashSetOf<String>()
 
 
+    val waitGroundingMap = hashMapOf<String,Int>()
+    val alreadyGroundingMap = hashMapOf<String,Int>()
+
 
 }

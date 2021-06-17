@@ -192,7 +192,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
                                 ActivityMessenger.startActivity<PdaUniqueTallyActivity>(this)
                             }
                             1->{
-
+                                ActivityMessenger.startActivity<PdaBarcodeTallyActivity>(this)
                             }
                             2 ->{
 

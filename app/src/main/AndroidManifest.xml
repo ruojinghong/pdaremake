@@ -53,6 +53,7 @@
         <activity android:name=".ui.activity.RfidTallyActivity" />
         <activity android:name=".ui.activity.PdaUniqueTallyActivity" />
         <activity android:name=".ui.activity.RfidUniqueTallyActivity" />
+        <activity android:name=".ui.activity.PdaBarcodeTallyActivity" />
     </application>
 
 </manifest>
