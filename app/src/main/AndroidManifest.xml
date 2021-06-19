@@ -54,6 +54,7 @@
         <activity android:name=".ui.activity.PdaUniqueTallyActivity" />
         <activity android:name=".ui.activity.RfidUniqueTallyActivity" />
         <activity android:name=".ui.activity.PdaBarcodeTallyActivity" />
+        <activity android:name=".ui.activity.RfidStocktakingActivityActivity" />
     </application>
 
 </manifest>

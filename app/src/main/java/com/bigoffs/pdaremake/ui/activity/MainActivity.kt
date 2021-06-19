@@ -167,6 +167,10 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
 
                     }
                 }
+                3->{
+                    ActivityMessenger.startActivity<RfidStocktakingActivityActivity>(this)
+                }
+
                 4 -> {
                     startActivity(Intent(this, RfidQueryActivity::class.java))
                 }
