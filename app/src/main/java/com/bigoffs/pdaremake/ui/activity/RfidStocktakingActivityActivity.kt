@@ -12,6 +12,7 @@ import com.bigoffs.pdaremake.app.event.RfidViewModel
 import com.bigoffs.pdaremake.app.ext.addOnNoneEditorActionListener
 import com.bigoffs.pdaremake.app.ext.init
 import com.bigoffs.pdaremake.app.ext.initTitle
+import com.bigoffs.pdaremake.data.model.bean.StocktakingListBean
 import com.bigoffs.pdaremake.databinding.ActivityRfidStocktakingBinding
 import com.bigoffs.pdaremake.databinding.ActivityRfidTallyBinding
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreErrorAdapter
@@ -32,7 +33,7 @@ class RfidStocktakingActivityActivity : BaseRfidFActivity<StocktakingViewModel,A
 
 
 
-
+    private  var data :StocktakingListBean? = null
 
 
     override fun initScan() {
@@ -64,12 +65,13 @@ class RfidStocktakingActivityActivity : BaseRfidFActivity<StocktakingViewModel,A
        initTitle(false,biaoti = "盘点")
     }
 
+
     override fun initView(savedInstanceState: Bundle?) {
         mDatabind.vm = mViewModel
         mDatabind.click = ProxyClick()
         mViewModel.stocktakingid.value = ""
         mViewModel.scanNum.value = 0
-
+        data = intent.getParcelableExtra<StocktakingListBean>("data")
 
     }
 

@@ -155,7 +155,6 @@ class PdaNewInstoreFragment : BaseInStoreFragment<PdaNewInstoreViewModel,Fragmen
 
     override fun lazyLoadData() {
         super.lazyLoadData()
-        loadsir.showLoading()
         requestInstoreViewmodel.getNewInstoreList("","","",true)
 
     }

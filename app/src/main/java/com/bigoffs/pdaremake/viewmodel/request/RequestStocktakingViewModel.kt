@@ -3,6 +3,7 @@ package com.bigoffs.pdaremake.viewmodel.request
 import androidx.lifecycle.MutableLiveData
 import com.bigoffs.pdaremake.app.network.apiService
 import com.bigoffs.pdaremake.data.model.bean.BarcodeFind
+import com.bigoffs.pdaremake.data.model.bean.StocktakingListBean
 import com.google.gson.Gson
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.ext.request
@@ -17,11 +18,11 @@ import okhttp3.RequestBody
  */
 class RequestStocktakingViewModel : BaseViewModel() {
 
-    var data =  MutableLiveData<ResultState<Any>>()
+    var data =  MutableLiveData<ResultState< MutableList<StocktakingListBean>>>()
 
     fun getStocktakingList(w_id:String){
         val map  = hashMapOf<String,Any>()
-        map.put("w_id","w_id")
+        map.put("w_id",w_id)
         val requestBody: RequestBody =
             RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))
         request({ apiService.getStocktakingList(requestBody)},data,true,"加载中...")
