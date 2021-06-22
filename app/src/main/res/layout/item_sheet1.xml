@@ -21,6 +21,7 @@
             android:textColor="@color/black"
             />
         <TextView
+            android:id="@+id/tv2"
             android:text="条形码获取不到商品信息"
             android:layout_width="0dp"
             android:layout_weight="3"

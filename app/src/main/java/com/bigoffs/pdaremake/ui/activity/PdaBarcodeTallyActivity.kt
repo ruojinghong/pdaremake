@@ -18,18 +18,18 @@ import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseScanActivity
 import com.bigoffs.pdaremake.app.ext.*
 import com.bigoffs.pdaremake.app.util.DeviceUtil
-import com.bigoffs.pdaremake.data.model.bean.InStoreBean
-import com.bigoffs.pdaremake.data.model.bean.NewInStoreErrorBean
-import com.bigoffs.pdaremake.data.model.bean.NewInStoreNormalBean
-import com.bigoffs.pdaremake.data.model.bean.TallyBean
+import com.bigoffs.pdaremake.data.model.bean.*
 import com.bigoffs.pdaremake.databinding.ActivityNewInstoreDetailBinding
 import com.bigoffs.pdaremake.databinding.ActivityPdaBarcodeTallyBinding
 
 import com.bigoffs.pdaremake.databinding.ActivityPdaUniqueTallyBinding
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreErrorAdapter
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreNormalAdapter
+import com.bigoffs.pdaremake.ui.adapter.StocktakingOffAdapter
+import com.bigoffs.pdaremake.ui.adapter.StocktakingOnlAdapter
 import com.bigoffs.pdaremake.ui.dialog.EditDialog
 import com.bigoffs.pdaremake.ui.dialog.HintDialog
+import com.bigoffs.pdaremake.ui.dialog.InputDialog
 import com.bigoffs.pdaremake.viewmodel.request.RequestInStroreDetailViewModel
 import com.bigoffs.pdaremake.viewmodel.request.RequestTallyViewModel
 import com.bigoffs.pdaremake.viewmodel.state.NewInStoreDetailViewModel
@@ -66,8 +66,8 @@ class PdaBarcodeTallyActivity :
 
 
     //适配器
-    private val errorAdapter: NewInStoreErrorAdapter by lazy { NewInStoreErrorAdapter(arrayListOf()) }
-    private val normalAdapter: NewInStoreNormalAdapter by lazy { NewInStoreNormalAdapter(arrayListOf()) }
+    private val offAdapter: StocktakingOffAdapter by lazy { StocktakingOffAdapter(arrayListOf()) }
+    private val onAdapter: StocktakingOnlAdapter by lazy { StocktakingOnlAdapter(arrayListOf()) }
 
     override fun layoutId(): Int = R.layout.activity_pda_barcode_tally
 
@@ -87,25 +87,33 @@ class PdaBarcodeTallyActivity :
 
                     if(isUndercarriage){
                         //下架操作
+                        if (mViewModel.currentUniqueSet.contains(data)) {
+                            ToastUtils.showShort("条形码已存在")
+                            beep()
+                        } else {
+                            mViewModel.currentUniqueSet.add(data)
+                            showDownDialog(data)
+                        }
 
                     }else{
                         //上架操作
+                            for(i in offAdapter.data.indices){
+                                if(offAdapter.data[i].code == data){
+                                    showUpDialog(i,data)
+                                    return
+                                }
+                                beep()
+                                ToastUtils.showShort("未找到待上架条形码")
+                            }
                     }
 
-                    if (mViewModel.currentUniqueSet.contains(data)) {
-                        ToastUtils.showShort("店内码已存在")
-                        beep()
-                    } else {
-                        mViewModel.currentUniqueSet.add(data)
-                        mViewModel.scanList.add(TallyBean(mViewModel.currentShelf.value,1,data))
-                        updateNum()
-                    }
+
                 }
                 //添加货架号
                 3 -> {
 //                    mDatabind.etShelf.setText(data)
                      mDatabind.etUnique.requestFocus()
-                    mViewModel.currentShelf.value = data
+                     mViewModel.currentShelf.value = data
 //                        addNormalList(data)
 
 
@@ -121,7 +129,7 @@ class PdaBarcodeTallyActivity :
 
         var view1 = View.inflate(this, R.layout.bottom_newinstoreerror, null)
         errorRecyclerView = view1.findViewById(R.id.dialog_recycleView)
-        errorRecyclerView.init(LinearLayoutManager(this), errorAdapter)
+        errorRecyclerView.init(LinearLayoutManager(this), offAdapter)
         errorBottomsheetDialog = BottomSheetDialog(this, R.style.dialog)
         errorBottomsheetDialog.setContentView(view1)
         view1.findViewById<ImageView>(R.id.iv_unfold).setOnClickListener {
@@ -143,7 +151,7 @@ class PdaBarcodeTallyActivity :
         view2.findViewById<TextView>(R.id.title1).setText("货架号")
         view2.findViewById<TextView>(R.id.title2).setText("条形码")
         view2.findViewById<TextView>(R.id.title3).setText("数量")
-        normalRecyclerView.init(LinearLayoutManager(this), normalAdapter)
+        normalRecyclerView.init(LinearLayoutManager(this), onAdapter)
         normalBottomsheetDialog = BottomSheetDialog(this, R.style.dialog)
         normalBottomsheetDialog.setContentView(view2)
         normalBottomSheetNum = view2.findViewById(R.id.tv_bottom_normal_num)
@@ -211,6 +219,8 @@ class PdaBarcodeTallyActivity :
                 onReceiverData(it)
             }
         }
+
+        mDatabind.etUnique.requestFocus()
     }
 
     override fun createObserver() {
@@ -250,7 +260,7 @@ class PdaBarcodeTallyActivity :
             normalBottomsheetDialog.show()
         }
         fun openErrorBottomSheet() {
-            normalBottomsheetDialog.show()
+            errorBottomsheetDialog.show()
         }
 
         fun onDelete() {
@@ -269,22 +279,22 @@ class PdaBarcodeTallyActivity :
 
     fun deleteItem(barcode: String) {
         mViewModel.currentUniqueSet.remove(barcode)
-        val errorIterator = errorAdapter.data.iterator()
+        val errorIterator = offAdapter.data.iterator()
         while (errorIterator.hasNext()) {
             var next = errorIterator.next()
-            if (next.unique == barcode) {
+            if (next.code == barcode) {
                 errorIterator.remove()
-                errorAdapter.notifyDataSetChanged()
+                offAdapter.notifyDataSetChanged()
                 updateNum()
 
             }
         }
-        val normalIterator = normalAdapter.data.iterator()
+        val normalIterator = onAdapter.data.iterator()
         while (normalIterator.hasNext()) {
             var next = normalIterator.next()
-            if (next.barcode == barcode) {
+            if (next.code == barcode) {
                 normalIterator.remove()
-                normalAdapter.notifyDataSetChanged()
+                onAdapter.notifyDataSetChanged()
                 updateNum()
             }
         }
@@ -316,15 +326,110 @@ class PdaBarcodeTallyActivity :
 
     private fun updateNum() {
 
-        normalBottomSheetNum.text = normalAdapter.data.size.toString()
-        mViewModel.normalNum.value = normalAdapter.data.size
-        mViewModel.errorNum.value = errorAdapter.data.size
+        normalBottomSheetNum.text = onAdapter.data.size.toString()
+        mViewModel.normalNum.value = onAdapter.data.size
+        mViewModel.errorNum.value = offAdapter.data.size
         mViewModel.scanNum.value = mViewModel.scanList.size
 
     }
 
     fun upload(){
-            var string = Gson().toJson(normalAdapter.data)
+            var string = Gson().toJson(onAdapter.data)
 
     }
+    fun showChangeNumDialog(position:Int,barcode:String){
+
+
+//        InputDialog.create(this)
+//            .setTitle("条形码${barcode}已被扫描，是否需要修改数量")
+//            .setRightBtnText("确定")
+//            .setOnClickListener(object : InputDialog.OnHintDialogListener{
+//                override fun onClickOk(content: String) {
+//                    var maxNum = normalAdapter.data[position].maxNum
+//                    if(content.toInt() <=  normalAdapter.data[position].maxNum){
+//                        normalAdapter.data[position].num = content
+//                        var num = 0
+//                        for (i in normalAdapter.data){
+//                            num += i.num.toInt()
+//                        }
+//                        mViewModel.normalNum.value = num
+//                        normalBottomSheetNum.text =  num.toString()
+//                        normalAdapter.notifyDataSetChanged()
+//                    }else{
+//                        beep()
+//                        ToastUtils.showShort("${barcode}条码已超量入库，请及时联系买手确认")
+//                    }
+//
+//                }
+//
+//                override fun onClickCancel() {
+//
+//                }
+//            }).show()
+
+    }
+    //下架数量dialog
+    fun showDownDialog(barcode:String){
+        InputDialog.create(this)
+            .setTitle("条形码${barcode}")
+            .setRightBtnText("确定")
+            .setOnClickListener(object : InputDialog.OnHintDialogListener{
+                override fun onClickOk(content: String) {
+                    val inputNum = content.toInt()
+                    offAdapter.addData(StocktakingOffBean(barcode,inputNum))
+                    mViewModel.errorNum.value = offAdapter.data.size
+
+                }
+
+                override fun onClickCancel() {
+
+                }
+            }).show()
+    }
+
+    fun showUpDialog(position: Int,barcode:String){
+        InputDialog.create(this)
+            .setTitle("条形码${barcode}")
+            .setRightBtnText("确定")
+            .setOnClickListener(object : InputDialog.OnHintDialogListener{
+                override fun onClickOk(content: String) {
+                    val inputNum = content.toInt()
+                   if(inputNum>offAdapter.data[position].num){
+                        beep()
+                       ToastUtils.showShort("上架数量不能大于待上架数量")
+                   }else{
+
+                       for(i in onAdapter.data.indices){
+                            if (onAdapter.data[i].code == barcode){
+                                onAdapter.data[i].num = onAdapter.data[i].num+inputNum
+                                onAdapter.notifyDataSetChanged()
+                                offAdapter.data[position].num = offAdapter.data[position].num-inputNum
+                                if(offAdapter.data[position].num == 0){
+                                    offAdapter.removeAt(position)
+                                }else{
+                                    offAdapter.notifyDataSetChanged()
+                                }
+                                return
+                            }
+
+                       }
+                       //没找到就是新数据
+                       onAdapter.addData(StocktakingOnBean(mViewModel.currentShelf.value,barcode,inputNum))
+                       offAdapter.data[position].num = offAdapter.data[position].num-inputNum
+                       if(offAdapter.data[position].num == 0){
+                           offAdapter.removeAt(position)
+                       }else{
+                           offAdapter.notifyDataSetChanged()
+                       }
+
+                   }
+
+                }
+
+                override fun onClickCancel() {
+
+                }
+            }).show()
+    }
+
 }
