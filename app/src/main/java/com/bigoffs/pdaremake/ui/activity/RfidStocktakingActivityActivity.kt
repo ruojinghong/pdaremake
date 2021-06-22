@@ -58,7 +58,7 @@ class RfidStocktakingActivityActivity : BaseRfidFActivity<StocktakingViewModel,A
         }
     }
 
-    override fun layoutId(): Int = R.layout.activity_rfid_tally
+    override fun layoutId(): Int = R.layout.activity_rfid_stocktaking
 
     override fun setStatusBar() {
        initTitle(false,biaoti = "盘点")

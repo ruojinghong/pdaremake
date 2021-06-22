@@ -168,7 +168,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
                     }
                 }
                 3->{
-                    ActivityMessenger.startActivity<RfidStocktakingActivityActivity>(this)
+                    ActivityMessenger.startActivity<StocktakingActivity>(this)
                 }
 
                 4 -> {

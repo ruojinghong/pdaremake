@@ -11,7 +11,7 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.util.*
 
-class RequestFindGoodByEpcViewModel : BaseViewModel() {
+class  RequestFindGoodByEpcViewModel : BaseViewModel() {
 
     var data  =  MutableLiveData<ResultState<BarcodeFind>>()
     var uniqueData  =  MutableLiveData<ResultState<FindEpcByUnicodeBean>>()
