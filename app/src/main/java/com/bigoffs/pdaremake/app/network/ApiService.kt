@@ -84,5 +84,14 @@ interface ApiService {
     @POST("/v1/stocktaking/index")
     suspend fun getStocktakingList(
         @Body  body : RequestBody
-    ):ApiResponse< MutableList<StocktakingListBean>>
+    ):ApiResponse<StocktakingBean>
+
+    @POST("/v1/stocktaking/getEpcSysData")
+    suspend fun getEpcSysData(
+        @Body  body : RequestBody
+    ):ApiResponse<StocktakingSysData>
+    @POST("/v1/stocktaking/uploadStData")
+    suspend fun uploadStData(
+        @Body  body : RequestBody
+    ):ApiResponse<Any>
 }

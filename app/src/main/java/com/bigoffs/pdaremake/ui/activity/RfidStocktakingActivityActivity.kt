@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bigoffs.pdaremake.R
@@ -12,29 +13,32 @@ import com.bigoffs.pdaremake.app.event.RfidViewModel
 import com.bigoffs.pdaremake.app.ext.addOnNoneEditorActionListener
 import com.bigoffs.pdaremake.app.ext.init
 import com.bigoffs.pdaremake.app.ext.initTitle
+import com.bigoffs.pdaremake.app.util.CacheUtil
 import com.bigoffs.pdaremake.data.model.bean.StocktakingListBean
 import com.bigoffs.pdaremake.databinding.ActivityRfidStocktakingBinding
 import com.bigoffs.pdaremake.databinding.ActivityRfidTallyBinding
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreErrorAdapter
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreNormalBarcodeAndUniqueAdapter
+import com.bigoffs.pdaremake.viewmodel.request.RequestStocktakingViewModel
 import com.bigoffs.pdaremake.viewmodel.state.MainViewModel
 import com.bigoffs.pdaremake.viewmodel.state.StocktakingViewModel
 import com.bigoffs.pdaremake.viewmodel.state.TallyViewModel
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import me.hgj.jetpackmvvm.ext.parseState
 
 /**
  *User:Kirito
  *Time:2021/6/15  23:05
  *Desc: 盘点Activity
  */
-class RfidStocktakingActivityActivity : BaseRfidFActivity<StocktakingViewModel,ActivityRfidStocktakingBinding>() {
+class RfidStocktakingActivityActivity :
+    BaseRfidFActivity<StocktakingViewModel, ActivityRfidStocktakingBinding>() {
 
 
-
-    private  var data :StocktakingListBean? = null
-
+    private var data: StocktakingListBean? = null
+    val requestStocktakingViewModel: RequestStocktakingViewModel by viewModels()
 
     override fun initScan() {
         rfidViewModel.initData()
@@ -44,13 +48,13 @@ class RfidStocktakingActivityActivity : BaseRfidFActivity<StocktakingViewModel,A
         rfidViewModel.setListenerProtectModel(this)
     }
 
-     fun readOrClose(view:View) {
-        if(mDatabind.scanDesc.text == "点击扫描"){
+    fun readOrClose(view: View) {
+        if (mDatabind.scanDesc.text == "点击扫描") {
             rfidViewModel.startReadRfid()
             mDatabind.rlScan.setBackgroundResource(R.mipmap.scan_open)
             //                mActivity.tbCommon.setVisibility(View.INVISIBLE);
             mDatabind.scanDesc.text = "点击关闭"
-        }else{
+        } else {
             rfidViewModel.stopReadRfid()
             mDatabind.rlScan.setBackgroundResource(R.mipmap.scan_close)
             //            mActivity.tbCommon.setVisibility(View.VISIBLE);
@@ -62,7 +66,7 @@ class RfidStocktakingActivityActivity : BaseRfidFActivity<StocktakingViewModel,A
     override fun layoutId(): Int = R.layout.activity_rfid_stocktaking
 
     override fun setStatusBar() {
-       initTitle(false,biaoti = "盘点")
+        initTitle(false, biaoti = "盘点")
     }
 
 
@@ -73,10 +77,19 @@ class RfidStocktakingActivityActivity : BaseRfidFActivity<StocktakingViewModel,A
         mViewModel.scanNum.value = 0
         data = intent.getParcelableExtra<StocktakingListBean>("data")
 
+        mViewModel.stocktakingid.value = "盘点ID:${data?.id ?: ""}"
+        data?.id?.let { requestStocktakingViewModel.getEpcSysData(it) }
     }
 
     override fun onFinish(data: String) {
-      mViewModel.scanNum.value =  rfidViewModel.num
+        if(mViewModel.netSet.contains(data)){
+            mViewModel.normalList.add(data)
+        }else{
+            mViewModel.errorList.add(data)
+        }
+        mViewModel.scanNum.value = mViewModel.normalList.size
+        mViewModel.errorNum.value =mViewModel.errorList.size
+        mViewModel.mapNum.value =rfidViewModel.map.size
     }
 
     private fun onReceiverData(data: String) {
@@ -84,21 +97,63 @@ class RfidStocktakingActivityActivity : BaseRfidFActivity<StocktakingViewModel,A
 
     }
 
-    inner class ProxyClick{
+    override fun createObserver() {
+        super.createObserver()
+        requestStocktakingViewModel.systemList.observe(this, { resultState ->
+            parseState(resultState, {
+                for (i in 1..100000){
+                    mViewModel.netSet.add(i.toString())
+                }
+                it.sys_data.forEach { epc ->
+                    mViewModel.netSet.add(epc)
+                }
+            mViewModel.taskNum.value = mViewModel.netSet.size
 
-        fun clear(){
-            ToastUtils.showShort("重新采集")
+            }, {
+                ToastUtils.showShort(it.errorMsg)
+                finish()
+            })
+        })
+
+        requestStocktakingViewModel.uploadResult.observe(this ,{resultState ->
+            parseState(resultState,{
+                ToastUtils.showShort("上传成功")
+                finish()
+            },{
+                ToastUtils.showShort(it.errorMsg)
+            })
+        })
+    }
+
+    inner class ProxyClick {
+
+        fun clear() {
+            rfidViewModel.initData()
+            mViewModel.normalList.clear()
+            mViewModel.errorList.clear()
+            mViewModel.netSet.clear()
+            updateAllNum()
         }
 
-        fun translate(){
-            ToastUtils.showShort("上传盘点数据")
+        fun translate() {
+            data?.id?.let { CacheUtil.getUser()?.userInfo?.uid?.let { it1 ->
+                requestStocktakingViewModel.uploadStData(it,
+                    it1,mViewModel.normalList
+                )
+            } }
         }
 
-        fun cancel(){
+        fun cancel() {
             ToastUtils.showShort("取消录入")
         }
     }
 
+    private fun updateAllNum() {
+        mViewModel.scanNum.value = mViewModel.normalList.size
+        mViewModel.errorNum.value = mViewModel.errorList.size
+        mViewModel.mapNum.value = rfidViewModel.map.size
+
+    }
 
 
     /**
@@ -119,7 +174,7 @@ class RfidStocktakingActivityActivity : BaseRfidFActivity<StocktakingViewModel,A
 
     override fun onPause() {
         super.onPause()
-        if (mDatabind.scanDesc.text.toString() == "停止扫描"){
+        if (mDatabind.scanDesc.text.toString() == "停止扫描") {
             readOrClose()
         }
     }

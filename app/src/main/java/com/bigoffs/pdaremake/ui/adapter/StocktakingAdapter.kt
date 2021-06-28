@@ -20,9 +20,9 @@ class StocktakingAdapter(data: MutableList<StocktakingListBean>)
         item.run {
             holder.setText(R.id.tv_no,id.toString())
             holder.setText(R.id.tv1,"盘点标题：${name}")
-            holder.setText(R.id.tv2,"盘点方式：${st_type.toString()}")
-            holder.setText(R.id.tv3,"盘点时间：${start_time.toString()}")
-            holder.setText(R.id.tv_count,"共${book_stock}件，已入${real_stock}件")
+            holder.setText(R.id.tv2,"盘点方式：${st_type_name}")
+            holder.setText(R.id.tv3,"盘点时间：${start_time}")
+            holder.setText(R.id.tv_count,"共${book_stock_total}件，已入${real_stock_total}件")
         }
 
     }

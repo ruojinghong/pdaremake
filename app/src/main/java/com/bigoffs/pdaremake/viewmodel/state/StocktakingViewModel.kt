@@ -14,5 +14,11 @@ class StocktakingViewModel : BaseViewModel() {
     var taskNum  = IntLiveData()
     var scanNum  = IntLiveData()
     var errorNum  = IntLiveData()
+    var mapNum  = IntLiveData()
+    //样本总数
+    var  netSet = mutableSetOf<String>()
+    var  normalList = mutableListOf<String>()
+    var  errorList = mutableListOf<String>()
+
 
 }

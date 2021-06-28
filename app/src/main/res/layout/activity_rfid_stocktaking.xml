@@ -44,7 +44,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="盘点ID"
+                        android:text="@{vm.stocktakingid}"
                         android:textColor="@color/black" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -55,13 +55,14 @@
 
 
                 </LinearLayout>
+
                 <TextView
-                    android:background="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{vm.stocktakingid}"
-                    android:textColor="#999999"
-                    android:layout_marginLeft="10dp" />
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/white"
+                    android:textColor="#999999" />
+
                 <View
                     android:id="@+id/devide_shelf"
                     android:layout_width="match_parent"
@@ -157,7 +158,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="25dp"
-                        android:text="@{vm.scanNum.toString()}" />
+                        android:text="@{vm.mapNum.toString()}" />
 
                     <TextView
                         android:layout_marginTop="4dp"

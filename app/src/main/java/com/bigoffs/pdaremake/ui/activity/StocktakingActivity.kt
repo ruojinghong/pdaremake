@@ -100,12 +100,14 @@ class StocktakingActivity : BaseActivity<StocktakingViewModel,ActivityStocktakin
     override fun createObserver() {
         requestInstoreViewmodel.data.observe(this, Observer { resultState ->
             parseState(resultState, {
-                        stocktakingAdapter.setList(it)
+                stocktakingAdapter.data.clear()
+                stocktakingAdapter.setList(it.data)
                 if(stocktakingAdapter.data.isEmpty()){
                     loadsir.showEmpty()
                 }else{
                     loadsir.showSuccess()
                 }
+                swipeRefresh.isRefreshing = false
             }, {
                 loadsir.showError(it.message+"")
             })
