@@ -51,6 +51,8 @@ class RequestStocktakingViewModel : BaseViewModel() {
         for (i in 1..100000){
             data.add(i.toString())
         }
+        data.add("2222222")
+        data.add("baoma6-03")
         map.put("data",data)
         val requestBody: RequestBody =
             RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))
