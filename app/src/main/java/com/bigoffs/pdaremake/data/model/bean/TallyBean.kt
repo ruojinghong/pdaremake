@@ -5,5 +5,9 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class TallyBean(var shelf_code:String = "",
-                    var nums:Int = 0,
-                    var code:String=""):Parcelable
+                        var goods_code:String="",
+
+
+                     //1是店内码 2是条形码
+                      var goods_code_type:String="",
+                     var num:String = "",):Parcelable

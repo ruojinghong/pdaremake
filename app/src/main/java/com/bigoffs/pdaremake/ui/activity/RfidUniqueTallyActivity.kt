@@ -90,7 +90,7 @@ class RfidUniqueTallyActivity :
 
                     } else {
                         mViewModel.currentUniqueSet.add(data)
-                        mViewModel.scanList.add(TallyBean(mViewModel.currentShelf.value,1,data))
+                        mViewModel.scanList.add(TallyBean(mViewModel.currentShelf.value,"1",data))
                         updateNum()
                     }
                 }

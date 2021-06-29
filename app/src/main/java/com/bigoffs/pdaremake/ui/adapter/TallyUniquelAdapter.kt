@@ -11,11 +11,9 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
  *Time:2021/5/19  4:16 下午
  *Desc:
  */
-class TallyNormalAdapter(data : MutableList<TallyBean>) : BaseQuickAdapter<TallyBean,BaseViewHolder>(R.layout.item_sheet2,data) {
+class TallyUniquelAdapter(data : MutableList<TallyBean>) : BaseQuickAdapter<TallyBean,BaseViewHolder>(R.layout.item_two_row,data) {
     override fun convert(holder: BaseViewHolder, item: TallyBean) {
-        holder.setText(R.id.tv_shelf,item.shelf_code)
-
-        holder.setText(R.id.tv_barcode,item.goods_code)
-        holder.setText(R.id.tv_unique,item.num.toString())
+        holder.setText(R.id.tv1,item.shelf_code)
+        holder.setText(R.id.tv2,item.goods_code)
     }
 }

@@ -75,6 +75,11 @@ interface ApiService {
         @Body  body : RequestBody
     ):ApiResponse<NewInStoreDetail>
 
+    @POST("/v1/tally/uploadTallyData")
+    suspend fun uploadTallyData(
+        @Body  body : RequestBody
+    ):ApiResponse<Any>
+
 
     @POST("/v1/inStore/save")
     suspend fun newInStoreByUnique(
@@ -90,8 +95,14 @@ interface ApiService {
     suspend fun getEpcSysData(
         @Body  body : RequestBody
     ):ApiResponse<StocktakingSysData>
+
     @POST("/v1/stocktaking/uploadStData")
     suspend fun uploadStData(
         @Body  body : RequestBody
     ):ApiResponse<Any>
+
+    @POST("/v1/stocktaking/checkEpcCodes")
+    suspend fun checkEpcCodes(
+        @Body  body : RequestBody
+    ):ApiResponse<CheckEpcCodeBean>
 }

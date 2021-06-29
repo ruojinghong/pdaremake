@@ -19,6 +19,8 @@ class StocktakingViewModel : BaseViewModel() {
     var  netSet = mutableSetOf<String>()
     var  normalList = mutableListOf<String>()
     var  errorList = mutableListOf<String>()
+    //一次开启扫描到关闭扫描的数据集合
+    var  oneScanList = mutableListOf<String>()
 
 
 }

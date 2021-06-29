@@ -2,10 +2,7 @@ package com.bigoffs.pdaremake.viewmodel.request
 
 import androidx.lifecycle.MutableLiveData
 import com.bigoffs.pdaremake.app.network.apiService
-import com.bigoffs.pdaremake.data.model.bean.BarcodeFind
-import com.bigoffs.pdaremake.data.model.bean.StocktakingBean
-import com.bigoffs.pdaremake.data.model.bean.StocktakingListBean
-import com.bigoffs.pdaremake.data.model.bean.StocktakingSysData
+import com.bigoffs.pdaremake.data.model.bean.*
 import com.google.gson.Gson
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.ext.request
@@ -24,6 +21,9 @@ class RequestStocktakingViewModel : BaseViewModel() {
 
     var systemList = MutableLiveData<ResultState<StocktakingSysData>>()
     var uploadResult = MutableLiveData<ResultState<Any>>()
+    var checkResult = MutableLiveData<ResultState<CheckEpcCodeBean>>()
+
+
 
 
 
@@ -58,6 +58,13 @@ class RequestStocktakingViewModel : BaseViewModel() {
             RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))
         request({ apiService.uploadStData(requestBody)},uploadResult,true,"加载中...")
     }
-
+    fun checkEpcCodes(st_id :String,epc_codes:MutableList<String>){
+        val map  = hashMapOf<String,Any>()
+        map.put("st_id",st_id)
+        map.put("epc_codes",epc_codes)
+        val requestBody: RequestBody =
+            RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))
+        request({ apiService.checkEpcCodes(requestBody)},checkResult,true,"加载中...")
+    }
 
 }

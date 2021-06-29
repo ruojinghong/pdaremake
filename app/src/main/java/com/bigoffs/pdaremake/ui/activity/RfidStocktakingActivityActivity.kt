@@ -19,6 +19,7 @@ import com.bigoffs.pdaremake.databinding.ActivityRfidStocktakingBinding
 import com.bigoffs.pdaremake.databinding.ActivityRfidTallyBinding
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreErrorAdapter
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreNormalBarcodeAndUniqueAdapter
+import com.bigoffs.pdaremake.ui.dialog.HintDialog
 import com.bigoffs.pdaremake.viewmodel.request.RequestStocktakingViewModel
 import com.bigoffs.pdaremake.viewmodel.state.MainViewModel
 import com.bigoffs.pdaremake.viewmodel.state.StocktakingViewModel
@@ -59,6 +60,7 @@ class RfidStocktakingActivityActivity :
             mDatabind.rlScan.setBackgroundResource(R.mipmap.scan_close)
             //            mActivity.tbCommon.setVisibility(View.VISIBLE);
             mDatabind.scanDesc.text = "点击扫描"
+            checkEpcCodes()
 
         }
     }
@@ -82,14 +84,15 @@ class RfidStocktakingActivityActivity :
     }
 
     override fun onFinish(data: String) {
-        if(mViewModel.netSet.contains(data)){
-            mViewModel.normalList.add(data)
-        }else{
-            mViewModel.errorList.add(data)
-        }
-        mViewModel.scanNum.value = mViewModel.normalList.size
-        mViewModel.errorNum.value =mViewModel.errorList.size
+//        if(mViewModel.netSet.contains(data)){
+//            mViewModel.normalList.add(data)
+//        }else{
+//            mViewModel.errorList.add(data)
+//        }
+//        mViewModel.scanNum.value = mViewModel.normalList.size
+//        mViewModel.errorNum.value =mViewModel.errorList.size
         mViewModel.mapNum.value =rfidViewModel.map.size
+        mViewModel.oneScanList.add(data);
     }
 
     private fun onReceiverData(data: String) {
@@ -123,24 +126,32 @@ class RfidStocktakingActivityActivity :
                 ToastUtils.showShort(it.errorMsg)
             })
         })
+
+        requestStocktakingViewModel.checkResult.observe(this,{resultState ->
+            parseState(resultState,{
+                     mViewModel.normalList.addAll(it.normal.list)
+                    mViewModel.errorList.addAll(it.abnormal.list)
+                    mViewModel.oneScanList.clear()
+                    updateAllNum()
+            },{
+                beep()
+                ToastUtils.showShort(it.message)
+            })
+
+
+        })
     }
 
     inner class ProxyClick {
 
         fun clear() {
-            rfidViewModel.initData()
-            mViewModel.normalList.clear()
-            mViewModel.errorList.clear()
-            mViewModel.netSet.clear()
-            updateAllNum()
+            showClearDialog()
+
         }
 
         fun translate() {
-            data?.id?.let { CacheUtil.getUser()?.userInfo?.uid?.let { it1 ->
-                requestStocktakingViewModel.uploadStData(it,
-                    it1,mViewModel.normalList
-                )
-            } }
+            showUploadDialog()
+
         }
 
         fun cancel() {
@@ -177,5 +188,56 @@ class RfidStocktakingActivityActivity :
         if (mDatabind.scanDesc.text.toString() == "停止扫描") {
             readOrClose()
         }
+    }
+
+    private fun checkEpcCodes(){
+        data?.id?.let { requestStocktakingViewModel.checkEpcCodes(it,mViewModel.oneScanList) }
+    }
+
+    fun showClearDialog(){
+        HintDialog.create(this, HintDialog.STYLE_ONLY_OK).setTitle("").setContent("确定重新采集？")
+            .setLeftBtnText("取消")
+            .setRightBtnText("确定")
+            .setDialogListener(object : HintDialog.OnHintDialogListener{
+                override fun onClickOk() {
+                    rfidViewModel.initData()
+                    mViewModel.normalList.clear()
+                    mViewModel.errorList.clear()
+                    mViewModel.netSet.clear()
+                    mViewModel.oneScanList.clear()
+                    updateAllNum()
+                }
+
+                override fun onClickCancel() {
+
+                }
+
+                override fun onClickOther() {
+
+                }
+            }).show()
+    }
+
+    fun showUploadDialog(){
+        HintDialog.create(this, HintDialog.STYLE_ONLY_OK).setTitle("").setContent("确定上传数据？")
+            .setLeftBtnText("取消")
+            .setRightBtnText("确定")
+            .setDialogListener(object : HintDialog.OnHintDialogListener{
+                override fun onClickOk() {
+                    data?.id?.let { CacheUtil.getUser()?.userInfo?.uid?.let { it1 ->
+                        requestStocktakingViewModel.uploadStData(it,
+                            it1,mViewModel.normalList
+                        )
+                    } }
+                }
+
+                override fun onClickCancel() {
+
+                }
+
+                override fun onClickOther() {
+
+                }
+            }).show()
     }
 }
