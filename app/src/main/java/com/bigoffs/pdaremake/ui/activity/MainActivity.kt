@@ -157,7 +157,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
                                 ActivityMessenger.startActivity<RfidUniqueTallyActivity>(this)
                             }
                            1->{
-
+                               ActivityMessenger.startActivity<RfidBarcodeTallyActivity>(this)
                            }
                            2 ->{
                                ActivityMessenger.startActivity<RfidTallyActivity>(this)

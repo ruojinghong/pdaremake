@@ -14,7 +14,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 class StocktakingOffAdapter(data : MutableList<StocktakingOffBean>)
     : BaseQuickAdapter<StocktakingOffBean,BaseViewHolder>(R.layout.item_sheet1,data) {
     override fun convert(holder: BaseViewHolder, item: StocktakingOffBean) {
-        holder.setText(R.id.tv_unique,item.code)
+        holder.setText(R.id.tv_unique,item.goods_code)
         holder.setText(R.id.tv2,item.num.toString())
     }
 }

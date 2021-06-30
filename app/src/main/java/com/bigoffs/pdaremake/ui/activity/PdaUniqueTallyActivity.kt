@@ -51,7 +51,7 @@ import me.hgj.jetpackmvvm.ext.parseState
  */
 class PdaUniqueTallyActivity :
     BaseScanActivity<TallyViewModel, ActivityPdaUniqueTallyBinding>() {
-
+    override fun layoutId(): Int = R.layout.activity_pda_unique_tally
     val set = arraySetOf<String>()
 
     val requestTallyViewModel: RequestTallyViewModel by viewModels()
@@ -69,7 +69,7 @@ class PdaUniqueTallyActivity :
     private val errorAdapter: TallyUniquelAdapter by lazy { TallyUniquelAdapter(arrayListOf()) }
 
 
-    override fun layoutId(): Int = R.layout.activity_pda_unique_tally
+
 
     override fun setStatusBar() {
         initTitle(false, biaoti = "理货")
@@ -312,7 +312,7 @@ class PdaUniqueTallyActivity :
             .setRightBtnText("确定")
             .setDialogListener(object : HintDialog.OnHintDialogListener{
                 override fun onClickOk() {
-                    requestTallyViewModel.uploadTallyData(errorAdapter.data)
+                    requestTallyViewModel.uploadTallyData(errorAdapter.data,"1")
                 }
 
                 override fun onClickCancel() {

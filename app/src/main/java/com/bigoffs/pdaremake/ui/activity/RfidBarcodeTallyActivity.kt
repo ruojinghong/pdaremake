@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bigoffs.pdaremake.R
+import com.bigoffs.pdaremake.app.base.BaseRfidFActivity
 import com.bigoffs.pdaremake.app.base.BaseScanActivity
 import com.bigoffs.pdaremake.app.ext.*
 import com.bigoffs.pdaremake.app.util.DeviceUtil
@@ -23,6 +24,7 @@ import com.bigoffs.pdaremake.databinding.ActivityNewInstoreDetailBinding
 import com.bigoffs.pdaremake.databinding.ActivityPdaBarcodeTallyBinding
 
 import com.bigoffs.pdaremake.databinding.ActivityPdaUniqueTallyBinding
+import com.bigoffs.pdaremake.databinding.ActivityRfidBarcodeTallyBinding
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreErrorAdapter
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreNormalAdapter
 import com.bigoffs.pdaremake.ui.adapter.StocktakingOffAdapter
@@ -46,9 +48,9 @@ import me.hgj.jetpackmvvm.ext.parseState
  *Time:2021/5/10  22:18
  *Desc:条形码理货
  */
-class PdaBarcodeTallyActivity :
-    BaseScanActivity<TallyViewModel, ActivityPdaBarcodeTallyBinding>() {
-    override fun layoutId(): Int = R.layout.activity_pda_barcode_tally
+class RfidBarcodeTallyActivity :
+    BaseRfidFActivity<TallyViewModel, ActivityRfidBarcodeTallyBinding>() {
+    override fun layoutId(): Int = R.layout.activity_rfid_barcode_tally
     val set = arraySetOf<String>()
 
     val requestTallyViewModel: RequestTallyViewModel by viewModels()
@@ -76,7 +78,7 @@ class PdaBarcodeTallyActivity :
     }
 
 
-    override fun onReceiverData(data: String) {
+     fun onReceiverData(data: String) {
 
         if(editDialog.isShowing){
                 editDialog.setContentText(data)
@@ -159,7 +161,7 @@ class PdaBarcodeTallyActivity :
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        super.initView(savedInstanceState)
+
 
 
         mDatabind.vm = mViewModel
@@ -239,7 +241,9 @@ class PdaBarcodeTallyActivity :
 
     }
 
+    override fun onFinish(data: String) {
 
+    }
 
 
     /**
@@ -465,6 +469,14 @@ class PdaBarcodeTallyActivity :
 
                 }
             }).show()
+    }
+
+    override fun initScan() {
+
+    }
+
+    override fun readOrClose() {
+
     }
 
 }

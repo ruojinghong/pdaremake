@@ -31,6 +31,7 @@ import com.bigoffs.pdaremake.databinding.ActivityPdaUniqueTallyBinding
 import com.bigoffs.pdaremake.databinding.ActivityRfidUniqueTallyBinding
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreErrorAdapter
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreNormalAdapter
+import com.bigoffs.pdaremake.ui.adapter.TallyUniquelAdapter
 import com.bigoffs.pdaremake.ui.dialog.EditDialog
 import com.bigoffs.pdaremake.ui.dialog.HintDialog
 import com.bigoffs.pdaremake.viewmodel.request.RequestInStroreDetailViewModel
@@ -52,23 +53,33 @@ import me.hgj.jetpackmvvm.ext.parseState
 class RfidUniqueTallyActivity :
     BaseRfidFActivity<TallyViewModel, ActivityRfidUniqueTallyBinding>() {
 
+    override fun layoutId(): Int = R.layout.activity_rfid_unique_tally
+    override fun initScan() {
+
+    }
+
+    override fun readOrClose() {
+
+
+    }
     val set = arraySetOf<String>()
 
     val requestTallyViewModel: RequestTallyViewModel by viewModels()
 
 
-    private lateinit var normalRecyclerView: RecyclerView
-    private lateinit var normalBottomsheetDialog: BottomSheetDialog
-    private lateinit var normalBottomSheetNum: TextView
+
+    private lateinit var errorRecyclerView: RecyclerView
+    private lateinit var errorBottomsheetDialog: BottomSheetDialog
+    private lateinit var errorBottomSheetNum: TextView
 
     private lateinit var editDialog: EditDialog
 
 
     //适配器
-    private val errorAdapter: NewInStoreErrorAdapter by lazy { NewInStoreErrorAdapter(arrayListOf()) }
-    private val normalAdapter: NewInStoreNormalAdapter by lazy { NewInStoreNormalAdapter(arrayListOf()) }
+    private val errorAdapter: TallyUniquelAdapter by lazy { TallyUniquelAdapter(arrayListOf()) }
 
-    override fun layoutId(): Int = R.layout.activity_rfid_unique_tally
+
+
 
     override fun setStatusBar() {
         initTitle(false, biaoti = "理货")
@@ -78,27 +89,32 @@ class RfidUniqueTallyActivity :
      fun onReceiverData(data: String) {
 
         if(editDialog.isShowing){
-                editDialog.setContentText(data)
+            editDialog.setContentText(data)
         }else{
             when (mViewModel.currentFocus.value) {
                 //添加店内码
                 1 -> {
                     if (mViewModel.currentUniqueSet.contains(data)) {
-
                         ToastUtils.showShort("店内码已存在")
                         beep()
 
                     } else {
                         mViewModel.currentUniqueSet.add(data)
-                        mViewModel.scanList.add(TallyBean(mViewModel.currentShelf.value,"1",data))
+                        errorAdapter.addData(TallyBean(mViewModel.currentShelf.value,data,"1","1"))
                         updateNum()
                     }
                 }
                 //添加货架号
                 3 -> {
 //                    mDatabind.etShelf.setText(data)
-                     mDatabind.etUnique.requestFocus()
+                    mDatabind.etUnique.requestFocus()
                     mViewModel.currentShelf.value = data
+                    errorAdapter.data.forEach {
+                        if(it.shelf_code.isEmpty()){
+                            it.shelf_code = data
+                        }
+                    }
+                    errorAdapter.notifyDataSetChanged()
 //                        addNormalList(data)
 
 
@@ -113,15 +129,16 @@ class RfidUniqueTallyActivity :
     private fun initBottomSheet() {
 
 
-        var view2 = View.inflate(this, R.layout.bottom_newinstorenormal, null)
-        normalRecyclerView = view2.findViewById(R.id.dialog_recycleView)
+        var view2 = View.inflate(this, R.layout.bottom_newinstoreerror, null)
+        errorRecyclerView = view2.findViewById(R.id.dialog_recycleView)
         view2.findViewById<ImageView>(R.id.iv_unfold).setOnClickListener {
-            normalBottomsheetDialog.dismiss()
+            errorBottomsheetDialog.dismiss()
         }
-        normalRecyclerView.init(LinearLayoutManager(this), normalAdapter)
-        normalBottomsheetDialog = BottomSheetDialog(this, R.style.dialog)
-        normalBottomsheetDialog.setContentView(view2)
-        normalBottomSheetNum = view2.findViewById(R.id.tv_bottom_normal_num)
+        view2.findViewById<TextView>(R.id.title2).setText("店内码")
+        errorRecyclerView.init(LinearLayoutManager(this), errorAdapter)
+        errorBottomsheetDialog = BottomSheetDialog(this, R.style.dialog)
+        errorBottomsheetDialog.setContentView(view2)
+        errorBottomSheetNum = view2.findViewById(R.id.tv_bottom_error_num)
         BottomSheetBehavior.from(view2.parent as View).peekHeight = getPeekHeight()
     }
 
@@ -155,8 +172,8 @@ class RfidUniqueTallyActivity :
 
         initBottomSheet();
         editDialog = EditDialog.create(mContext)
-            .setTitle("请扫描剔除商品编码")
-            .setHintText("请扫描店内码或条形码")
+            .setTitle("请扫描剔除店内码")
+            .setHintText("请扫描店内码")
             .setOnClickListener(object : EditDialog.OnHintDialogListener{
                 override fun onClickOk(content: String?) {
                     deleteItem(editDialog.genContentText())
@@ -166,7 +183,7 @@ class RfidUniqueTallyActivity :
                 }
 
                 override fun onClickCancel() {
-                  editDialog.dismiss()
+                    editDialog.dismiss()
                 }
 
             })
@@ -186,7 +203,17 @@ class RfidUniqueTallyActivity :
 
     override fun createObserver() {
         super.createObserver()
+        requestTallyViewModel.uniqueUploadResult.observe(this,{state ->
 
+            parseState(state,{
+                ToastUtils.showShort("操作成功")
+                finish()
+
+            },{
+                beep()
+                ToastUtils.showShort(it.message)
+            })
+        })
 
 
     }
@@ -220,7 +247,7 @@ class RfidUniqueTallyActivity :
 
 
         fun openNormalBottomSheet() {
-            normalBottomsheetDialog.show()
+            errorBottomsheetDialog.show()
         }
 
         fun onDelete() {
@@ -242,22 +269,14 @@ class RfidUniqueTallyActivity :
         val errorIterator = errorAdapter.data.iterator()
         while (errorIterator.hasNext()) {
             var next = errorIterator.next()
-            if (next.unique == barcode) {
+            if (next.goods_code == barcode) {
                 errorIterator.remove()
                 errorAdapter.notifyDataSetChanged()
                 updateNum()
 
             }
         }
-        val normalIterator = normalAdapter.data.iterator()
-        while (normalIterator.hasNext()) {
-            var next = normalIterator.next()
-            if (next.barcode == barcode) {
-                normalIterator.remove()
-                normalAdapter.notifyDataSetChanged()
-                updateNum()
-            }
-        }
+
         editDialog.setContentText("")
 
 
@@ -286,23 +305,35 @@ class RfidUniqueTallyActivity :
 
     private fun updateNum() {
 
-        normalBottomSheetNum.text = normalAdapter.data.size.toString()
-        mViewModel.normalNum.value = normalAdapter.data.size
+        errorBottomSheetNum.text = errorAdapter.data.size.toString()
+        mViewModel.normalNum.value = errorAdapter.data.size
         mViewModel.errorNum.value = errorAdapter.data.size
         mViewModel.scanNum.value = mViewModel.scanList.size
 
     }
 
     fun upload(){
-            var string = Gson().toJson(normalAdapter.data)
+        showUploadDialog()
+
 
     }
 
-    override fun initScan() {
+    fun showUploadDialog(){
+        HintDialog.create(this, HintDialog.STYLE_ONLY_OK).setTitle("").setContent("确定上传本次理货数据？")
+            .setLeftBtnText("取消")
+            .setRightBtnText("确定")
+            .setDialogListener(object : HintDialog.OnHintDialogListener{
+                override fun onClickOk() {
+                    requestTallyViewModel.uploadTallyData(errorAdapter.data,"1")
+                }
 
-    }
+                override fun onClickCancel() {
 
-    override fun readOrClose() {
+                }
 
+                override fun onClickOther() {
+
+                }
+            }).show()
     }
 }
