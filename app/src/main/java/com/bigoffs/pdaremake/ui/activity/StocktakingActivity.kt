@@ -90,8 +90,13 @@ class StocktakingActivity : BaseActivity<StocktakingViewModel,ActivityStocktakin
                 ActivityMessenger.startActivity<RfidStocktakingActivityActivity>(context,Pair<String,StocktakingListBean>("data",stocktakingAdapter.data[position]))
         }
 
-        requestInstoreViewmodel.getStocktakingList(CacheUtil.getHouse()?.id.toString())
 
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requestInstoreViewmodel.getStocktakingList(CacheUtil.getHouse()?.id.toString())
     }
 
 

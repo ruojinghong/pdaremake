@@ -104,9 +104,7 @@ class RfidStocktakingActivityActivity :
         super.createObserver()
         requestStocktakingViewModel.systemList.observe(this, { resultState ->
             parseState(resultState, {
-                for (i in 1..100000){
-                    mViewModel.netSet.add(i.toString())
-                }
+
                 it.sys_data.forEach { epc ->
                     mViewModel.netSet.add(epc)
                 }
@@ -226,7 +224,9 @@ class RfidStocktakingActivityActivity :
                 override fun onClickOk() {
                     data?.id?.let { CacheUtil.getUser()?.userInfo?.uid?.let { it1 ->
                         requestStocktakingViewModel.uploadStData(it,
-                            it1,mViewModel.normalList
+                            it1, mutableListOf<String>().apply {
+                                addAll(mViewModel.normalList)
+                                addAll(mViewModel.errorList)}
                         )
                     } }
                 }
