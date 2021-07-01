@@ -15,11 +15,13 @@ class TallyViewModel : BaseViewModel() {
     var currentShelf =  StringLiveData()
     var CollectedNum = IntLiveData()
     var scanNum = IntLiveData()
+    var responseNum = IntLiveData()
     var currentFocus = IntLiveData()
     val errorNum = IntLiveData()
     val normalNum = IntLiveData()
     var openErrorBottomSheet = IntLiveData()
     val scanList = arrayListOf<TallyBean>()
+    var oneScanList = mutableListOf<String>()
     val currentUniqueSet = hashSetOf<String>()
 
 

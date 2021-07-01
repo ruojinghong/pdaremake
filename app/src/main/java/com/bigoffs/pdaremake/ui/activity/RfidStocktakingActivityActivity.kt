@@ -126,9 +126,9 @@ class RfidStocktakingActivityActivity :
         })
 
         requestStocktakingViewModel.checkResult.observe(this,{resultState ->
-            parseState(resultState,{
-                     mViewModel.normalList.addAll(it.normal.list)
-                    mViewModel.errorList.addAll(it.abnormal.list)
+            parseState(resultState,{data ->
+                     mViewModel.normalList.addAll(data.normal.list)
+                    mViewModel.errorList.addAll(data.abnormal.list)
                     mViewModel.oneScanList.clear()
                     updateAllNum()
             },{

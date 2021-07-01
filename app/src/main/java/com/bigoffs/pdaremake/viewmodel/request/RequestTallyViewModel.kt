@@ -2,9 +2,7 @@ package com.bigoffs.pdaremake.viewmodel.request
 
 import androidx.lifecycle.MutableLiveData
 import com.bigoffs.pdaremake.app.network.apiService
-import com.bigoffs.pdaremake.data.model.bean.NewInStoreDetail
-import com.bigoffs.pdaremake.data.model.bean.StocktakingOnBean
-import com.bigoffs.pdaremake.data.model.bean.TallyBean
+import com.bigoffs.pdaremake.data.model.bean.*
 import com.google.gson.Gson
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.ext.request
@@ -65,5 +63,14 @@ class RequestTallyViewModel :BaseViewModel() {
             true,//是否显示等待框，，默认false不显示 可以默认不传
             "加载中..."//等待框内容，可以默认不填请求网络中...
         )
+    }
+
+    var checkResult = MutableLiveData<ResultState<CheckEpcTally>>()
+    fun checkEpcCodes(epc_codes:MutableList<String>){
+        val map  = hashMapOf<String,Any>()
+        map.put("data",epc_codes)
+        val requestBody: RequestBody =
+            RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))
+        request({ apiService.tallyCheckEpcCodes(requestBody)},checkResult,true,"加载中...")
     }
 }

@@ -105,4 +105,9 @@ interface ApiService {
     suspend fun checkEpcCodes(
         @Body  body : RequestBody
     ):ApiResponse<CheckEpcCodeBean>
+
+    @POST("/v1/tally/checkEpcCodes")
+    suspend fun tallyCheckEpcCodes(
+        @Body  body : RequestBody
+    ):ApiResponse<CheckEpcTally>
 }
