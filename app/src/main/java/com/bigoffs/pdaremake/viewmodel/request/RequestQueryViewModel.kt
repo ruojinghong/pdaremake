@@ -11,10 +11,7 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 
 class RequestQueryViewModel : BaseViewModel() {
-
                 var queryData  =  MutableLiveData<ResultState<List<QueryType>>>()
-
-
 
         fun getQueryData(){
                 val requestBody: RequestBody =

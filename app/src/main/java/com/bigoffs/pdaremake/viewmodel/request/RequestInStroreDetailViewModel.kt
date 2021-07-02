@@ -44,7 +44,7 @@ class RequestInStroreDetailViewModel : BaseViewModel() {
             map.put("in_store_id",inStoreId)
         }
         //1是店内码
-        map.put("batch_type",1)
+        map.put("batch_type",batchType)
         map.put("data_list",dataList)
         LogUtils.i("----------",Gson().toJson(map))
         val requestBody: RequestBody =

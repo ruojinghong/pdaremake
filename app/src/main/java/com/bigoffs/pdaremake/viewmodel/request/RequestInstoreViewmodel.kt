@@ -35,7 +35,7 @@ class RequestInstoreViewmodel : BaseViewModel() {
         }
         val map  = hashMapOf<String,Any>()
         //（1=新品入库,3=调拨入库）
-        map.put("type","1")
+        map.put("type",type)
         //对应 inStore/options 中 search_option.value 字段 （1=条形码,2=供应商,3=批次号,4=店内码,5=箱号,6=调拨单号）
         if(search_type.isNotEmpty())map.put("search_type",search_type)
         //mock: 1=条形码：3333 2=供应商：耐克 3=批次号：2112012110000000001 4=店内码 ：ST1021213 5=箱号：27或28 6=调拨单号：33332133
