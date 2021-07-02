@@ -12,5 +12,6 @@ data class TallyNormalData(
 data class Data(
     var shelf:String,
     val code: String,
-    val num: Int
+    val num: Int,
+    val goods_code_type:Int
 ):Parcelable

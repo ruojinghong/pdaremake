@@ -15,6 +15,7 @@ import com.bigoffs.pdaremake.app.ext.addOnNoneEditorActionListener
 import com.bigoffs.pdaremake.app.ext.init
 import com.bigoffs.pdaremake.app.ext.initTitle
 import com.bigoffs.pdaremake.app.util.CacheUtil
+import com.bigoffs.pdaremake.data.model.bean.Data
 import com.bigoffs.pdaremake.data.model.bean.TallyBean
 import com.bigoffs.pdaremake.databinding.ActivityRfidTallyBinding
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreErrorAdapter
@@ -174,7 +175,7 @@ class RfidTallyActivity : BaseRfidFActivity<TallyViewModel,ActivityRfidTallyBind
                    val tallyList  =  mutableListOf<TallyBean>()
                     normalAdapter.data.forEach {
                         //待修改
-                        tallyList.add(TallyBean(it.shelf,it.code,"2",it.num.toString()))
+                        tallyList.add(TallyBean(it.shelf,it.code,it.goods_code_type.toString(),it.num.toString()))
                     }
                     requestTallyViewModel.uploadTallyData(tallyList,"3")
                 }
