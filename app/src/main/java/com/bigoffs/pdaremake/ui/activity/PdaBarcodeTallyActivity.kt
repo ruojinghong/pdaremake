@@ -422,6 +422,7 @@ class PdaBarcodeTallyActivity :
                                 offAdapter.data[position].num = (offAdapter.data[position].num.toInt()-inputNum).toString()
                                 if(offAdapter.data[position].num == "0"){
                                     offAdapter.removeAt(position)
+                                    offAdapter.notifyDataSetChanged()
                                 }else{
                                     offAdapter.notifyDataSetChanged()
                                 }
@@ -434,6 +435,7 @@ class PdaBarcodeTallyActivity :
                        offAdapter.data[position].num = (offAdapter.data[position].num.toInt()-inputNum).toString()
                        if(offAdapter.data[position].num == "0"){
                            offAdapter.removeAt(position)
+                           offAdapter.notifyDataSetChanged()
                        }else{
                            offAdapter.notifyDataSetChanged()
                        }

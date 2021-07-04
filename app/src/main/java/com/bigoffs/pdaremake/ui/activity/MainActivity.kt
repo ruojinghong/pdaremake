@@ -1,10 +1,14 @@
 package com.bigoffs.pdaremake.ui.activity
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseActivity
@@ -37,9 +41,14 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
 
         mDatabind.viewmodel = mViewModel
-        mViewModel.username.value = "王硕"
-        mViewModel.depotname.value = "永旺国际商城仓"
-        mViewModel.taskNum.value = "8"
+        CacheUtil.getUser()?.let {
+            mViewModel.username.value = it.userInfo.nickname
+        }
+
+         CacheUtil.getHouse()?.let {
+             mViewModel.depotname.value = it.name
+         }
+        mViewModel.taskNum.value = "unknow"
 
         mDatabind.recycler.let {
             it.layoutManager = GridLayoutManager(mContext, 2)
@@ -65,7 +74,45 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
         mDatabind.tvTaskNum.setOnClickListener(){
             ActivityMessenger.startActivity<TaskActivity>(this)
         }
+        requestPermission()
+    }
 
+    private fun requestPermission() {
+
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                ActivityCompat.requestPermissions(
+                    this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    1
+                )
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(
+                    this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    1
+                )
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
     }
 
 
@@ -174,6 +221,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
                 4 -> {
                     startActivity(Intent(this, RfidQueryActivity::class.java))
                 }
+                5 -> {
+                    startActivity(Intent(this, RfidCollectActivity::class.java))
+                }
             }
         }
     }
@@ -207,6 +257,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
                 }
                 4 -> {
                     startActivity(Intent(this, PdaQueryActivity::class.java))
+                }
+                5 ->{
+                    startActivity(Intent(this, PdaCollectActivity::class.java))
                 }
             }
         }

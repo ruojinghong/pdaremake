@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="37dp">
+    <LinearLayout
+        android:id="@+id/ll_unique"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:gravity="center_vertical"
+        android:background="@color/white">
+
+       <com.xujiaji.library.RippleCheckBox
+           android:id="@+id/checkbox"
+           android:layout_width="25dp"
+           android:layout_height="25dp"
+           app:rcbRightColor="@color/colorPrimary"
+           app:rcbStatus="HOOK"/>
+
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取值框"
+            android:textColor="@color/black"
+            />
+
+        <EditText
+            android:id="@+id/et_code"
+            android:layout_marginLeft="20dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="请扫描"
+            android:textColorHint="#c8c8c8"
+            android:textColor="@color/black"
+            android:background="@null"
+            android:textSize="14dp"
+            android:lines="1"
+            android:layout_marginRight="10dp"/>
+        <ImageView
+            android:id="@+id/iv_delete"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:src="@mipmap/icon_close"/>
+
+
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#eeeeee" />
+
+
+</LinearLayout>

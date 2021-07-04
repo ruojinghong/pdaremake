@@ -103,4 +103,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta1'
     implementation project(path: ':JetpackMvvm')
+    implementation 'com.github.xujiaji:ripple-checkbox:0.0.5'
 }

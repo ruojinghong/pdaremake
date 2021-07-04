@@ -54,4 +54,9 @@
         <item name="android:backgroundDimAmount">0.6</item>
         <item name="android:windowAnimationStyle">@style/BottomDialogAnimation</item>
     </style>
+
+    <style name="MyCheckBox" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">#f5f5f5</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
 </resources>
