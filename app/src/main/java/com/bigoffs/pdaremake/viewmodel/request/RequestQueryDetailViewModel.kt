@@ -20,7 +20,7 @@ class RequestQueryDetailViewModel : BaseViewModel() {
     // 查询店内码
     fun queryDetail(wid:String,uniqueCode : String){
         val map  = hashMapOf<String,Any>()
-        map.put("unique_code","ST1021331")
+        map.put("unique_code",uniqueCode)
 
         val requestBody: RequestBody =
             RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))
@@ -30,7 +30,7 @@ class RequestQueryDetailViewModel : BaseViewModel() {
     //查询条形码
     fun queryBarcodeDetail(barcode : String){
         val map  = hashMapOf<String,Any>()
-        map.put("barcode","aafdse")
+        map.put("barcode",barcode)
 
         val requestBody: RequestBody =
             RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))

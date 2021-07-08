@@ -95,7 +95,7 @@ class RfidQueryActivity : BaseRfidFActivity<RfidQueryViewModel, ActivityRfidQuer
             //            mActivity.tbCommon.setVisibility(View.VISIBLE);
             btn_read_or_stop.text = "开始扫描"
         } else {
-            rfidViewModel.setReadDataModel(1)
+            rfidViewModel.setReadDataModel(0)
             rfidViewModel.startReadRfid()
             btn_read_or_stop.setBackgroundColor(Color.RED)
             //                mActivity.tbCommon.setVisibility(View.INVISIBLE);

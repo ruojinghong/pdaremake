@@ -106,7 +106,7 @@ class UniqueQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPda
 
 
             }, { exception ->
-                ToastUtils.showShort(exception.message)
+                ToastUtils.showShort(exception.errorMsg)
                 loadsir.showError("加载失败")
                 finish()
 

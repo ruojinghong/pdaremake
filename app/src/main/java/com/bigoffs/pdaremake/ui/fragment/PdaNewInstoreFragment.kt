@@ -80,7 +80,7 @@ class PdaNewInstoreFragment : BaseInStoreFragment<PdaNewInstoreViewModel,Fragmen
         loadsir = loadServiceInit(swipeRefresh) {
             //点击重试时触发的操作
             loadsir.showLoading()
-            requestInstoreViewmodel.getNewInstoreList("","","",true)
+            requestInstoreViewmodel.getNewInstoreList("1","","",true)
         }
 
         //初始化recyclerView
@@ -88,7 +88,7 @@ class PdaNewInstoreFragment : BaseInStoreFragment<PdaNewInstoreViewModel,Fragmen
             it.addItemDecoration(SpaceItemDecoration(0, ConvertUtils.dp2px(8f)))
             it.initFooter(SwipeRecyclerView.LoadMoreListener {
                 //触发加载更多时请求数据
-                requestInstoreViewmodel.getNewInstoreList("","","",false)
+                requestInstoreViewmodel.getNewInstoreList("1","","",false)
             })
             //初始化FloatingActionButton
             it.initFloatBtn(floatbtn)
@@ -97,7 +97,7 @@ class PdaNewInstoreFragment : BaseInStoreFragment<PdaNewInstoreViewModel,Fragmen
         //初始化 SwipeRefreshLayout
         swipeRefresh.init {
             //触发刷新监听时请求数据
-            requestInstoreViewmodel.getNewInstoreList("","","",true)
+            requestInstoreViewmodel.getNewInstoreList("1","","",true)
         }
         articleAdapter.addChildClickViewIds(R.id.tv_go_detail)
         articleAdapter.setOnItemChildClickListener{adapter, view, position ->
@@ -155,7 +155,7 @@ class PdaNewInstoreFragment : BaseInStoreFragment<PdaNewInstoreViewModel,Fragmen
 
     override fun lazyLoadData() {
         super.lazyLoadData()
-        requestInstoreViewmodel.getNewInstoreList("","","",true)
+        requestInstoreViewmodel.getNewInstoreList("1","","",true)
 
     }
 

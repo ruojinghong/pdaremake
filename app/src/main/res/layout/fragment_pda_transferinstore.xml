@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:id="@+id/ll_content"
             android:orientation="vertical">
-            <include layout="@layout/common_choose_edittext"
+            <include layout="@layout/common_trans_instore_edittext"
                 app:viewmode="@{viewmodel}"/>
             <include layout="@layout/include_list"/>
         </LinearLayout>

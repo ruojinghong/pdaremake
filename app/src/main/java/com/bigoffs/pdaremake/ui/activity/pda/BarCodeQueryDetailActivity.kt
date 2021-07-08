@@ -47,7 +47,7 @@ class BarCodeQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityBa
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        uniqueCode = (intent.getStringExtra("unique"))+""
+        uniqueCode = (intent.getStringExtra("barcode"))+""
         mDatabind.vm = mViewModel
         mDatabind.click = ClickProxy()
 
@@ -112,7 +112,7 @@ class BarCodeQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityBa
 
 
             }, { exception ->
-                ToastUtils.showShort(exception.message)
+                ToastUtils.showShort(exception.errorMsg)
                 loadsir.showError("加载失败")
                 finish()
 

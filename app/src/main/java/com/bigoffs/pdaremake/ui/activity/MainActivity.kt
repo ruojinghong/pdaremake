@@ -48,7 +48,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
          CacheUtil.getHouse()?.let {
              mViewModel.depotname.value = it.name
          }
-        mViewModel.taskNum.value = "unknow"
+        mViewModel.taskNum.value = "0"
 
         mDatabind.recycler.let {
             it.layoutManager = GridLayoutManager(mContext, 2)
@@ -65,7 +65,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
                 initN5()
             }
             else -> {
-                showMessage("这是OTHER")
+                initN5()
             }
 
 

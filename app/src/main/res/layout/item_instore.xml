@@ -76,7 +76,8 @@
             android:layout_width="80dp"
             android:layout_height="32dp"
             android:layout_gravity="right"
-            android:background="@color/colorPrimary"/>
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"/>
         </LinearLayout>
 
 

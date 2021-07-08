@@ -29,9 +29,9 @@ class PdaBarcodeQueryFindSamelActivity :
     //界面状态管理者
     private lateinit var loadsir: LoadService<Any>
     private val requestViewModel: RequestQueryPdaFindSameViewModel by viewModels()
-    var uniqueCode = ""
-    var barcode = ""
-    var spu_no = ""
+    var uniqueCode :String? = null
+    var barcode :String? = null
+    var spu_no :String? = null
 
     override fun layoutId(): Int = R.layout.activity_pda_barcode_query_find_same
     lateinit var image: ImageView
@@ -44,9 +44,9 @@ class PdaBarcodeQueryFindSamelActivity :
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        uniqueCode = (intent.getStringExtra("unique")) + ""
-        uniqueCode = (intent.getStringExtra("barcode")) + ""
-        uniqueCode = (intent.getStringExtra("spu_no")) + ""
+        uniqueCode = intent.getStringExtra("unique")
+        barcode = intent.getStringExtra("barcode")
+        spu_no = intent.getStringExtra("spu_no")
         mDatabind.vm = mViewModel
 
 //状态页配置
@@ -104,8 +104,8 @@ class PdaBarcodeQueryFindSamelActivity :
 
 
             }, { exception ->
-                ToastUtils.showShort(exception.message)
-                loadsir.showError(exception.message + "")
+                ToastUtils.showShort(exception.errorMsg)
+                loadsir.showError(exception.errorMsg + "")
                 finish()
 
             }, {
@@ -116,14 +116,17 @@ class PdaBarcodeQueryFindSamelActivity :
 
 
     fun way() {
-        if (uniqueCode.isNotEmpty()) {
-
-            requestViewModel.findSameByUnique("")
-        } else if (barcode.isNotEmpty()) {
-            requestViewModel.findSameByBarcode("")
-        } else if (spu_no.isNotEmpty()) {
-            requestViewModel.findSameBySpuNo("")
+        uniqueCode?.let {
+            requestViewModel.findSameByUnique(it)
         }
+        barcode?.let {
+            requestViewModel.findSameByBarcode(it)
+        }
+        spu_no?.let {
+            requestViewModel.findSameBySpuNo(it)
+        }
+
+
 
 
     }
