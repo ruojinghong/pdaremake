@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseActivity
 import com.bigoffs.pdaremake.app.service.ScanServiceControl
+import com.bigoffs.pdaremake.app.util.CacheUtil
 import com.bigoffs.pdaremake.databinding.ActivityLoginBinding
 import com.bigoffs.pdaremake.databinding.ActivitySplashBinding
 import com.blankj.utilcode.util.LogUtils
@@ -19,10 +20,18 @@ class SplashActivity : BaseActivity<BaseViewModel,ActivitySplashBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
 
-        if(appViewModel.user.value?.token == null){
-                startActivity(Intent(this,LoginActivity::class.java))
+
+//        if(appViewModel.user.value?.token == null){
+//                startActivity(Intent(this,LoginActivity::class.java))
+//        }else{
+//                startActivity(Intent(this,MainActivity::class.java))
+//        }
+//        finish()
+
+        if(!CacheUtil.isLogin()){
+            startActivity(Intent(this,LoginActivity::class.java))
         }else{
-                startActivity(Intent(this,MainActivity::class.java))
+            startActivity(Intent(this,MainActivity::class.java))
         }
         finish()
     }

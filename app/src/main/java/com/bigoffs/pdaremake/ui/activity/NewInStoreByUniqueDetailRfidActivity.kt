@@ -191,7 +191,9 @@ class NewInStoreByUniqueDetailRfidActivity :
             }
         }
 
-        requestInStroreDetailViewModel.getInStoreDetail(1)
+        task?.id?.let {
+            requestInStroreDetailViewModel.getInStoreDetail(it)
+        }
 
         initBottomSheet();
         editDialog = EditDialog.create(mContext)

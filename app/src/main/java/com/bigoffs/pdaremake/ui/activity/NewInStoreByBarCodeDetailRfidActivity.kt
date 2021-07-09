@@ -196,8 +196,10 @@ class NewInStoreByBarCodeDetailRfidActivity :
                 mDatabind.devideShelf.setBackgroundColor(Color.parseColor("#EEEEEE"))
             }
         }
+        task?.id?.let {
+            requestInStroreDetailViewModel.getInStoreDetail(it)
+        }
 
-        requestInStroreDetailViewModel.getInStoreDetail(1)
 
         initBottomSheet();
         editDialog = EditDialog.create(mContext)

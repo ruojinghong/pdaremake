@@ -28,10 +28,11 @@ class InstoreAdapter(data: MutableList<InStoreBean>?,private var type:Int) :
 
            if(type == 1){
                //新品入庫
-               holder.setText(R.id.tv_no,arrival_no)
+               holder.setText(R.id.tv_no,in_stock_no)
                holder.setText(R.id.tv_supplier,"供应商：${sup_name}")
                holder.setText(R.id.tv_warehouse,"仓库：${ware_name}")
                holder.setText(R.id.tv_make_data,"生成时间：${created_at}")
+               holder.setText(R.id.tv_instore_style,"入库方式：${batch_type_name}")
                holder.setText(R.id.tv_count,"共${total_num}件，已入${final_num}件")
                holder.setVisible(R.id.tv_go_rfid_detail,false)
            }else{

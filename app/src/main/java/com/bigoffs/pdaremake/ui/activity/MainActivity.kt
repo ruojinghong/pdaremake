@@ -18,6 +18,7 @@ import com.bigoffs.pdaremake.app.ext.showBottomSheedList
 import com.bigoffs.pdaremake.app.ext.showMessage
 import com.bigoffs.pdaremake.app.service.ScanServiceControl
 import com.bigoffs.pdaremake.app.util.CacheUtil
+import com.bigoffs.pdaremake.app.util.DeviceUtil
 import com.bigoffs.pdaremake.databinding.ActivityNewMainBinding
 import com.bigoffs.pdaremake.ui.activity.rfid.RfidQueryActivity
 import com.bigoffs.pdaremake.ui.activity.pda.PdaQueryActivity
@@ -27,6 +28,8 @@ import com.bigoffs.pdaremake.ui.adapter.MainAdapter
 import com.bigoffs.pdaremake.ui.customview.SpaceItemDecoration
 import com.bigoffs.pdaremake.viewmodel.state.MainViewModel
 import com.blankj.utilcode.util.*
+import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.interfaces.OnSelectListener
 import me.hgj.jetpackmvvm.util.ActivityMessenger
 
 class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
@@ -182,6 +185,19 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
             showRightBtn = View.VISIBLE,
             biaoti = "首页"
         ) {
+
+                    XPopup.Builder(mContext).atView(findViewById(R.id.iv_right_btn)).asAttachList(arrayOf("设置","退出"),null,
+                        OnSelectListener { position, text ->
+                            when(position){
+                                0 ->{showMessage("暂未实现")}
+                                1 ->{
+                                    CacheUtil.setIsLogin(false)
+                                    ActivityMessenger.startActivity<LoginActivity>(mContext)
+                                    finish()
+                                }
+                            }
+
+                        }).show()
 
         }
     }
