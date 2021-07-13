@@ -29,6 +29,7 @@ class ExplainLinearLayout : LinearLayout {
     lateinit var tv_sku: TextView
     lateinit var tv_num: TextView
     lateinit var tv_brand: TextView
+    lateinit var tv_category: TextView
     lateinit var ll_property: LinearLayout
     lateinit var llContent: LinearLayout
     lateinit var tv: TextView
@@ -42,6 +43,7 @@ class ExplainLinearLayout : LinearLayout {
         tv_sku = findViewById(R.id.tv_sku)
         tv_num = findViewById(R.id.tv_num)
         tv_brand = findViewById(R.id.tv_brand)
+        tv_category = findViewById(R.id.tv_category)
         ll_property = findViewById(R.id.ll_property)
         llContent = findViewById<LinearLayout>(R.id.content)
         tv = findViewById<TextView>(R.id.tv_fold)
@@ -61,6 +63,7 @@ class ExplainLinearLayout : LinearLayout {
         tv_sku.text = bean.sku_id.toString()
         tv_num.text = bean.spu_no
         tv_brand.text = bean.brand_name
+        tv_category.text = bean.category_name
         for (item in bean.property_list) {
             val linearLayout = LinearLayout(context)
             linearLayout.orientation = LinearLayout.HORIZONTAL
