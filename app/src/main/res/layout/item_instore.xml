@@ -74,7 +74,8 @@
                 android:layout_height="32dp"
                 android:layout_gravity="right"
                 android:background="@color/colorPrimary"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:textColor="@color/white"/>
         <TextView
             android:id="@+id/tv_go_detail"
             android:layout_marginLeft="20dp"

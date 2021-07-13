@@ -11,6 +11,7 @@ import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseActivity
 import com.bigoffs.pdaremake.app.ext.*
 import com.bigoffs.pdaremake.data.model.bean.FindSame
+import com.bigoffs.pdaremake.data.model.bean.ShelfCodeStockNum
 import com.bigoffs.pdaremake.databinding.ActivityPdaBarcodeQueryFindSameBinding
 import com.bigoffs.pdaremake.ui.adapter.FindGoodlAdapter
 import com.bigoffs.pdaremake.ui.customview.FindSameExplainLinearLayout
@@ -91,13 +92,13 @@ class PdaBarcodeQueryFindSamelActivity :
 
                 loadsir.showSuccess()
 
-                mViewModel.uniqueCode.value = ""
+                mViewModel.uniqueCode.value = same.spu_name
                 mViewModel.queryDetail.value = same
                 mViewModel.stockNum.value = "库存：${same.stock_num}"
-                mViewModel.salePrice.value = "销售价：${same.sale_price}"
+                mViewModel.salePrice.value = "销售价：${same.sale_price/100}"
                 recyclerView.init(
                     LinearLayoutManager(mContext),
-                    FindGoodlAdapter(same.stock_map as ArrayList<FindSame.StockMap>)
+                    FindGoodlAdapter(same.stock_map as ArrayList<ShelfCodeStockNum>)
                 )
                 ex.setContent(same)
                 ex.foldOrUnfold()

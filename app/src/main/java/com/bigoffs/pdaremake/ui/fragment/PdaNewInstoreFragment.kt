@@ -103,20 +103,9 @@ class PdaNewInstoreFragment : BaseInStoreFragment<PdaNewInstoreViewModel,Fragmen
         articleAdapter.setOnItemChildClickListener{adapter, view, position ->
                 when(view.id){
                         R.id.tv_go_detail ->{
-                            if(DeviceUtil.isPdaDevice()){
-                                if(mViewModel.currentCodeType.value == "条形码"){
-                                    ActivityMessenger
-                                        .startActivity<NewInStoreByBarCodeDetailActivity>(requireActivity(),
-                                            Pair("task",articleAdapter.data[position])
-                                        )
-                                }else{
-                                    ActivityMessenger
-                                        .startActivity<NewInStoreByUniqueDetailActivity>(requireActivity(),
-                                            Pair("task",articleAdapter.data[position])
-                                        )
-                                }
-                            }else{
-                                if(mViewModel.currentCodeType.value == "条形码"){
+                            if(DeviceUtil.isRfidDevice()){
+                                //batch_type 1店内码 2条形码
+                                if(articleAdapter.data[position].batch_type == 2){
                                     ActivityMessenger
                                         .startActivity<NewInStoreByBarCodeDetailRfidActivity>(requireActivity(),
                                             Pair("task",articleAdapter.data[position])
@@ -127,6 +116,21 @@ class PdaNewInstoreFragment : BaseInStoreFragment<PdaNewInstoreViewModel,Fragmen
                                             Pair("task",articleAdapter.data[position])
                                         )
                                 }
+                            }else{
+
+                                if(articleAdapter.data[position].batch_type == 2){
+                                    ActivityMessenger
+                                        .startActivity<NewInStoreByBarCodeDetailActivity>(requireActivity(),
+                                            Pair("task",articleAdapter.data[position])
+                                        )
+                                }else{
+                                    ActivityMessenger
+                                        .startActivity<NewInStoreByUniqueDetailActivity>(requireActivity(),
+                                            Pair("task",articleAdapter.data[position])
+                                        )
+                                }
+
+
                             }
 
 

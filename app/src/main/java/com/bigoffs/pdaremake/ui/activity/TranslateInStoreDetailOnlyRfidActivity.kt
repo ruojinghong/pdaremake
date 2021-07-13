@@ -419,7 +419,7 @@ class TranslateInStoreDetailOnlyRfidActivity :
     fun upload() {
         var string = Gson().toJson(normalAdapter.data)
         requestInStroreDetailViewModel.uploadBarcodeAndUnuqie(
-            task?.in_stock_no,
+            task?.id.toString(),
             3,
             normalAdapter.data
         )

@@ -94,7 +94,7 @@ class UniqueQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPda
                 mViewModel.barcode.value = list.barcode
                 mViewModel.uniqueCode.value = list.unique_code
                 mViewModel.queryDetail.value = list
-                mViewModel.salePrice.value = "销售价：${list.sale_price}"
+                mViewModel.salePrice.value = "销售价：${list.sale_price.toInt()/100}"
                 val spec  = StringBuilder()
                 spec.append("规格：")
                 for (item in list.spec_list){
@@ -117,7 +117,7 @@ class UniqueQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPda
     }
 
     fun goFindSame(){
-        ActivityMessenger.startActivity<PdaBarcodeQueryFindSamelActivity>(this,"unique" to mViewModel.barcode.value)
+        ActivityMessenger.startActivity<PdaBarcodeQueryFindSamelActivity>(this,"unique" to mViewModel.uniqueCode.value)
     }
     fun goFindGood(){
         ActivityMessenger.startActivity<FindEpcByUniqueActivity>(this,

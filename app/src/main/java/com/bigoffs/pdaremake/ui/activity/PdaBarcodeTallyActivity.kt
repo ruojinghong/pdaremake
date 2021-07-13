@@ -167,6 +167,12 @@ class PdaBarcodeTallyActivity :
         mDatabind.viewPager.init(this, arrayListOf(Fragment(), Fragment()))
         mDatabind.magicIndicator.bindViewPager2(mDatabind.viewPager, arrayListOf("条码下架","条码上架")){
             isUndercarriage = it == 0
+            mDatabind.tvRight.isClickable = !isUndercarriage
+            if(isUndercarriage){
+                mDatabind.tvRight.setBackgroundColor(Color.GRAY)
+            }else{
+                mDatabind.tvRight.setBackgroundColor(Color.parseColor("#0033CC"))
+            }
         }
         mDatabind.viewPager.offscreenPageLimit = 2
 

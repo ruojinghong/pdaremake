@@ -57,9 +57,9 @@ class ExplainLinearLayout : LinearLayout {
     fun setContent(bean: QueryResultBean) {
 
         tvSpuName.text = bean.spu_name
-        tv_spu.text = bean.spu_no
+        tv_spu.text = bean.spu_id.toString()
         tv_sku.text = bean.sku_id.toString()
-        tv_num.text = bean.stock_num.toString()
+        tv_num.text = bean.spu_no
         tv_brand.text = bean.brand_name
         for (item in bean.property_list) {
             val linearLayout = LinearLayout(context)

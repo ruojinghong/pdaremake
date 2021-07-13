@@ -444,7 +444,7 @@ class NewInStoreByUniqueDetailRfidActivity :
 
     fun upload(){
             var string = Gson().toJson(normalAdapter.data)
-       requestInStroreDetailViewModel.upload(task.in_stock_no,1,normalAdapter.data)
+       requestInStroreDetailViewModel.upload(task.id.toString(),1,normalAdapter.data)
     }
 
     override fun initScan() {

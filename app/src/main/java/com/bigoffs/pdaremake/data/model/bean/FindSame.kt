@@ -21,7 +21,7 @@ data class FindSame(
     val spu_id: Int = 0,
     val spu_name: String = "",
     val spu_no: String = "",
-    val stock_map: List<StockMap> = mutableListOf(),
+    val stock_map: List<ShelfCodeStockNum> = mutableListOf(),
     val stock_num: Int = 0
 ):Parcelable{
     @Parcelize

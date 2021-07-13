@@ -2,6 +2,7 @@ package com.bigoffs.pdaremake.ui.activity.rfid
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.KeyEvent
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -12,6 +13,7 @@ import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseRfidFActivity
 import com.bigoffs.pdaremake.app.event.RfidViewModel
 import com.bigoffs.pdaremake.app.ext.*
+import com.bigoffs.pdaremake.app.util.DeviceUtil
 import com.bigoffs.pdaremake.data.model.bean.QueryType
 import com.bigoffs.pdaremake.databinding.ActivityRfidQueryBinding
 import com.bigoffs.pdaremake.ui.activity.pda.BarCodeQueryDetailActivity
@@ -33,6 +35,7 @@ class RfidQueryActivity : BaseRfidFActivity<RfidQueryViewModel, ActivityRfidQuer
     var intercept = false
     private lateinit var btn_read_or_stop:TextView
     private val requestQueryViewModel: RequestQueryViewModel by viewModels()
+    private lateinit var et:EditText;
     override fun initView(savedInstanceState: Bundle?) {
         mDatabind.viewmodel = mViewModel
         mDatabind.click = Click()
@@ -46,9 +49,7 @@ class RfidQueryActivity : BaseRfidFActivity<RfidQueryViewModel, ActivityRfidQuer
         }
 
 
-        findViewById<EditText>(R.id.common_et).addOnEditorActionListener{
-            onFinish(it)
-        }
+
 
         //状态页配置
         loadsir = loadServiceInit(findViewById(R.id.ll_content)) {
@@ -60,6 +61,16 @@ class RfidQueryActivity : BaseRfidFActivity<RfidQueryViewModel, ActivityRfidQuer
         //设置界面 加载中
         loadsir.showLoading()
         requestQueryViewModel.getQueryData()
+
+
+        if(DeviceUtil.isRfidDevice()){
+            et =  findViewById<EditText>(R.id.common_et)
+            et.addOnNoneEditorActionListener{
+                et.setText("")
+                onFinish(it)
+            }
+
+        }
     }
 
     override fun onFinish(data: String) {
@@ -168,5 +179,9 @@ class RfidQueryActivity : BaseRfidFActivity<RfidQueryViewModel, ActivityRfidQuer
         rfidViewModel.setMode(1)
         rfidViewModel.setCurrentSetting(RfidViewModel.Setting.stockRead)
         rfidViewModel.setListener(this)
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        return true
     }
 }

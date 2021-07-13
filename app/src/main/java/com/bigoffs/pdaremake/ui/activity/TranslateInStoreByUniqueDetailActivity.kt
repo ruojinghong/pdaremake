@@ -220,10 +220,12 @@ class TranslateInStoreByUniqueDetailActivity :
         mDatabind.vm = mViewModel
         mDatabind.click = ProxyClick()
         task = intent.getParcelableExtra<InStoreBean>("task")
-        if (task != null) {
-//            mViewModel.taskNo.value = "入库批次：${task.in_stock_no}"
-            mViewModel.taskNo.value = "入库批次："
+        task?.let {
+            mViewModel.taskNo.value = "调拨单号：${it.serial_no}"
         }
+//            mViewModel.taskNo.value = "入库批次：${task.in_stock_no}"
+
+
 
         mDatabind.etUnique.setOnFocusChangeListener() { v, hasFocus ->
             if (hasFocus) {
@@ -529,7 +531,7 @@ class TranslateInStoreByUniqueDetailActivity :
 
     fun upload(){
             var string = Gson().toJson(normalAdapter.data)
-       requestInStroreDetailViewModel.uploadBarcodeAndUnuqie(task?.in_stock_no,3,normalAdapter.data)
+       requestInStroreDetailViewModel.uploadBarcodeAndUnuqie(task?.id.toString(),3,normalAdapter.data)
     }
 
 

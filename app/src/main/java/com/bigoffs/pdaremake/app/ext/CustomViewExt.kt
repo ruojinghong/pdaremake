@@ -210,9 +210,9 @@ fun EditText.addOnEditorActionListener(action: (String) -> Unit){
 fun EditText.addOnNoneEditorActionListener(action: (String) -> Unit){
     setOnEditorActionListener { p0, p1, p2 ->
         LogUtils.i("----------------",p1)
-        if(p2.action == EditorInfo.IME_ACTION_NONE){
+//        if(p2.action == EditorInfo.IME_ACTION_NONE){
             action(p0.text.toString().trim())
-        }
+//        }
         true
     }
 

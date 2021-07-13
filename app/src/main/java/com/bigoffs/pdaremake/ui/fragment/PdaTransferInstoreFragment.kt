@@ -103,17 +103,18 @@ class PdaTransferInstoreFragment : BaseInStoreFragment<RfidQueryViewModel,Fragme
         articleAdapter.setOnItemChildClickListener{adapter, view, position ->
             when(view.id){
                 R.id.tv_go_detail ->{
-                    if(DeviceUtil.isPdaDevice()){
+                    if(DeviceUtil.isRfidDevice()){
                         ActivityMessenger
-                            .startActivity<TranslateInStoreByUniqueDetailActivity>(requireActivity(),
+                            .startActivity<TranslateInStoreByUniqueDetailRfidActivity>(requireActivity(),
                                 Pair("task",articleAdapter.data[position])
                             )
 
                     }else{
                         ActivityMessenger
-                            .startActivity<TranslateInStoreByUniqueDetailRfidActivity>(requireActivity(),
+                            .startActivity<TranslateInStoreByUniqueDetailActivity>(requireActivity(),
                                 Pair("task",articleAdapter.data[position])
                             )
+
                     }
 
                 }
