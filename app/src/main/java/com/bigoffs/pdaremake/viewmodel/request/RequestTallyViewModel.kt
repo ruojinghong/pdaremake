@@ -2,6 +2,7 @@ package com.bigoffs.pdaremake.viewmodel.request
 
 import androidx.lifecycle.MutableLiveData
 import com.bigoffs.pdaremake.app.network.apiService
+import com.bigoffs.pdaremake.app.util.CacheUtil
 import com.bigoffs.pdaremake.data.model.bean.*
 import com.google.gson.Gson
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
@@ -36,7 +37,9 @@ class RequestTallyViewModel :BaseViewModel() {
     fun uploadTallyData(data:MutableList<TallyBean>,t_type:String) {
         //1.这种是在 Activity/Fragment的监听回调中拿到已脱壳的数据（项目有基类的可以用）
         val map = HashMap<String, Any>()
+
         map.put("data",data)
+        map.put("w_id",CacheUtil.getHouse()?.id.toString())
         map.put("t_type",t_type)
         val requestBody: RequestBody =
             RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))
@@ -54,6 +57,7 @@ class RequestTallyViewModel :BaseViewModel() {
         //1.这种是在 Activity/Fragment的监听回调中拿到已脱壳的数据（项目有基类的可以用）
         val map = HashMap<String, Any>()
         map.put("data",data)
+        map.put("w_id",CacheUtil.getHouse()?.id.toString())
         map.put("t_type",t_type)
         val requestBody: RequestBody =
             RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))

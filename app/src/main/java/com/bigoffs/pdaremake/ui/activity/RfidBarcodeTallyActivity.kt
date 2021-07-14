@@ -427,8 +427,9 @@ class RfidBarcodeTallyActivity :
                    }else{
 
                        for(i in onAdapter.data.indices){
-                            if (onAdapter.data[i].goods_code == barcode){
+                            if (onAdapter.data[i].goods_code == barcode && onAdapter.data[i].shelf_code == mViewModel.currentShelf.value){
                                 onAdapter.data[i].num = onAdapter.data[i].num+inputNum
+                                onAdapter.data[i].old_num = onAdapter.data[i].num
                                 onAdapter.notifyDataSetChanged()
                                 offAdapter.data[position].num = (offAdapter.data[position].num.toInt()-inputNum).toString()
                                 if(offAdapter.data[position].num == "0"){
@@ -442,7 +443,8 @@ class RfidBarcodeTallyActivity :
 
                        }
                        //没找到就是新数据
-                       onAdapter.addData(StocktakingOnBean(mViewModel.currentShelf.value,barcode,inputNum.toString()))
+                       onAdapter.addData(StocktakingOnBean(mViewModel.currentShelf.value,barcode,inputNum.toString()
+                           ,"2",offAdapter.data[position].shelf_code,inputNum.toString()))
                        offAdapter.data[position].num = (offAdapter.data[position].num.toInt()-inputNum).toString()
                        if(offAdapter.data[position].num == "0"){
                            offAdapter.removeAt(position)

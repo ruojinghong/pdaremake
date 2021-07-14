@@ -422,7 +422,7 @@ class PdaBarcodeTallyActivity :
                    }else{
 
                        for(i in onAdapter.data.indices){
-                            if (onAdapter.data[i].goods_code == barcode){
+                            if (onAdapter.data[i].goods_code == barcode && onAdapter.data[i].shelf_code == mViewModel.currentShelf.value){
                                 onAdapter.data[i].num = onAdapter.data[i].num+inputNum
                                 onAdapter.notifyDataSetChanged()
                                 offAdapter.data[position].num = (offAdapter.data[position].num.toInt()-inputNum).toString()
