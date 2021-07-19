@@ -139,8 +139,8 @@ class PdaNewInstoreFragment : BaseInStoreFragment<PdaNewInstoreViewModel,Fragmen
         }
 
         if(DeviceUtil.isRfidDevice()){
-            mDatabind.root.findViewById<EditText>(R.id.common_et_new).addOnEditorActionListener{
-
+            mDatabind.root.findViewById<EditText>(R.id.common_et_new).addOnNoneEditorActionListener{
+                mDatabind.root.findViewById<EditText>(R.id.common_et_new).setText("")
                 goInStoreDetail(it)
             }
         }

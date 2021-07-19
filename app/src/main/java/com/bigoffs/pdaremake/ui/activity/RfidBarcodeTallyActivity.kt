@@ -79,7 +79,10 @@ class RfidBarcodeTallyActivity :
 
 
      fun onReceiverData(data: String) {
-
+            if(data.isEmpty()){
+                return
+            }
+         LogUtils.i("data==${data}我草你妈")
         if(editDialog.isShowing){
                 editDialog.setContentText(data)
         }else{

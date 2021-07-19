@@ -16,6 +16,8 @@ import me.hgj.jetpackmvvm.callback.livedata.StringLiveData
  *Desc:
  */
 class NewInStoreDetailViewModel : BaseViewModel() {
+
+    var currentUnique = StringLiveData()
     var taskNo = StringLiveData()
     //货品数
     var goodsCount  = IntLiveData()

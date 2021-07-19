@@ -22,6 +22,8 @@ import com.blankj.utilcode.util.ToastUtils
 import com.kingja.loadsir.core.LoadService
 import com.lxj.xpopup.XPopup
 import me.hgj.jetpackmvvm.ext.parseState
+import java.math.BigDecimal
+import java.text.DecimalFormat
 
 class PdaBarcodeQueryFindSamelActivity :
     BaseActivity<QueryPdaUniqueFindSameViewModel, ActivityPdaBarcodeQueryFindSameBinding>() {
@@ -95,7 +97,7 @@ class PdaBarcodeQueryFindSamelActivity :
                 mViewModel.uniqueCode.value = same.spu_name
                 mViewModel.queryDetail.value = same
                 mViewModel.stockNum.value = "库存：${same.stock_num}"
-                mViewModel.salePrice.value = "销售价：${same.sale_price/100}"
+                mViewModel.salePrice.value = "销售价：${same.sale_price.toString()}"
                 recyclerView.init(
                     LinearLayoutManager(mContext),
                     FindGoodlAdapter(same.stock_map as ArrayList<ShelfCodeStockNum>)

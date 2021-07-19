@@ -13,6 +13,7 @@ interface ApiService {
 //        const val TEST_URL = "http://10.1.1.3:2022/mock/13/"
 //        const val TEST_URL = "http://admin.bigoffs.com:9080/"
         const val TEST_URL = "http://dev-pda.bigoffs.com:9080/"
+//        const val TEST_URL = "http://test-pda.bigoffs.com:9080/"
 //        val BASE_URL = ""
     }
     @Headers("Domain-Name:loginurl")

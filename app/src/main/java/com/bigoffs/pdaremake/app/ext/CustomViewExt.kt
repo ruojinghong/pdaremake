@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -209,12 +211,30 @@ fun EditText.addOnEditorActionListener(action: (String) -> Unit){
 //监听rfid信息扫描到输入框
 fun EditText.addOnNoneEditorActionListener(action: (String) -> Unit){
     setOnEditorActionListener { p0, p1, p2 ->
-        LogUtils.i("----------------",p1)
 //        if(p2.action == EditorInfo.IME_ACTION_NONE){
+        if(p0.text.toString().trim().isNotEmpty() && p1 == EditorInfo.IME_ACTION_UNSPECIFIED || p1 == EditorInfo.IME_ACTION_SEARCH){
+            LogUtils.i("----------------",p1)
             action(p0.text.toString().trim())
-//        }
+        }
         true
     }
+//    addTextChangedListener(object :TextWatcher{
+//        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+//
+//        }
+//
+//        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+//
+//        }
+//
+//        override fun afterTextChanged(s: Editable?) {
+//            if(s.toString().isEmpty()){
+//                return
+//            }
+//            action.invoke(s.toString())
+//
+//        }
+//    })
 
 
 }

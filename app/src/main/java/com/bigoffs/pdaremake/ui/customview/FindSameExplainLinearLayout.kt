@@ -2,6 +2,8 @@ package com.bigoffs.pdaremake.ui.customview
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Build
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -10,8 +12,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.marginRight
+import androidx.core.widget.TextViewCompat
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.data.model.bean.FindSame
 import com.bigoffs.pdaremake.data.model.bean.QueryResultBean
@@ -54,6 +59,7 @@ class FindSameExplainLinearLayout : LinearLayout {
     }
 
 
+
     fun setContent(bean: FindSame) {
 
         tv_spu.text = bean.spu_id.toString()
@@ -71,8 +77,10 @@ class FindSameExplainLinearLayout : LinearLayout {
             val param = LayoutParams(ConvertUtils.dp2px(80f), ViewGroup.LayoutParams.WRAP_CONTENT)
             tvname.layoutParams = param
             tvname.text = item.property_key
-            tvname.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
             tvname.setTextColor(Color.BLACK)
+            tvname.setLines(1)
+            tvname.ellipsize = TextUtils.TruncateAt.END
+            tvname.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10f)
 
 
             val textView = TextView(context)
@@ -81,7 +89,9 @@ class FindSameExplainLinearLayout : LinearLayout {
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             textView.text = item.property_value
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
+            tvname.setLines(1)
+            tvname.ellipsize = TextUtils.TruncateAt.END
+            tvname.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10f)
             textView.setTextColor(Color.parseColor("#999999"))
 
             linearLayout.addView(tvname)

@@ -24,6 +24,8 @@ import com.lxj.xpopup.XPopup
 import me.hgj.jetpackmvvm.ext.parseState
 import me.hgj.jetpackmvvm.util.ActivityMessenger
 import java.lang.StringBuilder
+import java.math.BigDecimal
+import java.text.DecimalFormat
 
 class UniqueQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPdaQueryDetailBinding>() {
 
@@ -83,6 +85,10 @@ class UniqueQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPda
         if (DeviceUtil.isRfidDevice()){
             findViewById<TextView>(R.id.tv_find_good).visibility = View.VISIBLE
         }
+
+        mDatabind.tvBarcode.setOnClickListener{
+            ActivityMessenger.startActivity<PdaBarcodeQueryFindSamelActivity>(this,"barcode" to mDatabind.tvBarcode.text)
+        }
     }
 
     override fun createObserver() {
@@ -94,11 +100,19 @@ class UniqueQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPda
                 mViewModel.barcode.value = list.barcode
                 mViewModel.uniqueCode.value = list.unique_code
                 mViewModel.queryDetail.value = list
-                mViewModel.salePrice.value = "销售价：${list.sale_price.toInt()/100}"
+                mViewModel.salePrice.value = "销售价：${list.sale_price.toString()}"
                 val spec  = StringBuilder()
                 spec.append("规格：")
-                for (item in list.spec_list){
-                    spec.append(item.spec_value+"/")
+                for (position in list.spec_list.indices){
+                    if(list.spec_list.size == 1){
+                        spec.append(list.spec_list[position].spec_value)
+                    }else{
+                        if(list.spec_list.size == position+1){
+                            spec.append(list.spec_list[position].spec_value)
+                        }else{
+                            spec.append(list.spec_list[position].spec_value).append("/")
+                        }
+                    }
                 }
                 mViewModel.spec.value = spec.toString()
                 ex.setContent(list)

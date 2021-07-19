@@ -86,7 +86,7 @@
                         android:id="@+id/tv_sale_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{String.valueOf(vm.queryDetail.sale_price)}"
+                        android:text="@{String.valueOf(vm.salePrice)}"
                         android:layout_toRightOf="@+id/iv"
                         android:layout_below="@+id/num"
                         android:textSize="12dp"

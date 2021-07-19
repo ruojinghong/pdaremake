@@ -27,6 +27,8 @@ import com.lxj.xpopup.XPopup
 import me.hgj.jetpackmvvm.ext.parseState
 import me.hgj.jetpackmvvm.util.ActivityMessenger
 import java.lang.StringBuilder
+import java.math.BigDecimal
+import java.text.DecimalFormat
 
 class BarCodeQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityBarcodeQueryDetailBinding>() {
 
@@ -102,10 +104,19 @@ class BarCodeQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityBa
                 mViewModel.stockNum.value = "库存：${list.stock_num}"
                 val spec  = StringBuilder()
                 spec.append("规格：")
-                for (item in list.spec_list){
-                    spec.append(item.spec_value+"/")
+                for (position in list.spec_list.indices){
+                    if(list.spec_list.size == 1){
+                        spec.append(list.spec_list[position].spec_value)
+                    }else{
+                        if(list.spec_list.size == position+1){
+                            spec.append(list.spec_list[position].spec_value)
+                        }else{
+                            spec.append(list.spec_list[position].spec_value).append("/")
+                        }
+                    }
                 }
                 mViewModel.spec.value = spec.toString()
+                mViewModel.salePrice.value = "销售价：${list.sale_price}"
                 recyclerView.init(LinearLayoutManager(mContext),BarcodeDetailAdapter(list.stock_map as ArrayList<StockMap>))
                 ex.setContent(list)
                 ex.foldOrUnfold()

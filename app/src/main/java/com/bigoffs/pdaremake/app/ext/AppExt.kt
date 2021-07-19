@@ -23,6 +23,8 @@ import com.gyf.immersionbar.ktx.immersionBar
 import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
+import java.text.NumberFormat
+import java.text.ParseException
 
 /**
  * @author: sxy
@@ -220,4 +222,20 @@ fun AppCompatActivity.initTitle(statusBarDarkFont:Boolean = true,
 inline fun <reified T : Activity> Activity.startActivity(context: Context) {
     startActivity(Intent(context, T::class.java))
 }
+
+fun  Int.fenToYuan ( amount:String):String{
+    var format = NumberFormat.getInstance()
+    try{
+        var number = format.parse(amount)
+        var temp = number.toDouble()/100.0;
+        format.setGroupingUsed(false);
+        // 设置返回的小数部分所允许的最大位数
+        format.setMaximumFractionDigits(2);
+        return  format.format(temp);
+    } catch ( e : ParseException){
+        e.printStackTrace();
+    }
+    return amount;
+}
+
 

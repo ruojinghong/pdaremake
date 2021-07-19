@@ -2,6 +2,7 @@ package com.bigoffs.pdaremake.ui.customview
 
 import android.content.Context
 import android.graphics.Color
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -75,7 +76,9 @@ class ExplainLinearLayout : LinearLayout {
             val param = LayoutParams(ConvertUtils.dp2px(80f), ViewGroup.LayoutParams.WRAP_CONTENT)
             tvname.layoutParams = param
             tvname.text = item.property_key
-            tvname.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
+            tvname.setLines(1)
+            tvname.ellipsize = TextUtils.TruncateAt.END
+            tvname.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10f)
             tvname.setTextColor(Color.BLACK)
 
 
@@ -85,7 +88,9 @@ class ExplainLinearLayout : LinearLayout {
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             textView.text = item.property_value
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
+            tvname.setLines(1)
+            tvname.ellipsize = TextUtils.TruncateAt.END
+            tvname.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10f)
             textView.setTextColor(Color.parseColor("#999999"))
 
             linearLayout.addView(tvname)

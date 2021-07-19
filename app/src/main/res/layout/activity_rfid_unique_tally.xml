@@ -48,6 +48,7 @@
                         android:textColor="@color/black" />
 
                     <EditText
+                        android:imeOptions="actionSearch"
                         android:id="@+id/et_unique"
                         android:layout_marginLeft="20dp"
                         android:layout_width="match_parent"
@@ -86,6 +87,7 @@
                         android:textColor="@color/black" />
 
                     <EditText
+                        android:imeOptions="actionSearch"
                         android:id="@+id/et_shelf"
                         android:layout_marginLeft="20dp"
                         android:layout_width="match_parent"

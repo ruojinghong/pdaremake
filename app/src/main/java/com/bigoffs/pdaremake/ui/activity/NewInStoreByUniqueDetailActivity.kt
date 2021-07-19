@@ -91,6 +91,7 @@ class NewInStoreByUniqueDetailActivity :
                             ToastUtils.showShort("店内码已入库")
                         } else {
 //                            mDatabind.etUnique.setText(data)
+                            mViewModel.currentUnique.value = data
                             mDatabind.etBarcode.requestFocus()
                         }
 
@@ -309,7 +310,7 @@ class NewInStoreByUniqueDetailActivity :
                             NewInStoreNormalBean(
                                 "",
                                 barcode,
-                                mDatabind.etUnique.text.toString()
+                                mViewModel.currentUnique.value
                             )
                         )
                         mViewModel.normalNum.value = normalAdapter.data.size

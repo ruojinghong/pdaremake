@@ -61,7 +61,8 @@
                     android:layout_height="wrap_content"
                     android:text="货号"
                     android:textSize="16dp"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:ellipsize="end"/>
 
                 <TextView
                     android:id="@+id/tv_num"

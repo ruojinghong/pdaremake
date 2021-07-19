@@ -89,7 +89,7 @@ class RfidCollectActivity : BaseRfidFActivity<CollectViewModel, ActivityRfidColl
     override fun layoutId(): Int = R.layout.activity_rfid_collect
 
     override fun setStatusBar() {
-       initTitle(false,biaoti = "理货")
+       initTitle(false,biaoti = "数据采集")
     }
 
     override fun initView(savedInstanceState: Bundle?) {
