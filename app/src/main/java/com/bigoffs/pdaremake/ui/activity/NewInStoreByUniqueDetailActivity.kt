@@ -99,16 +99,16 @@ class NewInStoreByUniqueDetailActivity :
                 }
                 //添加条形码
                 2 -> {
-                    if (mViewModel.currentBarCodeSet.contains(data)) {
-                        beep()
-                        ToastUtils.showShort("条形码已存在")
-                    } else {
-                        mViewModel.currentBarCodeSet.add(data)
+//                    if (mViewModel.currentBarCodeSet.contains(data)) {
+//                        beep()
+//                        ToastUtils.showShort("条形码已存在")
+//                    } else {
+//                        mViewModel.currentBarCodeSet.add(data)
 //                        mDatabind.etBarcode.setText(data)
                         addErrorOrNormalList(data)
                         mDatabind.etUnique.requestFocus()
 
-                    }
+//                    }
 
                 }
                 //添加货架号
@@ -264,7 +264,7 @@ class NewInStoreByUniqueDetailActivity :
 
             }, {
 
-                ToastUtils.showShort(it.errorMsg)
+                ToastUtils.showShort(it.msg)
                 finish()
 
             })
@@ -276,7 +276,7 @@ class NewInStoreByUniqueDetailActivity :
             parseState(it,{
                ToastUtils.showShort("入库成功")
             },{ exception ->
-             ToastUtils.showShort(exception.errorMsg)
+             ToastUtils.showShort(exception.msg)
             })
         })
 

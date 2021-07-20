@@ -107,8 +107,8 @@ class PdaBarcodeQueryFindSamelActivity :
 
 
             }, { exception ->
-                ToastUtils.showShort(exception.errorMsg)
-                loadsir.showError(exception.errorMsg + "")
+                ToastUtils.showShort(exception.msg)
+                loadsir.showError(exception.msg + "")
                 finish()
 
             }, {

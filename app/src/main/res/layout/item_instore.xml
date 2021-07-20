@@ -18,28 +18,24 @@
         android:id="@+id/tv_supplier"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="供应商"
         android:textColor="#999999"
         android:layout_marginTop="7dp"/>
     <TextView
         android:id="@+id/tv_warehouse"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="仓库"
         android:textColor="#999999"
         android:layout_marginTop="2dp"/>
     <TextView
         android:id="@+id/tv_instore_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="仓库"
         android:textColor="#999999"
         android:layout_marginTop="2dp"/>
     <TextView
         android:id="@+id/tv_make_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="仓库"
         android:textColor="#999999"
         android:layout_marginTop="2dp"/>
     <LinearLayout

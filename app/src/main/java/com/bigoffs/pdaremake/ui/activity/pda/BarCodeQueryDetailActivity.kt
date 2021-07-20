@@ -100,6 +100,7 @@ class BarCodeQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityBa
                 loadsir.showSuccess()
                 mViewModel.barcode.value = list.barcode
                 mViewModel.uniqueCode.value = list.unique_code
+                mViewModel.shelfcode.value = list.shelf_code
                 mViewModel.queryDetail.value = list
                 mViewModel.stockNum.value = "库存：${list.stock_num}"
                 val spec  = StringBuilder()
@@ -123,7 +124,7 @@ class BarCodeQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityBa
 
 
             }, { exception ->
-                ToastUtils.showShort(exception.errorMsg)
+                ToastUtils.showShort(exception.msg)
                 loadsir.showError("加载失败")
                 finish()
 

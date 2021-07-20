@@ -111,7 +111,7 @@ class RfidStocktakingActivityActivity :
             mViewModel.taskNum.value = mViewModel.netSet.size
 
             }, {
-                ToastUtils.showShort(it.errorMsg)
+                ToastUtils.showShort(it.msg)
                 finish()
             })
         })
@@ -121,7 +121,7 @@ class RfidStocktakingActivityActivity :
                 ToastUtils.showShort("上传成功")
                 finish()
             },{
-                ToastUtils.showShort(it.errorMsg)
+                ToastUtils.showShort(it.msg)
             })
         })
 

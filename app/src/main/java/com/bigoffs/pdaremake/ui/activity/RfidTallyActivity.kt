@@ -123,7 +123,7 @@ class RfidTallyActivity : BaseRfidFActivity<TallyViewModel,ActivityRfidTallyBind
 
             },{
                 beep()
-                ToastUtils.showShort(it.errorMsg)
+                ToastUtils.showShort(it.msg)
             })
 
         })

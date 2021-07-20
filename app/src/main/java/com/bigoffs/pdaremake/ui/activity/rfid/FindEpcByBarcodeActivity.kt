@@ -114,7 +114,7 @@ class FindEpcByBarcodeActivity : BaseRfidFActivity<FindGoodByEpcViewModel, Activ
 
             }, { excepion ->
                 //失败
-                loadsir.showError(excepion.message + "")
+                loadsir.showError(excepion.errorLog + "")
             }, {
                 //加载中
                 showLoading("加载中")

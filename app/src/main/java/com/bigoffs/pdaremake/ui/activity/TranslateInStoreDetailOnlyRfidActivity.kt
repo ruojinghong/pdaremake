@@ -218,7 +218,7 @@ class TranslateInStoreDetailOnlyRfidActivity :
 
             }, {
 
-                ToastUtils.showShort(it.errorMsg)
+                ToastUtils.showShort(it.msg)
                 finish()
 
             })
@@ -230,7 +230,7 @@ class TranslateInStoreDetailOnlyRfidActivity :
             parseState(it, {
                 ToastUtils.showShort("入库成功")
             }, { exception ->
-                ToastUtils.showShort(exception.errorMsg)
+                ToastUtils.showShort(exception.msg)
             })
         })
 

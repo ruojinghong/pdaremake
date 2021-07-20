@@ -117,8 +117,8 @@ class FindEpcByUniqueActivity() : BaseRfidFActivity<FindEpcByUnicodeViewModel, A
 
             }, { excepion ->
                 //失败
-                loadsir.showError(excepion.message + "")
-                finish()
+                loadsir.showError(excepion.msg + "")
+
             }, {
                 //加载中
                 showLoading("加载中")

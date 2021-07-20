@@ -43,7 +43,7 @@ class LoginActivity : BaseActivity<LoginRegisterViewModel, ActivityLoginBinding>
                 requestLoginViewModel.getHouseId()
             }, { appException ->
                 //登录失败
-                showMessage(appException.errorMsg)
+                showMessage(appException.msg)
             }, {
 
                 showLoading()
@@ -69,7 +69,7 @@ class LoginActivity : BaseActivity<LoginRegisterViewModel, ActivityLoginBinding>
                 }
             }, { appException ->
                 //登录失败
-                showMessage(appException.errorMsg)
+                showMessage(appException.msg)
             }, {
 
                 showLoading()

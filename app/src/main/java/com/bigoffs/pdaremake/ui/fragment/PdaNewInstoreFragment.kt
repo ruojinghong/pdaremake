@@ -193,12 +193,12 @@ class PdaNewInstoreFragment : BaseInStoreFragment<PdaNewInstoreViewModel,Fragmen
                 swipeRefresh.isRefreshing = false
                 if (articleAdapter.data.size == 0) {
                     //如果适配器数据没有值，则显示错误界面，并提示错误信息
-                    loadsir.setErrorText(it.errorMsg)
+                    loadsir.setErrorText(it.msg)
                     loadsir.showCallback(ErrorCallback::class.java)
                 } else {
-                    recyclerView.loadMoreError(0, it.errorMsg)
+                    recyclerView.loadMoreError(0, it.msg)
                 }
-                ToastUtils.showShort(it.errorMsg)
+                ToastUtils.showShort(it.msg)
             })
 //            loadListData(it, articleAdapter, loadsir, recyclerView,swipeRefresh)
         })

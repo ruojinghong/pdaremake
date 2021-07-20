@@ -126,7 +126,7 @@ class RfidCollectActivity : BaseRfidFActivity<CollectViewModel, ActivityRfidColl
 
             },{
                 beep()
-                ToastUtils.showShort(it.errorMsg)
+                ToastUtils.showShort(it.msg)
             })
 
         })

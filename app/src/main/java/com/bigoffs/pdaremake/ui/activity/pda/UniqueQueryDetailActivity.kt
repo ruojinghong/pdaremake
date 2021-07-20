@@ -99,6 +99,7 @@ class UniqueQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPda
                 loadsir.showSuccess()
                 mViewModel.barcode.value = list.barcode
                 mViewModel.uniqueCode.value = list.unique_code
+                mViewModel.shelfcode.value = list.shelf_code
                 mViewModel.queryDetail.value = list
                 mViewModel.salePrice.value = "销售价：${list.sale_price.toString()}"
                 val spec  = StringBuilder()
@@ -120,7 +121,7 @@ class UniqueQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPda
 
 
             }, { exception ->
-                ToastUtils.showShort(exception.errorMsg)
+                ToastUtils.showShort(exception.msg)
                 loadsir.showError("加载失败")
                 finish()
 
@@ -135,7 +136,7 @@ class UniqueQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPda
     }
     fun goFindGood(){
         ActivityMessenger.startActivity<FindEpcByUniqueActivity>(this,
-           "unique" to mViewModel.barcode.value ,"shelf_code" to mViewModel.shelfcode.value)
+           "unique" to mViewModel.uniqueCode.value ,"shelf_code" to mViewModel.shelfcode.value)
     }
 
     inner class ClickProxy{

@@ -18,8 +18,8 @@ class  RequestFindGoodByEpcViewModel : BaseViewModel() {
 
     fun findGoodByEpc(uniqueCode : String,shelfcode:String){
         val map  = hashMapOf<String,Any>()
-        map.put("barcode","aafdse")
-        map.put("shelf_code","q-w-e-1")
+        map.put("barcode",uniqueCode)
+        map.put("shelf_code",shelfcode)
         val requestBody: RequestBody =
             RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))
         request({ apiService.findGoodByEpc(requestBody)},data,true,"加载中...")
@@ -28,8 +28,8 @@ class  RequestFindGoodByEpcViewModel : BaseViewModel() {
 
     fun findEpcByUnicode(uniqueCode : String,shelfcode:String){
         val map  = hashMapOf<String,Any>()
-        map.put("unique_code","ST1021331")
-        map.put("shelf_code","q-w-e-1")
+        map.put("unique_code",uniqueCode)
+        map.put("shelf_code",shelfcode)
         val requestBody: RequestBody =
             RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))
         request({ apiService.findEpcByUnicode(requestBody)},uniqueData,true,"加载中...")

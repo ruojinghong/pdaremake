@@ -22,7 +22,7 @@ class RequestQueryPdaFindSameViewModel : BaseViewModel() {
         map.put("unique_code",uniqueCode)
         val requestBody: RequestBody =
             RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))
-        request({ apiService.findSameByUnique(requestBody)},same,true,"加载中...")
+        request({ apiService.findSameBySpuNo(requestBody)},same,true,"加载中...")
 
     }
     fun findSameByBarcode(uniqueCode : String){
@@ -30,7 +30,7 @@ class RequestQueryPdaFindSameViewModel : BaseViewModel() {
         map.put("barcode",uniqueCode)
         val requestBody: RequestBody =
             RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))
-        request({ apiService.findSameByBarcode(requestBody)},same,true,"加载中...")
+        request({ apiService.findSameBySpuNo(requestBody)},same,true,"加载中...")
 
     }
     fun findSameBySpuNo(uniqueCode : String){

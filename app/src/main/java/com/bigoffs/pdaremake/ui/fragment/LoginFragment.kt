@@ -35,7 +35,7 @@ class LoginFragment : BaseRfidFragment<LoginRegisterViewModel,FragmentLoginBindi
 //                me.hgj.jetpackmvvm.ext.nav().navigateUp()
             }, { appException ->
                 //登录失败
-                showMessage(appException.errorMsg)
+                showMessage(appException.msg)
             },{
 
                 showLoading()
