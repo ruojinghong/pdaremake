@@ -117,7 +117,7 @@ class BarCodeQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityBa
                     }
                 }
                 mViewModel.spec.value = spec.toString()
-                mViewModel.salePrice.value = "销售价：${list.sale_price}"
+                mViewModel.salePrice.value = "销售价：${list.sale_price.toString().fen2yuan()}"
                 recyclerView.init(LinearLayoutManager(mContext),BarcodeDetailAdapter(list.stock_map as ArrayList<StockMap>))
                 ex.setContent(list)
                 ex.foldOrUnfold()

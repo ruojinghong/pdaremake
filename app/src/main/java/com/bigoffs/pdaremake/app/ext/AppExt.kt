@@ -238,4 +238,14 @@ fun  Int.fenToYuan ( amount:String):String{
     return amount;
 }
 
+fun String.fen2yuan():String{
+    if(this.length>=3){
+        return this.take(this.length-2)+"."+this.takeLast(2)
+    }else if(this.length == 2){
+        return "0.$this"
+    }else if(this.length == 1){
+        return "0.0$this"
+    }
+    return ""
+}
 

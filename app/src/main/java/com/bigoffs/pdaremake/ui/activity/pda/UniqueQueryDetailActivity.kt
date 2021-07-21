@@ -18,6 +18,7 @@ import com.bigoffs.pdaremake.ui.customview.ExplainLinearLayout
 import com.bigoffs.pdaremake.ui.customview.ImageLoader
 import com.bigoffs.pdaremake.viewmodel.request.RequestQueryDetailViewModel
 import com.bigoffs.pdaremake.viewmodel.state.QueryResultViewModel
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.kingja.loadsir.core.LoadService
 import com.lxj.xpopup.XPopup
@@ -101,7 +102,7 @@ class UniqueQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPda
                 mViewModel.uniqueCode.value = list.unique_code
                 mViewModel.shelfcode.value = list.shelf_code
                 mViewModel.queryDetail.value = list
-                mViewModel.salePrice.value = "销售价：${list.sale_price.toString()}"
+                mViewModel.salePrice.value = "销售价：${list.sale_price.toString().fen2yuan()}"
                 val spec  = StringBuilder()
                 spec.append("规格：")
                 for (position in list.spec_list.indices){

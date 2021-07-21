@@ -97,7 +97,7 @@ class PdaBarcodeQueryFindSamelActivity :
                 mViewModel.uniqueCode.value = same.spu_name
                 mViewModel.queryDetail.value = same
                 mViewModel.stockNum.value = "库存：${same.stock_num}"
-                mViewModel.salePrice.value = "销售价：${same.sale_price.toString()}"
+                mViewModel.salePrice.value = "销售价：${same.sale_price.toString().fen2yuan()}"
                 recyclerView.init(
                     LinearLayoutManager(mContext),
                     FindGoodlAdapter(same.stock_map as ArrayList<ShelfCodeStockNum>)

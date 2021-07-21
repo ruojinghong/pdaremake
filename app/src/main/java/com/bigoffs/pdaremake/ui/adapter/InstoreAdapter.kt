@@ -43,6 +43,7 @@ class InstoreAdapter(data: MutableList<InStoreBean>?,private var type:Int) :
                holder.setText(R.id.tv_warehouse,"调入方：${in_ware_name}")
                holder.setText(R.id.tv_instore_style,"发货时间：${created_at}")
                holder.setText(R.id.tv_count,"共${total_num}件，已入${final_num}件")
+               holder.setText(R.id.tv_make_data,"")
                holder.setVisible(R.id.tv_go_rfid_detail,DeviceUtil.isRfidDevice())
            }
 
