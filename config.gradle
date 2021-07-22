@@ -9,7 +9,7 @@ ext{
             minSdkVersion    : 21,
             targetSdkVersion :29,
             versionCode      : 1001, //4位
-            versionName      : "1.4.0.4" //3或者4位 3.9.3.2 ，3.9.3 跟versionCode成对应关系3932，3930
+            versionName      : "1.4.0.5" //3或者4位 3.9.3.2 ，3.9.3 跟versionCode成对应关系3932，3930
 
 
     ]
@@ -19,7 +19,7 @@ ext{
             minSdkVersion    : 21,
             targetSdkVersion : 29,
             versionCode      : 1001, //4位
-            versionName      : "1.4.0.4" ,//3或者4位 3.9.3.2 ，3.9.3 跟versionCode成对应关系3932，3930
+            versionName      : "1.4.0.5" ,//3或者4位 3.9.3.2 ，3.9.3 跟versionCode成对应关系3932，3930
 
 
 
