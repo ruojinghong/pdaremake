@@ -293,12 +293,16 @@ class TranslateInStoreByUniqueDetailActivity :
 
         mDatabind.rbBarcode.setOnClickListener {
             mDatabind.rbUnique.isChecked = false
+            mDatabind.etBarcode.requestFocus()
         }
         mDatabind.rbUnique.setOnClickListener{
             mDatabind.rbBarcode.isChecked = false
+            mDatabind.etUnique.requestFocus()
         }
 
         mDatabind.rbUnique.isChecked = true
+
+
 
     }
 

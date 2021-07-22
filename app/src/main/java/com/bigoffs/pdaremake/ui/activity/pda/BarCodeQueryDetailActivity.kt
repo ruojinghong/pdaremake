@@ -39,6 +39,7 @@ class BarCodeQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityBa
     var uniqueCode = ""
 
     override fun layoutId(): Int = R.layout.activity_barcode_query_detail
+    private val adatpare : BarcodeDetailAdapter by lazy{BarcodeDetailAdapter( arrayListOf<StockMap>())}
     lateinit var image: ImageView
     lateinit var recyclerView: RecyclerView
     lateinit var ex: ExplainLinearLayout
@@ -87,9 +88,14 @@ class BarCodeQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityBa
                 .show()
 
         }
-        if (DeviceUtil.isRfidDevice()){
-            findViewById<TextView>(R.id.tv_find_good).visibility = View.VISIBLE
+        if(DeviceUtil.isRfidDevice()){
+            adatpare.setOnItemClickListener{ adapter,view,position ->
+                ActivityMessenger.startActivity<FindEpcByBarcodeActivity>(this,
+                    "unique" to mViewModel.barcode.value ,"shelf_code" to adatpare.data[position].shelf_code)
+            }
         }
+
+
     }
 
     override fun createObserver() {
@@ -118,7 +124,8 @@ class BarCodeQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityBa
                 }
                 mViewModel.spec.value = spec.toString()
                 mViewModel.salePrice.value = "销售价：${list.sale_price.toString().fen2yuan()}"
-                recyclerView.init(LinearLayoutManager(mContext),BarcodeDetailAdapter(list.stock_map as ArrayList<StockMap>))
+                adatpare.addData(list.stock_map)
+                recyclerView.init(LinearLayoutManager(mContext),adatpare)
                 ex.setContent(list)
                 ex.foldOrUnfold()
 

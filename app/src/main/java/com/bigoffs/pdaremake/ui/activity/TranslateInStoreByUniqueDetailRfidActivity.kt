@@ -199,6 +199,8 @@ class TranslateInStoreByUniqueDetailRfidActivity :
                  onReceiverData(it)
              }
          }
+
+
     }
 
     private fun initBottomSheet() {
@@ -305,13 +307,27 @@ class TranslateInStoreByUniqueDetailRfidActivity :
 
         mDatabind.rbBarcode.setOnClickListener {
             mDatabind.rbUnique.isChecked = false
+            mDatabind.etBarcode.requestFocus()
         }
         mDatabind.rbUnique.setOnClickListener{
             mDatabind.rbBarcode.isChecked = false
+            mDatabind.etUnique.requestFocus()
         }
 
         mDatabind.rbUnique.isChecked = true
 
+
+//        mDatabind.rbBarcode.setOnCheckedChangeListener{ _,isChecked ->
+//            if(isChecked){
+//                mDatabind.etBarcode.requestFocus()
+//            }
+//
+//        }
+//        mDatabind.rbUnique.setOnCheckedChangeListener{_,isChecked ->
+//            if(isChecked) {
+//                mDatabind.etUnique.requestFocus()
+//            }
+//        }
     }
 
     override fun createObserver() {

@@ -88,7 +88,7 @@ class UniqueQueryDetailActivity : BaseActivity<QueryResultViewModel, ActivityPda
         }
 
         mDatabind.tvBarcode.setOnClickListener{
-            ActivityMessenger.startActivity<PdaBarcodeQueryFindSamelActivity>(this,"barcode" to mDatabind.tvBarcode.text)
+            ActivityMessenger.startActivity<BarCodeQueryDetailActivity>(this,"barcode" to mDatabind.tvBarcode.text)
         }
     }
 

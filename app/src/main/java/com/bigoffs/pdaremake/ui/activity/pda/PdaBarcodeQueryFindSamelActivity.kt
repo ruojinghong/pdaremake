@@ -13,6 +13,7 @@ import com.bigoffs.pdaremake.app.ext.*
 import com.bigoffs.pdaremake.data.model.bean.FindSame
 import com.bigoffs.pdaremake.data.model.bean.ShelfCodeStockNum
 import com.bigoffs.pdaremake.databinding.ActivityPdaBarcodeQueryFindSameBinding
+import com.bigoffs.pdaremake.ui.activity.rfid.FindEpcByBarcodeActivity
 import com.bigoffs.pdaremake.ui.adapter.FindGoodlAdapter
 import com.bigoffs.pdaremake.ui.customview.FindSameExplainLinearLayout
 import com.bigoffs.pdaremake.ui.customview.ImageLoader
@@ -22,6 +23,7 @@ import com.blankj.utilcode.util.ToastUtils
 import com.kingja.loadsir.core.LoadService
 import com.lxj.xpopup.XPopup
 import me.hgj.jetpackmvvm.ext.parseState
+import me.hgj.jetpackmvvm.util.ActivityMessenger
 import java.math.BigDecimal
 import java.text.DecimalFormat
 
@@ -32,6 +34,7 @@ class PdaBarcodeQueryFindSamelActivity :
     //界面状态管理者
     private lateinit var loadsir: LoadService<Any>
     private val requestViewModel: RequestQueryPdaFindSameViewModel by viewModels()
+    private val adapter : FindGoodlAdapter by lazy {FindGoodlAdapter(arrayListOf())}
     var uniqueCode :String? = null
     var barcode :String? = null
     var spu_no :String? = null
@@ -85,6 +88,10 @@ class PdaBarcodeQueryFindSamelActivity :
                 .show()
 
         }
+//        adapter.setOnItemClickListener{_,_,position ->
+//            ActivityMessenger.startActivity<FindEpcByBarcodeActivity>(this,
+//                "unique" to mViewModel.barcode.value ,"shelf_code" to adatpare.data[position].shelf_code)
+//        }
     }
 
     override fun createObserver() {
@@ -98,9 +105,10 @@ class PdaBarcodeQueryFindSamelActivity :
                 mViewModel.queryDetail.value = same
                 mViewModel.stockNum.value = "库存：${same.stock_num}"
                 mViewModel.salePrice.value = "销售价：${same.sale_price.toString().fen2yuan()}"
+                adapter.addData(same.stock_map)
                 recyclerView.init(
                     LinearLayoutManager(mContext),
-                    FindGoodlAdapter(same.stock_map as ArrayList<ShelfCodeStockNum>)
+                   adapter
                 )
                 ex.setContent(same)
                 ex.foldOrUnfold()
