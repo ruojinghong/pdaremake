@@ -90,7 +90,7 @@ class PdaUniqueTallyActivity :
 
                     } else {
                         mViewModel.currentUniqueSet.add(data)
-                        errorAdapter.addData(TallyBean(mViewModel.currentShelf.value,data,"1","1"))
+                        errorAdapter.addData(TallyBean("",data,"1","1"))
                         updateNum()
                     }
                 }

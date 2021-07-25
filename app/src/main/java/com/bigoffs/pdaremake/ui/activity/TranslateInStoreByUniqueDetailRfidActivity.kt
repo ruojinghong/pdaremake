@@ -518,7 +518,7 @@ class TranslateInStoreByUniqueDetailRfidActivity :
         val normalIterator = normalAdapter.data.iterator()
         while (normalIterator.hasNext()) {
             var next = normalIterator.next()
-            if (next.barcode == barcode) {
+            if (next.barcode == barcode || next.unique_code == barcode) {
                 normalIterator.remove()
                 normalAdapter.notifyDataSetChanged()
                 updateNum()
