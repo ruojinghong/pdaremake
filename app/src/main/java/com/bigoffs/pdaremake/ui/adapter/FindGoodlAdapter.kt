@@ -24,7 +24,7 @@ class FindGoodlAdapter(data: ArrayList<ShelfCodeStockNum>)
     : BaseQuickAdapter<ShelfCodeStockNum,BaseViewHolder>( R.layout.item_three_row,data) {
     override fun convert(holder: BaseViewHolder, item: ShelfCodeStockNum) {
         holder.setText(R.id.tv1,item.shelf_code)
-        holder.setText(R.id.tv2,"")
+        holder.setText(R.id.tv2,item.spec_list[0].spec_value)
         holder.setText(R.id.tv3,item.stock_num.toString())
     }
 }

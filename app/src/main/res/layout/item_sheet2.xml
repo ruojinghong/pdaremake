@@ -17,14 +17,16 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:textSize="10dp"/>
         <TextView
 
             android:id="@+id/tv_barcode"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textSize="10dp"/>
 
     <TextView
         android:id="@+id/tv_unique"
@@ -33,7 +35,7 @@
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
-        />
+        android:textSize="10dp"/>
     </LinearLayout>
 
     <View
