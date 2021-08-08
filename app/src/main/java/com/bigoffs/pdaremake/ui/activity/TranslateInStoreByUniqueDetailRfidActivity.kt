@@ -490,6 +490,7 @@ class TranslateInStoreByUniqueDetailRfidActivity :
 
         fun onDelete() {
             editDialog.show()
+            editDialog.setContentText("")
 
         }
         fun onCancel(){

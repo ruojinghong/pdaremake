@@ -344,7 +344,9 @@ class TranslateInStoreDetailOnlyRfidActivity :
         }
 
         fun onDelete() {
+
             editDialog.show()
+            editDialog.setContentText("")
 
         }
 
