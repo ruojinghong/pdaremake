@@ -121,7 +121,7 @@ class PdaBarcodeTallyActivity :
 
             }
         }
-
+        mDatabind.etShelf.requestFocus()
 
     }
 
@@ -397,7 +397,7 @@ class PdaBarcodeTallyActivity :
             .setOnClickListener(object : InputDialog.OnHintDialogListener{
                 override fun onClickOk(content: String) {
                     val inputNum = content.toInt()
-                    offAdapter.addData(StocktakingOffBean(barcode,content))
+                    offAdapter.addData(StocktakingOffBean(barcode,content,mViewModel.currentShelf.value))
                     mViewModel.errorNum.value = offAdapter.data.size
                     updateNum()
 

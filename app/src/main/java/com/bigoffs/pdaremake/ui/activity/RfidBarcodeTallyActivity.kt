@@ -82,7 +82,6 @@ class RfidBarcodeTallyActivity :
             if(data.isEmpty()){
                 return
             }
-         LogUtils.i("data==${data}我草你妈")
         if(editDialog.isShowing){
                 editDialog.setContentText(data)
         }else{
@@ -232,7 +231,7 @@ class RfidBarcodeTallyActivity :
             }
         }
 
-        mDatabind.etUnique.requestFocus()
+        mDatabind.etShelf.requestFocus()
     }
 
     override fun createObserver() {
@@ -405,7 +404,7 @@ class RfidBarcodeTallyActivity :
             .setOnClickListener(object : InputDialog.OnHintDialogListener{
                 override fun onClickOk(content: String) {
                     val inputNum = content.toInt()
-                    offAdapter.addData(StocktakingOffBean(barcode,content))
+                    offAdapter.addData(StocktakingOffBean(barcode,content,mViewModel.currentShelf.value))
                     mViewModel.errorNum.value = offAdapter.data.size
                     updateNum()
 
