@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import androidx.core.app.ActivityCompat
@@ -19,6 +20,7 @@ import com.bigoffs.pdaremake.app.ext.showMessage
 import com.bigoffs.pdaremake.app.service.ScanServiceControl
 import com.bigoffs.pdaremake.app.util.CacheUtil
 import com.bigoffs.pdaremake.app.util.DeviceUtil
+import com.bigoffs.pdaremake.app.util.Timestamp
 import com.bigoffs.pdaremake.databinding.ActivityNewMainBinding
 import com.bigoffs.pdaremake.ui.activity.rfid.RfidQueryActivity
 import com.bigoffs.pdaremake.ui.activity.pda.PdaQueryActivity
@@ -270,6 +272,10 @@ class MainActivity : BaseActivity<MainViewModel, ActivityNewMainBinding>() {
 
                         }
                     }
+                }
+
+                3->{
+                    ActivityMessenger.startActivity<StocktakingActivity>(this)
                 }
                 4 -> {
                     startActivity(Intent(this, PdaQueryActivity::class.java))

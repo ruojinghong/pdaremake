@@ -1,5 +1,6 @@
 package com.bigoffs.pdaremake.viewmodel.state
 
+import com.bigoffs.pdaremake.data.model.bean.TallyBean
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.callback.livedata.IntLiveData
 import me.hgj.jetpackmvvm.callback.livedata.StringLiveData
@@ -22,5 +23,23 @@ class StocktakingViewModel : BaseViewModel() {
     //一次开启扫描到关闭扫描的数据集合
     var  oneScanList = mutableListOf<String>()
 
+
+
+
+    var currentShelf =  StringLiveData()
+    var CollectedNum = IntLiveData()
+
+    var responseNum = IntLiveData()
+    var currentFocus = IntLiveData()
+
+    val normalNum = IntLiveData()
+    var openErrorBottomSheet = IntLiveData()
+    val scanList = arrayListOf<TallyBean>()
+
+    val currentUniqueSet = hashSetOf<String>()
+
+
+    val waitGroundingMap = hashMapOf<String,Int>()
+    val alreadyGroundingMap = hashMapOf<String,Int>()
 
 }
