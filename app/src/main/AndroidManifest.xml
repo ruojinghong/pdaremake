@@ -62,6 +62,8 @@
         <activity android:name=".ui.activity.RfidCollectActivity" />
         <activity android:name=".ui.activity.PdaUniqueStocktakingActivity" />
         <activity android:name=".ui.activity.RfidUniqueStocktakingActivity" />
+        <activity android:name=".ui.activity.PdaBarcodeStocktakingActivity" />
+        <activity android:name=".ui.activity.RfidBarcodeStocktakingActivity" />
     </application>
 
 </manifest>

@@ -85,7 +85,7 @@ class RequestStocktakingViewModel : BaseViewModel() {
         request({ apiService.stocktakingCheckUnique(requestBody)},checkUnique,true,"加载中...")
     }
 
-    fun tocktakingCheckBarcode(epc_codes:String){
+    fun stocktakingCheckBarcode(epc_codes:String){
         val map  = hashMapOf<String,Any>()
         map.put("barcode",epc_codes)
         val requestBody: RequestBody =

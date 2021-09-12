@@ -98,7 +98,13 @@ class StocktakingActivity : BaseActivity<StocktakingViewModel,ActivityStocktakin
                         }
                     }
                     //条形码
-                    2->{}
+                    2->{
+                        if(DeviceUtil.isRfidDevice()){
+                            ActivityMessenger.startActivity<RfidBarcodeStocktakingActivity>(this,Pair<String,StocktakingListBean>("data",stocktakingAdapter.data[position]))
+                        }else{
+                            ActivityMessenger.startActivity<PdaBarcodeStocktakingActivity>(this,Pair<String,StocktakingListBean>("data",stocktakingAdapter.data[position]))
+                        }
+                    }
                     //epc
                     3->{
                         if(DeviceUtil.isRfidDevice()){
