@@ -15,10 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseScanActivity
-import com.bigoffs.pdaremake.app.ext.addOnEditorActionListener
-import com.bigoffs.pdaremake.app.ext.addOnNoneEditorActionListener
-import com.bigoffs.pdaremake.app.ext.init
-import com.bigoffs.pdaremake.app.ext.initTitle
+import com.bigoffs.pdaremake.app.ext.*
 import com.bigoffs.pdaremake.app.util.DeviceUtil
 import com.bigoffs.pdaremake.data.model.bean.InStoreBean
 import com.bigoffs.pdaremake.data.model.bean.NewInStoreErrorBean
@@ -36,6 +33,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
 import me.hgj.jetpackmvvm.ext.parseState
+import me.hgj.jetpackmvvm.util.ActivityMessenger
 
 /**
  *User:Kirito
@@ -129,6 +127,28 @@ class NewInStoreByUniqueDetailActivity :
         }
 
 
+    }
+
+    private fun showDateSheet(){
+        showBottomSheedList(
+            mContext, arrayOf("店内码理货","条形码理货","RFID理货"),"选择理货类型"
+        ) { position, text ->
+            //登录成功 通知账户数据发生改变鸟
+
+            when(position){
+                0 ->{
+                    ActivityMessenger.startActivity<RfidUniqueTallyActivity>(this)
+                }
+                1->{
+                    ActivityMessenger.startActivity<RfidBarcodeTallyActivity>(this)
+                }
+                2 ->{
+                    ActivityMessenger.startActivity<RfidTallyActivity>(this)
+                }
+
+            }
+
+        }
     }
 
     private fun initBottomSheet() {

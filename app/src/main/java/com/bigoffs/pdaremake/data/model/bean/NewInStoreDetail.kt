@@ -2,6 +2,7 @@ package com.bigoffs.pdaremake.data.model.bean
 
 data class NewInStoreDetail(
     val barcode_sku_map: MutableMap<String,Int>,
+    val production_sku_map: MutableMap<String,ArrayList<InstoreDateBean>>,
     val in_store_list: InStoreList,
     val task_list: TaskList
 )
