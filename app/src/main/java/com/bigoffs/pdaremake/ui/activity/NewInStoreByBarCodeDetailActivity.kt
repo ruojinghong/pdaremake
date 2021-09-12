@@ -16,6 +16,7 @@ import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseScanActivity
 import com.bigoffs.pdaremake.app.ext.init
 import com.bigoffs.pdaremake.app.ext.initTitle
+import com.bigoffs.pdaremake.app.ext.showBottomSheedList
 import com.bigoffs.pdaremake.data.model.bean.InStoreBean
 import com.bigoffs.pdaremake.data.model.bean.NewInStoreErrorBean
 import com.bigoffs.pdaremake.data.model.bean.NewInStoreNormalBarcodeBean
@@ -37,6 +38,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
 import me.hgj.jetpackmvvm.ext.parseState
+import me.hgj.jetpackmvvm.util.ActivityMessenger
 import org.w3c.dom.Text
 
 /**
@@ -266,6 +268,61 @@ class NewInStoreByBarCodeDetailActivity :
 
     }
 
+    fun showSelectDateDialog(dataString:Array<String>,barcode:String,n:Int){
+
+
+        showBottomSheedList(
+            mContext, dataString,"选择生产日期"
+        ) { position, text ->
+            //登录成功 通知账户数据发生改变鸟
+
+            showNormalDialog(dataString[position],barcode,n)
+        }
+
+    }
+
+    fun showNormalDialog(data:String,barcode:String,n : Int){
+
+        var num  = n
+        InputDialog.create(this)
+            .setTitle("条形码${barcode}")
+            .setRightBtnText("确定")
+            .setOnClickListener(object : InputDialog.OnHintDialogListener{
+                override fun onClickOk(content: String) {
+                    val inputNum = content.toInt()
+                    if (num!! < inputNum){
+                        beep()
+                        ToastUtils.showShort("${barcode}条码已超量入库，请及时联系买手确认")
+                        mViewModel.currentBarCodeSet.remove(barcode)
+                    }else{
+                        normalAdapter.addData(
+                            NewInStoreNormalBarcodeBean(
+                                "",
+                                barcode,
+                                content,
+                                maxNum = num!!,
+                                production_at = data
+                            )
+                        )
+                        num = num!!- inputNum
+//                                        mViewModel.currentSkuNumMap.put(sku, num!!)
+                        var count = 0
+                        for (i in normalAdapter.data){
+                            count += i.num.toInt()
+                        }
+                        mViewModel.normalNum.value = count
+                        normalBottomSheetNum.text = mViewModel.normalNum.value.toString()
+                    }
+
+
+                }
+
+                override fun onClickCancel() {
+
+                }
+            }).show()
+    }
+
 
     fun addErrorOrNormalList(barcode: String) {
 
@@ -282,42 +339,14 @@ class NewInStoreByBarCodeDetailActivity :
                         showErrorDialog(barcode,"没有可入库的数量")
 
                     } else {
-                        InputDialog.create(this)
-                            .setTitle("条形码${barcode}")
-                            .setRightBtnText("确定")
-                            .setOnClickListener(object : InputDialog.OnHintDialogListener{
-                                override fun onClickOk(content: String) {
-                                    val inputNum = content.toInt()
-                                    if (num!! < inputNum){
-                                        beep()
-                                        ToastUtils.showShort("${barcode}条码已超量入库，请及时联系买手确认")
-                                        mViewModel.currentBarCodeSet.remove(barcode)
-                                    }else{
-                                        normalAdapter.addData(
-                                            NewInStoreNormalBarcodeBean(
-                                                "",
-                                                barcode,
-                                                content,
-                                                maxNum = num!!
-                                            )
-                                        )
-                                        num = num!!- inputNum
-//                                        mViewModel.currentSkuNumMap.put(sku, num!!)
-                                        var count = 0
-                                        for (i in normalAdapter.data){
-                                            count += i.num.toInt()
-                                        }
-                                        mViewModel.normalNum.value = count
-                                        normalBottomSheetNum.text = mViewModel.normalNum.value.toString()
-                                    }
 
+                        mViewModel.detail.value?.let {
+                            var dataString  = it.production_sku_map.get(sku)?.toArray()
 
-                                }
+                            showSelectDateDialog(dataString as Array<String>,barcode,num)
 
-                                override fun onClickCancel() {
+                        }
 
-                                }
-                            }).show()
 
 
                     }

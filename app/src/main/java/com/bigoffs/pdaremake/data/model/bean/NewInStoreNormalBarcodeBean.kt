@@ -10,4 +10,6 @@ data class NewInStoreNormalBarcodeBean(
     var barcode:String = "",
     var num:String = "",
     var admin_id:String = CacheUtil.getUser()?.userInfo?.uid+"",
-    var maxNum : Int = 999):Parcelable
+    var maxNum : Int = 999,
+    var production_at : String = ""
+    ):Parcelable
