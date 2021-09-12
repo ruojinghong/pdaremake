@@ -91,6 +91,11 @@ interface ApiService {
         @Body  body : RequestBody
     ):ApiResponse<Any>
 
+    @POST("/v1/stocktaking/saveData")
+    suspend fun uploadStocktakingData(
+        @Body  body : RequestBody
+    ):ApiResponse<Any>
+
 
     @POST("/v1/inStore/save")
     suspend fun newInStoreByUnique(
@@ -121,4 +126,19 @@ interface ApiService {
     suspend fun tallyCheckEpcCodes(
         @Body  body : RequestBody
     ):ApiResponse<CheckEpcTally>
+
+    @POST("/v1/stocktaking/checkUniqueCode")
+    suspend fun stocktakingCheckUnique(
+        @Body  body : RequestBody
+    ):ApiResponse<Any>
+
+    @POST("/v1/stocktaking/checkShelfCodeOne")
+    suspend fun stocktakingCheckShelf(
+        @Body  body : RequestBody
+    ):ApiResponse<Any>
+
+    @POST("/v1/stocktaking/checkBarcode")
+    suspend fun tocktakingCheckBarcode(
+        @Body  body : RequestBody
+    ):ApiResponse<Any>
 }

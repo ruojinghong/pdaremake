@@ -24,14 +24,12 @@ import com.bigoffs.pdaremake.app.ext.initTitle
 import com.bigoffs.pdaremake.app.util.CacheUtil
 import com.bigoffs.pdaremake.app.util.DeviceUtil
 import com.bigoffs.pdaremake.app.util.Timestamp
-import com.bigoffs.pdaremake.data.model.bean.InStoreBean
-import com.bigoffs.pdaremake.data.model.bean.NewInStoreErrorBean
-import com.bigoffs.pdaremake.data.model.bean.NewInStoreNormalBean
-import com.bigoffs.pdaremake.data.model.bean.UniqueStocktakingBean
+import com.bigoffs.pdaremake.data.model.bean.*
 import com.bigoffs.pdaremake.databinding.ActivityNewInstoreDetailBinding
 import com.bigoffs.pdaremake.databinding.ActivityPdaUniqueStocktakingBinding
 
 import com.bigoffs.pdaremake.databinding.ActivityPdaUniqueTallyBinding
+import com.bigoffs.pdaremake.ui.activity.rfid.FindEpcByBarcodeActivity
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreErrorAdapter
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreNormalAdapter
 import com.bigoffs.pdaremake.ui.adapter.StocktakingUniquelAdapter
@@ -39,16 +37,20 @@ import com.bigoffs.pdaremake.ui.adapter.TallyUniquelAdapter
 import com.bigoffs.pdaremake.ui.dialog.EditDialog
 import com.bigoffs.pdaremake.ui.dialog.HintDialog
 import com.bigoffs.pdaremake.viewmodel.request.RequestInStroreDetailViewModel
+import com.bigoffs.pdaremake.viewmodel.request.RequestStocktakingViewModel
 import com.bigoffs.pdaremake.viewmodel.request.RequestTallyViewModel
 import com.bigoffs.pdaremake.viewmodel.state.NewInStoreDetailViewModel
 import com.bigoffs.pdaremake.viewmodel.state.StocktakingViewModel
 import com.bigoffs.pdaremake.viewmodel.state.TallyViewModel
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
 import me.hgj.jetpackmvvm.ext.parseState
+import me.hgj.jetpackmvvm.util.ActivityMessenger
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
@@ -63,7 +65,7 @@ class PdaUniqueStocktakingActivity :
     override fun layoutId(): Int = R.layout.activity_pda_unique_stocktaking
     val set = arraySetOf<String>()
 
-    val requestTallyViewModel: RequestTallyViewModel by viewModels()
+    val requestStocktakingViewModel: RequestStocktakingViewModel by viewModels()
 
 
 
@@ -72,6 +74,8 @@ class PdaUniqueStocktakingActivity :
     private lateinit var errorBottomSheetNum: TextView
 
     private lateinit var editDialog: EditDialog
+
+    private var bean : StocktakingListBean?  = null
 
 
     //适配器
@@ -93,6 +97,13 @@ class PdaUniqueStocktakingActivity :
             when (mViewModel.currentFocus.value) {
                 //添加店内码
                 1 -> {
+
+                    if(errorAdapter.data.size > 3000){
+                        ToastUtils.showShort("行数不能超过3000行")
+                        beep()
+                        return;
+                    }
+
                     if(TextUtils.isEmpty(mViewModel.currentShelf.value)){
                         ToastUtils.showShort("货架号不能为空")
                         beep()
@@ -109,16 +120,20 @@ class PdaUniqueStocktakingActivity :
                         }
 
                     }
+                    mViewModel.currentScanUnique.value = data
+                   requestStocktakingViewModel.stocktakingCheckUnique(data);
 
-                        mViewModel.currentUniqueSet.add(data)
-                        errorAdapter.addData(UniqueStocktakingBean(mViewModel.currentShelf.value,data,"1"))
-                        updateNum()
+
                 }
                 //添加货架号
                 3 -> {
+
+//                    mViewModel.currentScanShelfCode.value = "YX-100-10-2"
+//                    requestStocktakingViewModel.stocktakingCheckShelf("YX-100-10-2");
+                    mViewModel.currentScanShelfCode.value = data
+                    requestStocktakingViewModel.stocktakingCheckShelf(data);
 //                    mDatabind.etShelf.setText(data)
-                     mDatabind.etUnique.requestFocus()
-                    mViewModel.currentShelf.value = data
+
 //                        addNormalList(data)
 
 
@@ -137,12 +152,39 @@ class PdaUniqueStocktakingActivity :
         view2.findViewById<ImageView>(R.id.iv_unfold).setOnClickListener {
             errorBottomsheetDialog.dismiss()
         }
-        view2.findViewById<TextView>(R.id.title2).setText("店内码")
+        view2.findViewById<TextView>(R.id.title2).text = "店内码"
+        view2.findViewById<TextView>(R.id.title).text = "正常数量"
+
         errorRecyclerView.init(LinearLayoutManager(this), errorAdapter)
         errorBottomsheetDialog = BottomSheetDialog(this, R.style.dialog)
         errorBottomsheetDialog.setContentView(view2)
         errorBottomSheetNum = view2.findViewById(R.id.tv_bottom_error_num)
         BottomSheetBehavior.from(view2.parent as View).peekHeight = getPeekHeight()
+        errorAdapter.setOnItemClickListener{ adapter,view,position ->
+            showItemDeleteDialog(position)
+        }
+    }
+
+    fun showItemDeleteDialog(position:Int){
+        HintDialog.create(this, HintDialog.STYLE_ONLY_OK).setTitle("").setContent("确定删除？")
+            .setLeftBtnText("取消")
+            .setRightBtnText("确定")
+            .setDialogListener(object : HintDialog.OnHintDialogListener{
+                override fun onClickOk() {
+                   errorAdapter.data.removeAt(position)
+                    errorAdapter.notifyDataSetChanged();
+                    updateNum();
+
+                }
+
+                override fun onClickCancel() {
+
+                }
+
+                override fun onClickOther() {
+
+                }
+            }).show()
     }
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -152,7 +194,7 @@ class PdaUniqueStocktakingActivity :
         mDatabind.vm = mViewModel
         mDatabind.click = ProxyClick()
 
-
+        bean = intent.getParcelableExtra("data")
         mDatabind.etUnique.setOnFocusChangeListener() { v, hasFocus ->
             if (hasFocus) {
                 mViewModel.currentFocus.value = 1
@@ -202,21 +244,65 @@ class PdaUniqueStocktakingActivity :
                 onReceiverData(it)
             }
         }
+
+        bean?.let {
+
+            if(it.save_type == 1){
+                mDatabind.tvRight.text = "预盘数据上传"
+            }else{
+                mDatabind.tvRight.text = "复盘数据上传"
+            }
+
+        }
     }
 
     override fun createObserver() {
         super.createObserver()
-        requestTallyViewModel.uniqueUploadResult.observe(this,{state ->
+
+
+        requestStocktakingViewModel.checkUnique.observe(this,{state ->
 
             parseState(state,{
-                             ToastUtils.showShort("操作成功")
-                finish()
+                mViewModel.currentUniqueSet.add(mViewModel.currentScanUnique.value)
+                errorAdapter.addData(UniqueStocktakingBean(mViewModel.currentShelf.value,mViewModel.currentScanUnique.value,"1"))
+                updateNum()
 
             },{
+//                mViewModel.currentUniqueSet.add(mViewModel.currentScanUnique.value)
+//                errorAdapter.addData(UniqueStocktakingBean(mViewModel.currentShelf.value,mViewModel.currentScanUnique.value,"1"))
+//                updateNum()
                 beep()
                 ToastUtils.showShort(it.message)
             })
         })
+
+
+        requestStocktakingViewModel.checkShelf.observe(this,{state ->
+
+            parseState(state,{
+                mDatabind.etUnique.requestFocus()
+                mViewModel.currentShelf.value = mViewModel.currentScanShelfCode.value
+
+            },{
+//                mDatabind.etUnique.requestFocus()
+//                mViewModel.currentShelf.value = mViewModel.currentScanShelfCode.value
+                beep()
+                ToastUtils.showShort(it.message)
+            })
+        })
+
+        requestStocktakingViewModel.uniqueUploadResult.observe(this,{state ->
+            parseState(state,{
+                resetData()
+                ToastUtils.showShort("数据上传成功")
+            },{
+                beep()
+                ToastUtils.showShort(it.message)
+
+            })
+        })
+
+
 
 
     }
@@ -270,15 +356,18 @@ class PdaUniqueStocktakingActivity :
     }
 
     fun deleteItem(barcode: String) {
-        mViewModel.currentUniqueSet.remove(barcode)
+
         val errorIterator = errorAdapter.data.iterator()
         while (errorIterator.hasNext()) {
             var next = errorIterator.next()
-            if (next.goods_code == barcode) {
-                errorIterator.remove()
-                errorAdapter.notifyDataSetChanged()
-                updateNum()
-
+            if (next.shelf_code == mViewModel.currentShelf.value) {
+                if(next.goods_code == barcode){
+                    mViewModel.currentUniqueSet.remove(barcode)
+                    errorIterator.remove()
+                    errorAdapter.notifyDataSetChanged()
+                    updateNum()
+                    return
+                }
             }
         }
 
@@ -329,7 +418,10 @@ class PdaUniqueStocktakingActivity :
             .setRightBtnText("确定")
             .setDialogListener(object : HintDialog.OnHintDialogListener{
                 override fun onClickOk() {
-                    requestTallyViewModel.uploadTallyData(errorAdapter.data,"1")
+                    bean?.let {
+                        requestStocktakingViewModel.uploadStacktakingData(errorAdapter.data,it.save_type,it.id,it.st_type)
+                    }
+
                 }
 
                 override fun onClickCancel() {
@@ -377,6 +469,7 @@ class PdaUniqueStocktakingActivity :
      * @throws IOException
      */
     fun writeTxtFile(content: String, filePath: String, fileName: String, append: Boolean): Boolean {
+        showLoading("生成数据中..")
         var flag: Boolean = true
         val thisFile = File("$filePath/$fileName")
         LogUtils.i("---------------","$filePath/$fileName")
@@ -385,13 +478,24 @@ class PdaUniqueStocktakingActivity :
                 thisFile.parentFile.mkdirs()
             }
             val fw = FileWriter("$filePath/$fileName", append)
-            mViewModel.scanList.forEach {
-                fw.write( "$it,\r\n")
+            errorAdapter.data.forEach {
+                fw.write( "${it.shelf_code},${it.goods_code},${it.num}\r\n")
             }
             fw.close()
+            resetData()
+            dismissLoading()
+            ToastUtils.showShort("{已生成${thisFile.name}}")
         } catch (e: IOException) {
             e.printStackTrace()
         }
         return flag
+    }
+
+    fun resetData(){
+        errorAdapter.data.clear();
+        errorAdapter.notifyDataSetChanged();
+        updateNum();
+        mViewModel.currentShelf.value = ""
+        mDatabind.etShelf.requestFocus()
     }
 }

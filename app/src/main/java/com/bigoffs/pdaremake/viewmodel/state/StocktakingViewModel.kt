@@ -42,4 +42,8 @@ class StocktakingViewModel : BaseViewModel() {
     val waitGroundingMap = hashMapOf<String,Int>()
     val alreadyGroundingMap = hashMapOf<String,Int>()
 
+    var currentScanShelfCode = StringLiveData();
+    var currentScanUnique = StringLiveData();
+    var currentScanBarcode = StringLiveData();
+
 }

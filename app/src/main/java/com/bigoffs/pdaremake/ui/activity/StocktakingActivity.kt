@@ -87,7 +87,10 @@ class StocktakingActivity : BaseActivity<StocktakingViewModel,ActivityStocktakin
         }
         stocktakingAdapter.addChildClickViewIds(R.id.tv_go_detail)
         stocktakingAdapter.setOnItemChildClickListener{adapter, view, position ->
-                ActivityMessenger.startActivity<PdaUniqueStocktakingActivity>(context,Pair<String,StocktakingListBean>("data",stocktakingAdapter.data[position]))
+                when(stocktakingAdapter.data[position].st_type_name){
+
+                }
+                ActivityMessenger.startActivity<PdaUniqueStocktakingActivity>(this,Pair<String,StocktakingListBean>("data",stocktakingAdapter.data[position]))
         }
 
 

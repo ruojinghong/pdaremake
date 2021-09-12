@@ -13,6 +13,8 @@ data class StocktakingListBean(
                                 var start_time :String = "",
                                 //盘点类型
                                 var w_id :Int = 0,
+                                var st_type : Int = 1,
+                                var save_type : Int = 1,
 
                                 ): Parcelable
 

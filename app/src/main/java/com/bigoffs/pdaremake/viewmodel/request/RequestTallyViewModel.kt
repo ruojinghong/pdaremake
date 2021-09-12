@@ -77,4 +77,5 @@ class RequestTallyViewModel :BaseViewModel() {
             RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))
         request({ apiService.tallyCheckEpcCodes(requestBody)},checkResult,true,"加载中...")
     }
+
 }
