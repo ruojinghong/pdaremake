@@ -4,8 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Environment
-import android.os.Parcel
-import android.os.Parcelable
 import android.text.Editable
 import android.text.TextUtils
 import android.view.View
@@ -18,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bigoffs.pdaremake.R
+import com.bigoffs.pdaremake.app.base.BaseRfidFActivity
 import com.bigoffs.pdaremake.app.base.BaseScanActivity
 import com.bigoffs.pdaremake.app.ext.addOnEditorActionListener
 import com.bigoffs.pdaremake.app.ext.addOnNoneEditorActionListener
@@ -31,6 +30,7 @@ import com.bigoffs.pdaremake.databinding.ActivityNewInstoreDetailBinding
 import com.bigoffs.pdaremake.databinding.ActivityPdaUniqueStocktakingBinding
 
 import com.bigoffs.pdaremake.databinding.ActivityPdaUniqueTallyBinding
+import com.bigoffs.pdaremake.databinding.ActivityRfidUniqueStocktakingBinding
 import com.bigoffs.pdaremake.ui.activity.rfid.FindEpcByBarcodeActivity
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreErrorAdapter
 import com.bigoffs.pdaremake.ui.adapter.NewInStoreNormalAdapter
@@ -62,9 +62,9 @@ import java.io.IOException
  *Time:2021/5/10  22:18
  *Desc:店内码盘点
  */
-class PdaUniqueStocktakingActivity() :
-    BaseScanActivity<StocktakingViewModel, ActivityPdaUniqueStocktakingBinding>() {
-    override fun layoutId(): Int = R.layout.activity_pda_unique_stocktaking
+class RfidUniqueStocktakingActivity :
+    BaseRfidFActivity<StocktakingViewModel, ActivityRfidUniqueStocktakingBinding>() {
+    override fun layoutId(): Int = R.layout.activity_rfid_unique_stocktaking
     val set = arraySetOf<String>()
 
     val requestStocktakingViewModel: RequestStocktakingViewModel by viewModels()
@@ -83,9 +83,7 @@ class PdaUniqueStocktakingActivity() :
     //适配器
     private val errorAdapter: StocktakingUniquelAdapter by lazy { StocktakingUniquelAdapter(arrayListOf()) }
 
-    constructor(parcel: Parcel) : this() {
-        bean = parcel.readParcelable(StocktakingListBean::class.java.classLoader)
-    }
+
 
 
     override fun setStatusBar() {
@@ -93,7 +91,7 @@ class PdaUniqueStocktakingActivity() :
     }
 
 
-    override fun onReceiverData(data: String) {
+     fun onReceiverData(data: String) {
 
         if(editDialog.isShowing){
                 editDialog.setContentText(data)
@@ -192,7 +190,7 @@ class PdaUniqueStocktakingActivity() :
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        super.initView(savedInstanceState)
+
 
 
         mDatabind.vm = mViewModel
@@ -258,6 +256,20 @@ class PdaUniqueStocktakingActivity() :
             }
 
             mViewModel.stocktakingid.value = it.id
+
+        }
+
+
+        if(DeviceUtil.isRfidDevice()){
+
+            mDatabind.etShelf.addOnNoneEditorActionListener{
+                mDatabind.etShelf.setText("")
+                onReceiverData(it)
+            }
+            mDatabind.etUnique.addOnNoneEditorActionListener {
+                mDatabind.etUnique.setText("")
+                onReceiverData(it)
+            }
         }
     }
 
@@ -312,7 +324,9 @@ class PdaUniqueStocktakingActivity() :
 
     }
 
-
+    override fun onFinish(data: String) {
+        onReceiverData(data)
+    }
 
 
     /**
@@ -333,6 +347,26 @@ class PdaUniqueStocktakingActivity() :
 
 //        normalAdapter.addData(mViewModel.currenNormalList)
 
+    }
+    fun clear(){
+        HintDialog.create(this, HintDialog.STYLE_ONLY_OK).setTitle("").setContent("确定清空采集？")
+            .setLeftBtnText("取消")
+            .setRightBtnText("确定")
+            .setDialogListener(object : HintDialog.OnHintDialogListener{
+                override fun onClickOk() {
+
+                    resetData();
+
+                }
+
+                override fun onClickCancel() {
+
+                }
+
+                override fun onClickOther() {
+
+                }
+            }).show()
     }
 
     inner class ProxyClick {
@@ -508,24 +542,11 @@ class PdaUniqueStocktakingActivity() :
         mDatabind.etShelf.requestFocus()
     }
 
-    fun clear(){
-        HintDialog.create(this, HintDialog.STYLE_ONLY_OK).setTitle("").setContent("确定清空采集？")
-            .setLeftBtnText("取消")
-            .setRightBtnText("确定")
-            .setDialogListener(object : HintDialog.OnHintDialogListener{
-                override fun onClickOk() {
+    override fun initScan() {
 
-                    resetData();
+    }
 
-                }
+    override fun readOrClose() {
 
-                override fun onClickCancel() {
-
-                }
-
-                override fun onClickOther() {
-
-                }
-            }).show()
     }
 }

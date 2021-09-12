@@ -10,6 +10,7 @@ import com.bigoffs.pdaremake.R
 import com.bigoffs.pdaremake.app.base.BaseActivity
 import com.bigoffs.pdaremake.app.ext.*
 import com.bigoffs.pdaremake.app.util.CacheUtil
+import com.bigoffs.pdaremake.app.util.DeviceUtil
 import com.bigoffs.pdaremake.app.util.SoundUtils.context
 import com.bigoffs.pdaremake.data.model.bean.StocktakingListBean
 import com.bigoffs.pdaremake.databinding.ActivityMainBinding
@@ -87,10 +88,27 @@ class StocktakingActivity : BaseActivity<StocktakingViewModel,ActivityStocktakin
         }
         stocktakingAdapter.addChildClickViewIds(R.id.tv_go_detail)
         stocktakingAdapter.setOnItemChildClickListener{adapter, view, position ->
-                when(stocktakingAdapter.data[position].st_type_name){
+                when(stocktakingAdapter.data[position].st_type){
+                    //店内码
+                    1->{
+                        if(DeviceUtil.isRfidDevice()){
+                            ActivityMessenger.startActivity<RfidUniqueStocktakingActivity>(this,Pair<String,StocktakingListBean>("data",stocktakingAdapter.data[position]))
+                        }else{
+                            ActivityMessenger.startActivity<PdaUniqueStocktakingActivity>(this,Pair<String,StocktakingListBean>("data",stocktakingAdapter.data[position]))
+                        }
+                    }
+                    //条形码
+                    2->{}
+                    //epc
+                    3->{
+                        if(DeviceUtil.isRfidDevice()){
+                            ActivityMessenger.startActivity<RfidStocktakingActivityActivity>(context,Pair<String,StocktakingListBean>("data",stocktakingAdapter.data[position]))
+                        }
+
+                    }
 
                 }
-                ActivityMessenger.startActivity<PdaUniqueStocktakingActivity>(this,Pair<String,StocktakingListBean>("data",stocktakingAdapter.data[position]))
+
         }
 
 

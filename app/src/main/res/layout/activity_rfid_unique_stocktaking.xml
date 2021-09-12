@@ -8,7 +8,7 @@
                 type="com.bigoffs.pdaremake.viewmodel.state.StocktakingViewModel" />
         <variable
             name="click"
-            type="com.bigoffs.pdaremake.ui.activity.PdaUniqueStocktakingActivity.ProxyClick" />
+            type="com.bigoffs.pdaremake.ui.activity.RfidUniqueStocktakingActivity.ProxyClick" />
     </data>
     <RelativeLayout
         android:background="#f5f5f5"
@@ -27,7 +27,6 @@
 
                 android:orientation="vertical"
                 android:layout_marginBottom="50dp">
-
                 <LinearLayout
                     android:id="@+id/ll_id"
                     android:layout_width="match_parent"
@@ -57,6 +56,8 @@
 
 
                 </LinearLayout>
+
+
                 <LinearLayout
                     android:id="@+id/ll_shelf"
                     android:layout_marginTop="10dp"
