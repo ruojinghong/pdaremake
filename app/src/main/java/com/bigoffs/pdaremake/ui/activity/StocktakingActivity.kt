@@ -21,6 +21,7 @@ import com.bigoffs.pdaremake.viewmodel.request.RequestInstoreViewmodel
 import com.bigoffs.pdaremake.viewmodel.request.RequestStocktakingViewModel
 import com.bigoffs.pdaremake.viewmodel.state.StocktakingViewModel
 import com.blankj.utilcode.util.ConvertUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.kingja.loadsir.core.LoadService
 import com.yanzhenjie.recyclerview.SwipeRecyclerView
@@ -90,7 +91,7 @@ class StocktakingActivity : BaseActivity<StocktakingViewModel,ActivityStocktakin
         stocktakingAdapter.setOnItemChildClickListener{adapter, view, position ->
                 when(stocktakingAdapter.data[position].st_type){
                     //店内码
-                    1->{
+                    5->{
                         if(DeviceUtil.isRfidDevice()){
                             ActivityMessenger.startActivity<RfidUniqueStocktakingActivity>(this,Pair<String,StocktakingListBean>("data",stocktakingAdapter.data[position]))
                         }else{
@@ -98,7 +99,7 @@ class StocktakingActivity : BaseActivity<StocktakingViewModel,ActivityStocktakin
                         }
                     }
                     //条形码
-                    2->{
+                    7->{
                         if(DeviceUtil.isRfidDevice()){
                             ActivityMessenger.startActivity<RfidBarcodeStocktakingActivity>(this,Pair<String,StocktakingListBean>("data",stocktakingAdapter.data[position]))
                         }else{
@@ -106,11 +107,14 @@ class StocktakingActivity : BaseActivity<StocktakingViewModel,ActivityStocktakin
                         }
                     }
                     //epc
-                    3->{
+                    6->{
                         if(DeviceUtil.isRfidDevice()){
                             ActivityMessenger.startActivity<RfidStocktakingActivityActivity>(context,Pair<String,StocktakingListBean>("data",stocktakingAdapter.data[position]))
                         }
 
+                    }
+                    else->{
+                        ToastUtils.showShort("st_type为${stocktakingAdapter.data[position].st_type},未知类型")
                     }
 
                 }

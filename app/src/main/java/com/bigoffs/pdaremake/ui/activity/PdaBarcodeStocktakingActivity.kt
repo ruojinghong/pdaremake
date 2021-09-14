@@ -245,7 +245,7 @@ class PdaBarcodeStocktakingActivity() :
 
         bean?.let {
 
-            if(it.save_type == 1){
+            if(it.st_status == 1){
                 mDatabind.tvRight.text = "预盘数据上传"
             }else{
                 mDatabind.tvRight.text = "复盘数据上传"
@@ -421,7 +421,7 @@ class PdaBarcodeStocktakingActivity() :
             .setDialogListener(object : HintDialog.OnHintDialogListener{
                 override fun onClickOk() {
                     bean?.let {
-                        requestStocktakingViewModel.uploadStacktakingData(errorAdapter.data,it.save_type,it.id,it.st_type)
+                        requestStocktakingViewModel.uploadStacktakingData(errorAdapter.data,it.st_status,it.id,it.st_type)
                     }
 
                 }
