@@ -97,11 +97,17 @@ class RequestStocktakingViewModel : BaseViewModel() {
     //品码类型：1店内码；2条码，3epc码
     fun uploadStacktakingData(data:MutableList<UniqueStocktakingBean>,save_type:Int,id:String,st_way:Int) {
         //1.这种是在 Activity/Fragment的监听回调中拿到已脱壳的数据（项目有基类的可以用）
+
         val map = HashMap<String, Any>()
         map.put("save_type",save_type)
         map.put("st_id", id)
-        map.put("st_way",st_way)
+
         map.put("data",data)
+        when(save_type){
+            5 -> { map.put("st_way",1)}
+            7 -> { map.put("st_way",2)}
+            else ->  map.put("st_way",save_type)
+        }
         val requestBody: RequestBody =
             RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Gson().toJson(map))
         request(

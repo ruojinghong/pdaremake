@@ -51,7 +51,7 @@ public class WpkEditText extends AppCompatEditText {
     private final int HIDE_STYLE_LIGHT = 4;
     private final int COUNT_STYLE = 5;
     private int count = 0;
-    private int maxCount = 9999;
+    private int maxCount = 99999999;
 
     private TextWatcher mTextWatcher;
 
